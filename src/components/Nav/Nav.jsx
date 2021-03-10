@@ -14,10 +14,8 @@ const Nav = () => {
 
     let buttons = useSelector(state => state.buttons);
 
-    console.log(buttons);
-
     const handleClick = (page) => {
-        dispatch(updateButton(page))
+        //dispatch(updateButton(page))
     }
 
     return (

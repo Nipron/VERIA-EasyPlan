@@ -1,0 +1,33 @@
+.btnShapeSelection {
+    position: absolute;
+    top: 296px;
+    left: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("../../img/step_button.svg");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    width: 134px;
+    height: 45px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    color: #595454;
+    text-decoration: none;
+}
+
+.btnShapeSelection::before {
+    content: url("../../img/selection-marker.svg");
+    width: 17px;
+    position: absolute;
+    left: -5%;
+    top: 15px;
+    visibility: hidden;
+}
+
+.active::before {
+    visibility: visible;
+}
+

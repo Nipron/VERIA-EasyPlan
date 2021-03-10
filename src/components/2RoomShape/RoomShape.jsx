@@ -1,9 +1,31 @@
 import React from 'react';
-import rectangular from '../../img/ractangular.svg';
-import rectangularL from '../../img/ractangular-l-type.svg';
-import rectangularT from '../../img/ractangular-t-type.svg';
+import {useDispatch, useSelector} from "react-redux";
+import {Redirect} from "react-router";
+import {HashLink as Link} from "react-router-hash-link";
+
+import shapeR from '../../img/ractangular.svg';
+import shapeL from '../../img/ractangular-l-type.svg';
+import shapeT from '../../img/ractangular-t-type.svg';
+import s from "./RoomShape.module.css";
+
+import {updateShape} from "../../redux/shapesReducer";
+import {updateButton} from "../../redux/buttonsReducer";
 
 const RoomShape = () => {
+
+    const dispatch = useDispatch();
+
+    let shapes = useSelector(state => state.shapes);
+    let buttons = useSelector(state => state.buttons);
+
+
+    const handleClick = (page, shape) => {
+        dispatch(updateButton(page))
+        dispatch(updateShape(shape))
+    }
+
+    if (!buttons[2]) return <Redirect to="/"/>
+
     return (
         <div>
             <div className="info-section">
@@ -18,20 +40,28 @@ const RoomShape = () => {
             <div className="content-section">
                 <div className="content-box">
                     <div className="object-container">
-                        <div className="rectangular"><img src={rectangular} alt="rectangular"/></div>
-                        <div className="btn-select selected" id="btn-rectangular">
-                            <a href="">Rectangular</a>
-                        </div>
+                        <div className="rectangular"><img src={shapeR} alt="rectangular"/></div>
+                        <Link to="/roomsize" onClick={() => handleClick(3,"R")}
+                              className={`${s.btnShapeSelection} ${shapes.R && s.active}`}
+                        >
+                            Rectangular
+                        </Link>
                     </div>
                     <div className="object-container">
-                        <div className="rectangular"><img src={rectangularL} alt="rectangular-l"/>
-                        </div>
-                        <div className="btn-select" id="btn-l"><a href="">L-Shaped</a></div>
+                        <div className="rectangular"><img src={shapeL} alt="rectangular-l"/></div>
+                        <Link to="/roomsize" onClick={() => handleClick(3,"L")}
+                              className={`${s.btnShapeSelection} ${shapes.L && s.active}`}
+                        >
+                            L-Shaped
+                        </Link>
                     </div>
                     <div className="object-container">
-                        <div className="rectangular"><img src={rectangularT} alt="rectangular-t"/>
-                        </div>
-                        <div className="btn-select" id="btn-t"><a href="">T-Shaped</a></div>
+                        <div className="rectangular"><img src={shapeT} alt="rectangular-t"/></div>
+                        <Link to="/roomsize" onClick={() => handleClick(3,"T")}
+                              className={`${s.btnShapeSelection} ${shapes.T && s.active}`}
+                        >
+                            T-Shaped
+                        </Link>
                     </div>
                 </div>
             </div>

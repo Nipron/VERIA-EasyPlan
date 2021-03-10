@@ -15,11 +15,13 @@
     line-height: 16px;
     color: #C2BDBD;
     text-decoration: none;
+    pointer-events: none;
 }
 
 .btnStart {
     background-image: url("../../img/start_arrow_button.svg");
     color: #595454;
+    pointer-events: auto;
 }
 
 .btnResult {
@@ -29,11 +31,13 @@
 .active {
     background-image: url("../../img/gradient_arrow_button.svg");
     color: #595454;
+    pointer-events: auto;
 }
 
 .activeResult {
     background-image: url("../../img/result_gradient_button.svg");
     color: #595454;
+    pointer-events: auto;
 }
 
 

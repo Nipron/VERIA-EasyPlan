@@ -1,11 +1,28 @@
 import React from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {Redirect} from "react-router";
+
 import laminate from '../../img/laminate.jpg';
 import parquet from '../../img/parquet.jpg';
 import veria from "../../img/veria-logo.png";
 import unburnable from "../../img/unburnable.jpg";
 import burnable from "../../img/burnable-wood.jpg";
+import {updateButton} from "../../redux/buttonsReducer";
+
+import s from "./FloorType.module.css";
+import {HashLink as Link} from "react-router-hash-link";
 
 const FloorType = () => {
+
+    const buttons = useSelector(state => state.buttons);
+    const dispatch = useDispatch();
+
+    const handleClick = (page) => {
+        dispatch(updateButton(page))
+    }
+
+    if (!buttons[5]) return <Redirect to="/"/>
+
     return (
         <div>
             <div className="info-section">
@@ -67,8 +84,9 @@ const FloorType = () => {
                     <div className="info-area">
                         <span>Select please top and subfloor...</span>
                     </div>
-                    <button type="submit" form="cover-form">Continue</button>
-
+                    <Link to="/thermostat" onClick={() => handleClick(6)} className={s.btnNextStep}>
+                        Continue
+                    </Link>
                 </div>
             </div>
         </div>

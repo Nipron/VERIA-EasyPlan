@@ -1,6 +1,22 @@
 import React from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {updateButton} from "../../redux/buttonsReducer";
+import {Redirect} from "react-router";
+
+import s from "./ColdSpots.module.css";
+import {HashLink as Link} from "react-router-hash-link";
 
 const ColdSpots = () => {
+
+    const buttons = useSelector(state => state.buttons);
+    const dispatch = useDispatch();
+
+    const handleClick = (page) => {
+        dispatch(updateButton(page))
+    }
+
+    if (!buttons[4]) return <Redirect to="/"/>
+
     return (
         <div>
             <div className="info-section">
@@ -26,8 +42,9 @@ const ColdSpots = () => {
                     <div className="bin-area">
                         <span>Drag here to delete</span>
                     </div>
-                    <div className="btn-next-step" id="btn-continue"><a href="">Continue</a>
-                    </div>
+                    <Link to="/floortype" onClick={() => handleClick(5)} className={s.btnNextStep}>
+                        Continue
+                    </Link>
                 </div>
             </div>
         </div>

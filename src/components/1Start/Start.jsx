@@ -1,8 +1,19 @@
 import React from 'react';
-import '../../styles/main.css';
-import '../../styles/modals.css';
+import {useDispatch} from "react-redux";
+import {HashLink as Link} from 'react-router-hash-link';
+
+import {updateButton} from "../../redux/buttonsReducer";
+
+import s from './Start.module.css';
 
 const Start = () => {
+
+    const dispatch = useDispatch();
+
+    const handleClick = (page) => {
+        dispatch(updateButton(page))
+    }
+
     return (
         <div>
             <div className="info-section">
@@ -20,7 +31,9 @@ const Start = () => {
                 <div className="content-section-banner">
 
                 </div>
-                <div className="btn-next-step" id="btn-step"><a href="/roomshape">Start here</a></div>
+                <Link to="/roomshape" onClick={() => handleClick(2)} className={s.btnNextStep}>
+                    Room Shape
+                </Link>
             </div>
         </div>
     );

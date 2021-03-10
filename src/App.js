@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route} from "react-router";
+import {Route, Switch} from "react-router-dom";
 
 import './styles/main.css';
 import './styles/modals.css';
@@ -22,13 +22,16 @@ const App = () => {
             <div className="app-grid">
                 <Header/>
                 <Nav/>
-                <Route exact path='/' component={Start}/>
-                <Route path='/roomshape' component={RoomShape}/>
-                <Route path='/roomsize' component={RoomSize}/>
-                <Route path='/coldspots' component={ColdSpots}/>
-                <Route path='/floortype' component={FloorType}/>
-                <Route path='/thermostat' component={Thermostat}/>
-                <Route path='/result' component={Result}/>
+                <Switch>
+                    <Route exact path='/' component={Start}/>
+                    <Route path='/roomshape' component={RoomShape}/>
+                    <Route path='/roomsize' component={RoomSize}/>
+                    <Route path='/coldspots' component={ColdSpots}/>
+                    <Route path='/floortype' component={FloorType}/>
+                    <Route path='/thermostat' component={Thermostat}/>
+                    <Route path='/result' component={Result}/>
+                    <Route component={Start}/>
+                </Switch>
             </div>
         </div>
     );
