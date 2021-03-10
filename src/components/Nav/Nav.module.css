@@ -1,0 +1,42 @@
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("../../img/white_arrow_button.svg");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    width: 154px;
+    height: 45px;
+    filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.25));
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    color: #C2BDBD;
+    text-decoration: none;
+}
+
+.btnStart {
+    background-image: url("../../img/start_arrow_button.svg");
+    color: #595454;
+}
+
+.btnResult {
+    background-image: url("../../img/result_white_button.svg");
+}
+
+.active {
+    background-image: url("../../img/gradient_arrow_button.svg");
+    color: #595454;
+}
+
+.activeResult {
+    background-image: url("../../img/result_gradient_button.svg");
+    color: #595454;
+}
+
+
+
+
+
