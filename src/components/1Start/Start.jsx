@@ -20,7 +20,7 @@ const Start = () => {
                 <div className="content-section-banner">
 
                 </div>
-                <div className="btn-next-step" id="btn-step"><a href="#">Start here</a></div>
+                <div className="btn-next-step" id="btn-step"><a href="/roomshape">Start here</a></div>
             </div>
         </div>
     );
