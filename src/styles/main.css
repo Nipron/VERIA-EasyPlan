@@ -982,6 +982,7 @@ https://css-tricks.com/the-checkbox-hack/#top-of-site
   line-height: 16px;
   color: #595454;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .info-area-thermostat {

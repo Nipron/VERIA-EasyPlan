@@ -311,7 +311,6 @@ input[type=number] {
   box-sizing: border-box;
   box-shadow: 1px 6px 6px rgba(0, 0, 0, 0.15), inset 0px -6px 11px rgba(0, 0, 0, 0.25), inset 0px 6px 11px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  visibility: hidden;
 }
 
 .modal-cs-left-content-box {
@@ -378,6 +377,7 @@ input[type=number] {
   bottom: -4%;
   right: 14%;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .modal-btn-continue {

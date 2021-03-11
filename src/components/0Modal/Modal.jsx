@@ -8,7 +8,6 @@ const Modal = ({active, setActive, children}) => {
     return (
         <div className={active ? `${s.modal} ${s.active}` : s.modal} onClick={() => setActive(false)}>
             <div className={s.modal__content} onClick={e => e.stopPropagation()}>
-                BBB
                 {children}
             </div>
         </div>

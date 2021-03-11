@@ -13,6 +13,7 @@ import RoomSize from "./components/3RoomSize/RoomSize";
 import ColdSpots from "./components/4ColdSpots/ColdSpots";
 import FloorType from "./components/5FloorType/FloorType";
 import Thermostat from "./components/6Thermostat/Thermostat";
+import Placement from "./components/6Thermostat/Placement";
 import Result from "./components/7Result/Result";
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
                     <Route path='/coldspots' component={ColdSpots}/>
                     <Route path='/floortype' component={FloorType}/>
                     <Route path='/thermostat' component={Thermostat}/>
+                    <Route path='/placement' component={Placement}/>
                     <Route path='/result' component={Result}/>
                     <Route component={Start}/>
                 </Switch>

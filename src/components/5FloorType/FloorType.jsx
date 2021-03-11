@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router";
 
@@ -11,8 +11,11 @@ import {updateButton} from "../../redux/buttonsReducer";
 
 import s from "./FloorType.module.css";
 import {HashLink as Link} from "react-router-hash-link";
+import Modal from "../0Modal/Modal";
 
 const FloorType = () => {
+
+    const [modalActive, setModalActive] = useState(false);
 
     const buttons = useSelector(state => state.buttons);
     const dispatch = useDispatch();
@@ -80,7 +83,8 @@ const FloorType = () => {
                     </form>
                 </div>
                 <div className="button-box">
-                    <div id="btn-help-floor-type" className="box_btn-style-black">Need help?</div>
+                    <div id="btn-help-floor-type" className="box_btn-style-black"
+                         onClick={() => setModalActive(true)}>Need help?</div>
                     <div className="info-area">
                         <span>Select please top and subfloor...</span>
                     </div>
@@ -89,6 +93,20 @@ const FloorType = () => {
                     </Link>
                 </div>
             </div>
+            <Modal active={modalActive} setActive={setModalActive}>
+
+                    <div className="modal-window-floor-type">
+                        <h1 className="modal-title">About Floor Types</h1>
+                        <span className="modal-btn-close"  onClick={() => setModalActive(false)}></span>
+                        <div className="modal-ft-left-content-box"></div>
+                        <div className="modal-ft-right-content-box">
+                            <p className="modal-container-description">An important part of the calculation is weather
+                                it is e.g. wood or tiles that goes on top of the heated floor.</p>
+                        </div>
+                        <div className="modal-btn-ok" onClick={() => setModalActive(false)}>ok</div>
+                    </div>
+
+            </Modal>
         </div>
     );
 };

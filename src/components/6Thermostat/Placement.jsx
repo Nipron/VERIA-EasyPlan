@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {updateButton} from "../../redux/buttonsReducer";
 import {Redirect} from "react-router";
-import s from "../2RoomShape/RoomShape.module.css";
+import s from "./Thermostat.module.css";
 import {HashLink as Link} from "react-router-hash-link";
 
-const Thermostat = () => {
+const Placement = () => {
 
     const [modalActive, setModalActive] = useState(false);
 
@@ -22,12 +22,8 @@ const Thermostat = () => {
         <div>
             <div className="info-section">
                 <div>
-                    <h2>Add Thermostat</h2>
-                    <p>You need this thermostat kit to connect to the 1st mat and to a socket. The kit also has a wired
-                        floor sensor.
-                        With Veria Wireless Clickkit you will be able to control the temperature quickly and precisely.
-                        You may also program
-                        4 different time zones during the weekdays and weekend.
+                    <h2>Place Thermostat</h2>
+                    <p>Drag the thermostat along the edges of the room, so it matches the placement in the actual room.
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>
@@ -35,20 +31,15 @@ const Thermostat = () => {
 
             <div className="content-section-grid">
                 <div className="constructor-box">
-                    <div className="product-box">
-                        <Link to="/placement" className="btn-accept-product">
-                            Wireles Clickkit
-                        </Link>
-                    </div>
                 </div>
                 <div className="button-box">
-                    <div className="info-area-thermostat">
-                        <span>Select please...</span>
-                    </div>
+                    <Link to="/result" onClick={() => handleClick(7)} className={s.btnNextStep}>
+                        Continue
+                    </Link>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Thermostat;
+export default Placement;

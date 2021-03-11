@@ -8,7 +8,6 @@ import '../../styles/modals.css';
 import s from "./RoomSize.module.css";
 
 import {updateButton} from "../../redux/buttonsReducer";
-import RoomSizeModal from "./RoomSizeModal";
 import Modal from "../0Modal/Modal";
 
 const RoomSize = () => {
@@ -68,7 +67,7 @@ const RoomSize = () => {
                                 change, then press and drag the corner handle to adjust the dimensions. Repeat to add
                                 more angled walls.</p>
                         </div>
-                        <div className={s.modalBtnOk} onClick={() => setModalActive(false)}>ok</div>
+                        <div className="modal-btn-ok" onClick={() => setModalActive(false)}>ok</div>
                     </div>
             </Modal>
         </div>
