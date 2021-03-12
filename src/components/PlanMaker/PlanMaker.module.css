@@ -8,7 +8,7 @@
     margin: 100px;
 }
 
-.point01 {
+.point, .pointStart, .point01, .point02, .point03, .point04, .point05 {
     width: 13px;
     height: 13px;
     background: linear-gradient(143.81deg, #DDDDDD 23.02%, #FFFFFF 102.04%);
@@ -16,55 +16,6 @@
     box-sizing: border-box;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
     border-radius: 50%;
-}
-
-.point02 {
-    width: 13px;
-    height: 13px;
-    background: red;
-    border: 1px solid #A39999;
-    box-sizing: border-box;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-}
-
-
-.point03 {
-    width: 13px;
-    height: 13px;
-    background: linear-gradient(143.81deg, #DDDDDD 23.02%, #FFFFFF 102.04%);
-    border: 1px solid #A39999;
-    box-sizing: border-box;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    z-index: 5;
-}
-
-.point04 {
-    width: 13px;
-    height: 13px;
-    background: linear-gradient(143.81deg, #DDDDDD 23.02%, #FFFFFF 102.04%);
-    border: 1px solid #A39999;
-    box-sizing: border-box;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    z-index: 5;
-}
-
-.pointStart {
-    width: 13px;
-    height: 13px;
-    background: linear-gradient(143.81deg, #DDDDDD 23.02%, #FFFFFF 102.04%);
-    border: 1px solid #A39999;
-    box-sizing: border-box;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    position: relative;
-    z-index: 41;
-}
-
-.lines {
-    z-index: -10;
 }
 
 .points {
@@ -72,19 +23,6 @@
     z-index: 7;
 }
 
-.drag1 {
-    z-index: 122;
-    border: 2px solid red;
-}
-
-.drag2 {
-    z-index: 25;
-    border: 2px solid yellowgreen;
-}
-
-.dimensions {
-
-}
 
 .dimContainer {
     display: flex;
@@ -124,6 +62,10 @@
     order: 0;
     flex-grow: 0;
     margin: 30.5px 0px;
+}
+
+.lines {
+
 }
 
 

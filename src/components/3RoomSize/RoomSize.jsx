@@ -10,12 +10,16 @@ import s from "./RoomSize.module.css";
 import {updateButton} from "../../redux/buttonsReducer";
 import Modal from "../0Modal/Modal";
 import PlanMaker from "../PlanMaker/PlanMaker";
+import PlanMakerL from "../PlanMaker/PlanMakerL";
 
 const RoomSize = () => {
 
     const [modalActive, setModalActive] = useState(false);
 
+
     const buttons = useSelector(state => state.buttons);
+    const shapes = useSelector(state => state.shapes);
+
     const dispatch = useDispatch();
 
     const handleClick = (page) => {
@@ -40,9 +44,13 @@ const RoomSize = () => {
 
             <div className="content-section-grid">
 
-                <div className="constructor-box">
+                {shapes.R && <div className="constructor-box">
                     <PlanMaker/>
-                </div>
+                </div>}
+
+                {shapes.L && <div className="constructor-box">
+                    <PlanMakerL/>
+                </div>}
 
 
                 <div className="button-box">
