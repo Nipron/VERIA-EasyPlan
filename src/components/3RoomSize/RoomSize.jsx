@@ -46,6 +46,7 @@ const RoomSize = () => {
 
                 <div className="constructor-box">
                     <PlanMaker/>
+                </div>
 
 
                 {/*shapes.L && <div className="constructor-box">
