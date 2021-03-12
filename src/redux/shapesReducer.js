@@ -6,8 +6,11 @@ const UPDATE_SHAPE = "UPDATE_SHAPE";
 let shapesInitialState = {
     R: false,
     L: false,
-    T: false
+    T: false,
+
 }
+
+
 
 //Action creators
 export const updateShape = shape => {

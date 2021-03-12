@@ -44,13 +44,13 @@ const RoomSize = () => {
 
             <div className="content-section-grid">
 
-                {shapes.R && <div className="constructor-box">
+                <div className="constructor-box">
                     <PlanMaker/>
-                </div>}
 
-                {shapes.L && <div className="constructor-box">
+
+                {/*shapes.L && <div className="constructor-box">
                     <PlanMakerL/>
-                </div>}
+                </div>*/}
 
 
                 <div className="button-box">
