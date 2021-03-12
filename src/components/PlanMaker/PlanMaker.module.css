@@ -40,6 +40,17 @@
     z-index: 5;
 }
 
+.point04 {
+    width: 13px;
+    height: 13px;
+    background: linear-gradient(143.81deg, #DDDDDD 23.02%, #FFFFFF 102.04%);
+    border: 1px solid #A39999;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    z-index: 5;
+}
+
 .pointStart {
     width: 13px;
     height: 13px;
