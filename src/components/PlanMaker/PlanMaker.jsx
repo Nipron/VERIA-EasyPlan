@@ -84,7 +84,9 @@ function PlanMaker() {
                 <div className={s.pointStart}/>
                 <Draggable onDrag={handleDrag01}
                            position={{x: pos01.x, y: pos01.y}}
-                           bounds={{left: 50, top: 0, right: 720, bottom: 0}}
+                           bounds={pos02angled
+                               ? {left: pos02.x + 30, top: 0, right: 720, bottom: 0}
+                               : {left: 50, top: 0, right: 720, bottom: 0}}
                 >
                     <div className={s.point01}/>
                 </Draggable>
@@ -114,7 +116,9 @@ function PlanMaker() {
 
                 <Draggable onDrag={handleDrag03}
                            position={{x: pos03.x, y: pos03.y}}
-                           bounds={{left: 0, top: 20, right: 0, bottom: 320}}>
+                           bounds={pos02angled
+                               ? {left: 0, top: pos02shadow.y + 30, right: 0, bottom: 320}
+                               : {left: 0, top: 60, right: 0, bottom: 320}}>
                     <div className={s.point03}/>
                 </Draggable>
             </div>
@@ -132,7 +136,7 @@ function PlanMaker() {
 
                 <div className={s.dimContainer}
                      style={{top: (pos01.y - 2), left: Math.round((pos01.x - 44) / 2 + 100)}}>
-                    <span>{`${pos02.x * 2}cm`}</span>
+                    <span>{`${pos02shadow.x * 2}cm`}</span>
                 </div>
 
                 <div className={s.dimContainer}
@@ -140,7 +144,7 @@ function PlanMaker() {
                          top: ((pos01.y + pos02shadow.y) / 2 - 4),
                          left: Math.round((pos01.x + pos02shadow.x) / 2 - 24 + 100)
                      }}>
-                    <span>{`${pos02.y * 2}cm`}</span>
+                    <span>{`${pos02shadow.y * 2}cm`}</span>
                 </div>
 
                 <div className={s.dimContainer}
@@ -149,7 +153,10 @@ function PlanMaker() {
                          top: ((pos02.y + pos02shadow.y) / 2 - 4),
                          left: ((pos02.x + pos02shadow.x) / 2 + 77)
                      } : {visibility: 'hidden'}}>
-                    <span>{`${pos02.x * 2}cm`}</span>
+                    <span>{`${Math.round(Math.sqrt(
+                        Math.pow(pos02.x - pos02shadow.x, 2)
+                        + Math.pow(pos02.y - pos02shadow.y, 2))) * 2}cm`}
+                    </span>
                 </div>
 
 
