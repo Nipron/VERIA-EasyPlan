@@ -169,6 +169,7 @@ function PlanMaker() {
                     <span>{`${pos02.y * 2}cm`}</span>
                 </div>
             </div>
+
         </div>
     );
 }
