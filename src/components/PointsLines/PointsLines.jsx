@@ -11,6 +11,7 @@ export const L = ({from, to}) => {
             path="straight"
             color="#868686"
             headSize={0}
+            strokeWidth={5}
         />
     );
 };

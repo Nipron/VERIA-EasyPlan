@@ -102,7 +102,7 @@ const PlanMaker = () => {
 
                     </div>
                     <div className={s.points}>
-                        <div className={s.point} id="pStart"/>
+                        <div className={`${s.point} ${s.pointStart}`} id="pStart"/>
                         <Draggable onDrag={handleDrag01}
                                    position={{x: pos01.x, y: pos01.y}}
                                    bounds={pos02angled
@@ -187,8 +187,10 @@ const PlanMaker = () => {
                             <span>{`${pos02.x * 2}cm`}</span>
                         </div>
 
-                        <div className={s.dimContainer} style={{top: ((pos03.y) / 2 - 10), left: 72,
-                            visibility: labVis ? 'visible' : 'hidden'}}>
+                        <div className={s.dimContainer} style={{
+                            top: ((pos03.y) / 2 - 10), left: 72,
+                            visibility: labVis ? 'visible' : 'hidden'
+                        }}>
                             <span>{`${pos02.y * 2}cm`}</span>
                         </div>
                     </div>

@@ -32,8 +32,8 @@
 }
 
 .point {
-    width: 1px;
-    height: 1px;
+    width: 0px;
+    height: 0px;
     text-align: center;
 }
 
@@ -47,13 +47,18 @@
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     position: absolute;
-    top: -7px;
-    left: -7px;
+    top: -6.5px;
+    left: -6.5px;
 }
 
 .points {
     position: relative;
     z-index: 7;
+}
+
+.pointStart::before {
+    background: #868686;
+    border: 0;
 }
 
 
