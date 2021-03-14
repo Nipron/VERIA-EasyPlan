@@ -22,10 +22,6 @@ const RoomSize = () => {
 
     const dispatch = useDispatch();
 
-    const handleClick = (page) => {
-        dispatch(updateButton(page))
-    };
-
     if (!buttons[3]) return <Redirect to="/"/>;
 
     return (
@@ -42,32 +38,8 @@ const RoomSize = () => {
                 <div className="ellipse-faq-btn">?</div>
             </div>
 
-            <div className="content-section-grid">
+            <PlanMaker/>
 
-                <div className="constructor-box">
-                    <PlanMaker/>
-                </div>
-
-
-                {/*shapes.L && <div className="constructor-box">
-                    <PlanMakerL/>
-                </div>*/}
-
-
-                <div className="button-box">
-                    <div id="btn-create-angle" className="box_btn-style">Create angled wall</div>
-                    <div id="bnt-labels" className="box_btn-style">Show/hide labels</div>
-                    <div id="btn-help-room-size" className="box_btn-style-black"
-                         onClick={() => setModalActive(true)}>Need help?
-                    </div>
-                    <div id="room-size-count">15,3 m<sup>2</sup></div>
-                </div>
-
-                <Link to="/coldspots" onClick={() => handleClick(4)} className={s.btnNextStep}>
-                    Continue
-                </Link>
-            </div>
-            <ModalRoomSize active={modalActive} setActive={setModalActive}/>
         </div>
     );
 };
