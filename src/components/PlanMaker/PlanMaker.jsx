@@ -30,6 +30,9 @@ const PlanMaker = () => {
     let [pos02angled, setPos02angled] = useState(false);
     let [labVis, setLabVis] = useState(true);
 
+    let [dim07editMode, setDim07EditMode] = useState(false);
+    let [dim07value, setDim07value] = useState(0);
+
 
     const handleDrag01 = (e, d) => {
         const {x, y} = pos01;
@@ -52,6 +55,7 @@ const PlanMaker = () => {
     const handleDrag02 = (e, d) => {
         const {x, y} = pos02;
         setPos02({x: x + d.deltaX, y: y + d.deltaY});
+        setDim07value(x);
 
         if (pos02angled) {
             setPos03({x: pos03.x, y: y});
@@ -87,7 +91,36 @@ const PlanMaker = () => {
     }
 
     useEffect(() => {
-    }, []);
+        setDim07value(pos02.x)
+    }, [pos02.x]);
+
+    const handleInputChange = (e) => {
+        let newDim = e.target.value / 2;
+        if (newDim < pos03.x ) setDim07value(pos03.x)
+        else if (newDim > pos02.x ) setDim07value(pos02.x)
+        else setDim07value(newDim)
+    }
+
+    const handleBlur = () => {
+        setDim07EditMode(false);
+        let newDim = dim07value;
+        if (pos02angled) {
+            if (newDim < pos03.x + 30) setDim07value(pos03.x + 30)
+            else if (newDim > 720 - 30 ) setDim07value(720 -30 )
+            else setDim07value(newDim);
+            setPos01({x: newDim + 30, y: pos01.y});
+            setPos02({x: newDim, y: pos02.y});
+            setPos02shadow({x: newDim + 30, y: pos02shadow.y});
+
+        } else {
+            if (newDim < pos03.x + 30) setDim07value(pos03.x + 30)
+            else if (newDim > 720 ) setDim07value(720 )
+            else setDim07value(newDim);
+            setPos01({x: newDim, y: pos01.y});
+            setPos02({x: newDim, y: pos02.y});
+            setPos02shadow({x: newDim, y: pos02shadow.y});
+        }
+    }
 
     return (
         <div className="content-section-grid">
@@ -96,7 +129,7 @@ const PlanMaker = () => {
                     <div className={s.lines}>
                         <L from={"pStart"} to={"p01"}/>
                         <L from={"p01"} to={"p02s"}/>
-                        <L from={"p02s"} to={"p02"}/>
+                        {pos02angled && <L from={"p02s"} to={"p02"}/>}
                         <L from={"p02"} to={"p03"}/>
                         <L from={"p03"} to={"pStart"}/>
 
@@ -184,7 +217,23 @@ const PlanMaker = () => {
                                  left: Math.round((pos02.x) / 2 + 72),
                                  visibility: labVis ? 'visible' : 'hidden'
                              }}>
-                            <span>{`${pos02.x * 2}cm`}</span>
+
+                            {!dim07editMode &&
+                            <div>
+                                <span onDoubleClick={() => setDim07EditMode(true)}
+                                style={{background: "lightgreen"}}>{`${dim07value * 2}cm`}</span>
+                            </div>}
+                            {dim07editMode &&
+                            <div>
+                                <input
+                                    className={s.dimInput}
+                                    type="number"
+                                    value={dim07value * 2}
+                                    onChange={e => setDim07value(e.target.value / 2)}
+                                    autoFocus={true}
+                                    onBlur={handleBlur}/>
+
+                            </div>}
                         </div>
 
                         <div className={s.dimContainer} style={{
