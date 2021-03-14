@@ -95,7 +95,9 @@ function PlanMaker() {
 
                 <Draggable onDrag={handleDrag02shadow}
                            position={{x: pos02shadow.x, y: pos02shadow.y}}
-                           bounds={{left: 60, top: 60, right: 720, bottom: 320}}
+                           bounds={pos02angled
+                               ? {left: pos02.x + 30, top: 60, right: 720, bottom: pos02.y - 30}
+                               : {left: 60, top: 60, right: 720, bottom: 320}}
                 >
                     <div className={s.point02shadow}
                          style={pos02angled ? {visibility: 'visible', background: 'red'} : {visibility: 'hidden'}}/>
@@ -103,7 +105,9 @@ function PlanMaker() {
 
                 <Draggable onDrag={handleDrag02}
                            position={{x: pos02.x, y: pos02.y}}
-                           bounds={{left: 60, top: 60, right: 720, bottom: 320}}
+                           bounds={pos02angled
+                               ? {left: 60, top: pos02shadow.y + 30, right: pos02shadow.x - 30, bottom: 320}
+                               : {left: 60, top: 60, right: 720, bottom: 320}}
                 >
                     <div className={s.point02}/>
                 </Draggable>
