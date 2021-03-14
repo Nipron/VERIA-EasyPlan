@@ -96,8 +96,8 @@ const PlanMaker = () => {
 
     const handleInputChange = (e) => {
         let newDim = e.target.value / 2;
-        if (newDim < pos03.x ) setDim07value(pos03.x)
-        else if (newDim > pos02.x ) setDim07value(pos02.x)
+        if (newDim < pos03.x) setDim07value(pos03.x)
+        else if (newDim > pos02.x) setDim07value(pos02.x)
         else setDim07value(newDim)
     }
 
@@ -106,15 +106,15 @@ const PlanMaker = () => {
         let newDim = dim07value;
         if (pos02angled) {
             if (newDim < pos03.x + 30) newDim = pos03.x + 30
-            if (newDim > 720 - 30 ) newDim = 720 - 30
+            if (newDim > pos02.x + 720 - pos02shadow.x) newDim = pos02.x + 720 - pos02shadow.x
             setDim07value(newDim);
-            setPos01({x: newDim + 30, y: pos01.y});
+            setPos01({x: newDim + pos02shadow.x - pos02.x, y: pos01.y});
             setPos02({x: newDim, y: pos02.y});
-            setPos02shadow({x: newDim + 30, y: pos02shadow.y});
+            setPos02shadow({x: newDim + pos02shadow.x - pos02.x, y: pos02shadow.y});
 
         } else {
             if (newDim < pos03.x + 30) newDim = pos03.x + 30
-            if (newDim > 720 ) newDim = 720
+            if (newDim > 720) newDim = 720
             setDim07value(newDim);
             setPos01({x: newDim, y: pos01.y});
             setPos02({x: newDim, y: pos02.y});
@@ -221,7 +221,7 @@ const PlanMaker = () => {
                             {!dim07editMode &&
                             <div>
                                 <span onDoubleClick={() => setDim07EditMode(true)}
-                                style={{background: "lightgreen"}}>{`${dim07value * 2}cm`}</span>
+                                      style={{background: "lightgreen"}}>{`${dim07value * 2}cm`}</span>
                             </div>}
                             {dim07editMode &&
                             <div>
@@ -230,9 +230,9 @@ const PlanMaker = () => {
                                     type="number"
                                     value={dim07value * 2}
                                     onChange={e => setDim07value(e.target.value / 2)}
+                                    onKeyPress={e => (e.key === "Enter") && handleBlur()}
                                     autoFocus={true}
                                     onBlur={handleBlur}/>
-
                             </div>}
                         </div>
 
