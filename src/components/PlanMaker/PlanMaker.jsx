@@ -105,17 +105,17 @@ const PlanMaker = () => {
         setDim07EditMode(false);
         let newDim = dim07value;
         if (pos02angled) {
-            if (newDim < pos03.x + 30) setDim07value(pos03.x + 30)
-            else if (newDim > 720 - 30 ) setDim07value(720 -30 )
-            else setDim07value(newDim);
+            if (newDim < pos03.x + 30) newDim = pos03.x + 30
+            if (newDim > 720 - 30 ) newDim = 720 - 30
+            setDim07value(newDim);
             setPos01({x: newDim + 30, y: pos01.y});
             setPos02({x: newDim, y: pos02.y});
             setPos02shadow({x: newDim + 30, y: pos02shadow.y});
 
         } else {
-            if (newDim < pos03.x + 30) setDim07value(pos03.x + 30)
-            else if (newDim > 720 ) setDim07value(720 )
-            else setDim07value(newDim);
+            if (newDim < pos03.x + 30) newDim = pos03.x + 30
+            if (newDim > 720 ) newDim = 720
+            setDim07value(newDim);
             setPos01({x: newDim, y: pos01.y});
             setPos02({x: newDim, y: pos02.y});
             setPos02shadow({x: newDim, y: pos02shadow.y});
