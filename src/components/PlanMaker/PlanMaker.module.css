@@ -31,13 +31,14 @@
     margin: 100px;
 }
 
-.point,
-.pointStart,
-.point01, .point01shadow,
-.point02, .point02shadow,
-.point03, .point03shadow,
-.point04,
-.point05 {
+.point {
+    width: 1px;
+    height: 1px;
+    text-align: center;
+}
+
+.point:before {
+    content: "";
     width: 13px;
     height: 13px;
     background: linear-gradient(143.81deg, #DDDDDD 23.02%, #FFFFFF 102.04%);
@@ -46,6 +47,8 @@
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     position: absolute;
+    top: -7px;
+    left: -7px;
 }
 
 .points {
@@ -64,7 +67,7 @@
     position: absolute;
     width: 57px;
     height: 19px;
-    left: calc(50% - 57px/2 - 128.5px);
+    left: calc(50% - 57px / 2 - 128.5px);
 
     background: linear-gradient(180deg, #D8D8D8 0%, #FFFFFF 43.75%, #F2F2F2 100%);
     border: 0.3px solid #D5D5D5;

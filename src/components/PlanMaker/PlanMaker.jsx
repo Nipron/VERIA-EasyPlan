@@ -7,6 +7,7 @@ import {HashLink as Link} from "react-router-hash-link";
 import ModalRoomSize from "../0Modal/ModalRoomSize";
 import {useDispatch} from "react-redux";
 import {updateButton} from "../../redux/buttonsReducer";
+import Xarrow from "react-xarrows";
 
 const PlanMaker = () => {
 
@@ -26,7 +27,8 @@ const PlanMaker = () => {
     let [pos03, setPos03] = useState({x: 0, y: 200});
     let [pos04, setPos04] = useState({x: 200, y: 200});
 
-    let [pos02angled, setPos02angled] = useState(false)
+    let [pos02angled, setPos02angled] = useState(false);
+    let [labVis, setLabVis] = useState(true);
 
 
     const handleDrag01 = (e, d) => {
@@ -72,34 +74,42 @@ const PlanMaker = () => {
     const handleAngles = (ang) => {
         setPos02angled(ang);
         if (ang) {
-            setPos02({x: pos02.x - 40, y: pos02.y});
-            setPos02shadow({x: pos02shadow.x, y: pos02shadow.y - 40});
+            setPos02({x: pos02.x - 30, y: pos02.y});
+            setPos02shadow({x: pos02shadow.x, y: pos02shadow.y - 30});
         } else {
             setPos02({x: pos02shadow.x, y: pos02.y});
             setPos02shadow({x: pos02shadow.x, y: pos02.y});
         }
     }
 
+    const handleLabVis = (labVis) => {
+        setLabVis(labVis);
+    }
+
+    useEffect(() => {
+    }, []);
+
     return (
         <div className="content-section-grid">
             <div className="constructor-box">
                 <div className={s.planMaker}>
                     <div className={s.lines}>
-                        <L from={s.pointStart} to={s.point01}/>
-                        <L from={s.point01} to={s.point02shadow}/>
-                        <L from={s.point02shadow} to={s.point02}/>
-                        <L from={s.point02} to={s.point03}/>
-                        <L from={s.point03} to={s.pointStart}/>
+                        <L from={"pStart"} to={"p01"}/>
+                        <L from={"p01"} to={"p02s"}/>
+                        <L from={"p02s"} to={"p02"}/>
+                        <L from={"p02"} to={"p03"}/>
+                        <L from={"p03"} to={"pStart"}/>
+
                     </div>
                     <div className={s.points}>
-                        <div className={s.pointStart}/>
+                        <div className={s.point} id="pStart"/>
                         <Draggable onDrag={handleDrag01}
                                    position={{x: pos01.x, y: pos01.y}}
                                    bounds={pos02angled
                                        ? {left: pos02.x + 30, top: 0, right: 720, bottom: 0}
-                                       : {left: 50, top: 0, right: 720, bottom: 0}}
+                                       : {left: 60, top: 0, right: 720, bottom: 0}}
                         >
-                            <div className={s.point01}/>
+                            <div className={s.point} id="p01"/>
                         </Draggable>
                         {/*<Draggable axis="both"
                            position={{x: pos04.x, y: pos04.y}}>
@@ -109,20 +119,23 @@ const PlanMaker = () => {
                         <Draggable onDrag={handleDrag02shadow}
                                    position={{x: pos02shadow.x, y: pos02shadow.y}}
                                    bounds={pos02angled
-                                       ? {left: pos02.x + 30, top: 60, right: 720, bottom: pos02.y - 30}
+                                       ? {left: pos02.x + 30, top: 30, right: 720, bottom: pos02.y - 30}
                                        : {left: 60, top: 60, right: 720, bottom: 320}}
                         >
-                            <div className={s.point02shadow}
-                                 style={pos02angled ? {visibility: 'visible', background: 'red'} : {visibility: 'hidden'}}/>
+                            <div className={s.point} id="p02s"
+                                 style={pos02angled ? {
+                                     visibility: 'visible',
+                                     background: 'red'
+                                 } : {visibility: 'hidden'}}/>
                         </Draggable>
 
                         <Draggable onDrag={handleDrag02}
                                    position={{x: pos02.x, y: pos02.y}}
                                    bounds={pos02angled
-                                       ? {left: 60, top: pos02shadow.y + 30, right: pos02shadow.x - 30, bottom: 320}
+                                       ? {left: 30, top: pos02shadow.y + 30, right: pos02shadow.x - 30, bottom: 320}
                                        : {left: 60, top: 60, right: 720, bottom: 320}}
                         >
-                            <div className={s.point02}/>
+                            <div className={s.point} id="p02"/>
                         </Draggable>
 
                         <Draggable onDrag={handleDrag03}
@@ -130,30 +143,34 @@ const PlanMaker = () => {
                                    bounds={pos02angled
                                        ? {left: 0, top: pos02shadow.y + 30, right: 0, bottom: 320}
                                        : {left: 0, top: 60, right: 0, bottom: 320}}>
-                            <div className={s.point03}/>
+                            <div className={s.point} id="p03"/>
                         </Draggable>
                     </div>
                     <div className={s.dimensions}>
 
                         <div className={s.dimContainer}
-                             style={{top: (pos01.y - 2), left: Math.round((pos01.x - 44) / 2 + 100)}}>
+                             style={{
+                                 top: (pos01.y - 10), left: Math.round((pos01.x) / 2 + 72),
+                                 visibility: labVis ? 'visible' : 'hidden'
+                             }}>
                             <span>{`${pos02shadow.x * 2}cm`}</span>
                         </div>
 
                         <div className={s.dimContainer}
                              style={{
-                                 top: ((pos01.y + pos02shadow.y) / 2 - 4),
-                                 left: Math.round((pos01.x + pos02shadow.x) / 2 - 24 + 100)
+                                 top: ((pos01.y + pos02shadow.y) / 2 - 10),
+                                 left: Math.round((pos01.x + pos02shadow.x) / 2 + 72),
+                                 visibility: labVis ? 'visible' : 'hidden'
                              }}>
                             <span>{`${pos02shadow.y * 2}cm`}</span>
                         </div>
 
                         <div className={s.dimContainer}
-                             style={pos02angled ? {
-                                 visibility: 'visible',
-                                 top: ((pos02.y + pos02shadow.y) / 2 - 4),
-                                 left: ((pos02.x + pos02shadow.x) / 2 + 77)
-                             } : {visibility: 'hidden'}}>
+                             style={{
+                                 top: ((pos02.y + pos02shadow.y) / 2 - 8),
+                                 left: ((pos02.x + pos02shadow.x) / 2 + 72),
+                                 visibility: labVis && pos02angled ? 'visible' : 'hidden'
+                             }}>
                     <span>{`${Math.round(Math.sqrt(
                         Math.pow(pos02.x - pos02shadow.x, 2)
                         + Math.pow(pos02.y - pos02shadow.y, 2))) * 2}cm`}
@@ -162,19 +179,26 @@ const PlanMaker = () => {
 
 
                         <div className={s.dimContainer}
-                             style={{top: ((pos02.y + pos03.y) / 2 - 6), left: Math.round((pos02.x - 44) / 2 + 100)}}>
+                             style={{
+                                 top: ((pos02.y + pos03.y) / 2 - 6),
+                                 left: Math.round((pos02.x) / 2 + 72),
+                                 visibility: labVis ? 'visible' : 'hidden'
+                             }}>
                             <span>{`${pos02.x * 2}cm`}</span>
                         </div>
 
-                        <div className={s.dimContainer} style={{top: ((pos03.y + 0) / 2 - 4), left: -20 + 100}}>
+                        <div className={s.dimContainer} style={{top: ((pos03.y) / 2 - 10), left: 72,
+                            visibility: labVis ? 'visible' : 'hidden'}}>
                             <span>{`${pos02.y * 2}cm`}</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="button-box">
-                <div id="btn-create-angle" className="box_btn-style" onClick={() => handleAngles(!pos02angled)}>Create angled wall</div>
-                <div id="bnt-labels" className="box_btn-style">Show/hide labels</div>
+                <div id="btn-create-angle" className="box_btn-style" onClick={() => handleAngles(!pos02angled)}>Create
+                    angled wall
+                </div>
+                <div id="bnt-labels" className="box_btn-style" onClick={() => setLabVis(!labVis)}>Show/hide labels</div>
                 <div id="btn-help-room-size" className="box_btn-style-black"
                      onClick={() => setModalActive(true)}>Need help?
                 </div>
