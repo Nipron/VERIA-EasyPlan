@@ -137,3 +137,23 @@ input[type=number]{
 .dimInput {
 
 }
+
+.butT {
+    width: 41px;
+    height: 41px;
+    position: absolute;
+    background: no-repeat;
+    background-size: cover;
+    top: 200px;
+    left: 100px;
+    z-index: 600;
+}
+
+
+
+
+
+
+
+
+

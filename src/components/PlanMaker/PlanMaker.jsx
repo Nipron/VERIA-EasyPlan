@@ -8,6 +8,8 @@ import ModalRoomSize from "../0Modal/ModalRoomSize";
 import {useDispatch} from "react-redux";
 import {updateButton} from "../../redux/buttonsReducer";
 import Xarrow from "react-xarrows";
+import imgIco from '../../img/CornerButtons/CornerLine.svg';
+import imgCorner from '../../img/CornerButtons/SEcorner.svg';
 
 const PlanMaker = () => {
 
@@ -21,17 +23,25 @@ const PlanMaker = () => {
         dispatch(updateButton(page))
     };
 
+
+    const [angIcon, setAngIcon] = useState(imgIco);
+
+
     let [pos01, setPos01] = useState({x: 200, y: 0});
     let [pos02shadow, setPos02shadow] = useState({x: 200, y: 200})
     let [pos02, setPos02] = useState({x: 200, y: 200});
     let [pos03, setPos03] = useState({x: 0, y: 200});
     let [pos04, setPos04] = useState({x: 200, y: 200});
 
+    const [aneglView, setAngelView] = useState(false)
+
     let [pos02angled, setPos02angled] = useState(false);
     let [labVis, setLabVis] = useState(true);
 
     let [dim07editMode, setDim07EditMode] = useState(false);
     let [dim07value, setDim07value] = useState(0);
+
+    const [anglesMode, setAnglesMode] = useState(false);
 
 
     const handleDrag01 = (e, d) => {
@@ -76,18 +86,18 @@ const PlanMaker = () => {
     };
 
     const handleAngles = (ang) => {
+
+        setAnglesMode(false);
         setPos02angled(ang);
         if (ang) {
+            setAngIcon(imgCorner)
             setPos02({x: pos02.x - 30, y: pos02.y});
             setPos02shadow({x: pos02shadow.x, y: pos02shadow.y - 30});
         } else {
+            setAngIcon(imgIco)
             setPos02({x: pos02shadow.x, y: pos02.y});
             setPos02shadow({x: pos02shadow.x, y: pos02.y});
         }
-    }
-
-    const handleLabVis = (labVis) => {
-        setLabVis(labVis);
     }
 
     useEffect(() => {
@@ -126,6 +136,19 @@ const PlanMaker = () => {
         <div className="content-section-grid">
             <div className="constructor-box">
                 <div className={s.planMaker}>
+
+                    <div className={s.butT}
+                         onClick={() => handleAngles(!pos02angled)}
+                         style={{
+                             backgroundImage: `url(${angIcon})`,
+                             top: ((pos02.y + pos02shadow.y) / 2 - 20),
+                             left: ((pos02.x + pos02shadow.x) / 2 + 81),
+                             transform: "rotate(90deg)",
+                             visibility: anglesMode ? 'visible' : 'hidden'
+                         }}>
+                    </div>
+
+
                     <div className={s.lines}>
                         <L from={"pStart"} to={"p01"}/>
                         <L from={"p01"} to={"p02s"}/>
@@ -169,6 +192,7 @@ const PlanMaker = () => {
                                        : {left: 60, top: 60, right: 720, bottom: 320}}
                         >
                             <div className={s.point} id="p02"/>
+
                         </Draggable>
 
                         <Draggable onDrag={handleDrag03}
@@ -179,6 +203,8 @@ const PlanMaker = () => {
                             <div className={s.point} id="p03"/>
                         </Draggable>
                     </div>
+
+
                     <div className={s.dimensions}>
 
                         <div className={s.dimContainer}
@@ -202,7 +228,7 @@ const PlanMaker = () => {
                              style={{
                                  top: ((pos02.y + pos02shadow.y) / 2 - 8),
                                  left: ((pos02.x + pos02shadow.x) / 2 + 72),
-                                 visibility: labVis && pos02angled ? 'visible' : 'hidden'
+                                 visibility: labVis && pos02angled && !anglesMode  ? 'visible' : 'hidden'
                              }}>
                     <span>{`${Math.round(Math.sqrt(
                         Math.pow(pos02.x - pos02shadow.x, 2)
@@ -246,7 +272,8 @@ const PlanMaker = () => {
                 </div>
             </div>
             <div className="button-box">
-                <div id="btn-create-angle" className="box_btn-style" onClick={() => handleAngles(!pos02angled)}>Create
+                <div id="btn-create-angle" className="box_btn-style" onClick={() => setAnglesMode(!anglesMode)}
+                >Create
                     angled wall
                 </div>
                 <div id="bnt-labels" className="box_btn-style" onClick={() => setLabVis(!labVis)}>Show/hide labels</div>
