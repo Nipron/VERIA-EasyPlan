@@ -14,6 +14,10 @@ import DimInput from "../../elements/DimInput/DimInput";
 
 const PlanMaker = () => {
 
+    const minDist = 30; //minimum distance between points/lines
+    const maxWidth = 720 ; //constructor max width
+    const maxHeight = 320; //constructor max height
+
     const position = useMousePosition();
 
     const [modalActive, setModalActive] = useState(false);
@@ -93,8 +97,8 @@ const PlanMaker = () => {
         setPos02angled(ang);
         if (ang) {
             setAngIcon(imgCorner)
-            setPos02({x: pos02.x - 30, y: pos02.y});
-            setPos02shadow({x: pos02shadow.x, y: pos02shadow.y - 30});
+            setPos02({x: pos02.x - minDist, y: pos02.y});
+            setPos02shadow({x: pos02shadow.x, y: pos02shadow.y - minDist});
         } else {
             setAngIcon(imgIco)
             setPos02({x: pos02shadow.x, y: pos02.y});
@@ -117,16 +121,16 @@ const PlanMaker = () => {
         setDim07EditMode(false);
         let newDim = dim07value;
         if (pos02angled) {
-            if (newDim < pos03.x + 30) newDim = pos03.x + 30
-            if (newDim > pos02.x + 720 - pos02shadow.x) newDim = pos02.x + 720 - pos02shadow.x
+            if (newDim < pos03.x + minDist) newDim = pos03.x + minDist
+            if (newDim > pos02.x + maxWidth - pos02shadow.x) newDim = pos02.x + maxWidth - pos02shadow.x
             setDim07value(newDim);
             setPos01({x: newDim + pos02shadow.x - pos02.x, y: pos01.y});
             setPos02({x: newDim, y: pos02.y});
             setPos02shadow({x: newDim + pos02shadow.x - pos02.x, y: pos02shadow.y});
 
         } else {
-            if (newDim < pos03.x + 30) newDim = pos03.x + 30
-            if (newDim > 720) newDim = 720
+            if (newDim < pos03.x + minDist) newDim = pos03.x + minDist
+            if (newDim > maxWidth) newDim = maxWidth
             setDim07value(newDim);
             setPos01({x: newDim, y: pos01.y});
             setPos02({x: newDim, y: pos02.y});
@@ -167,8 +171,8 @@ const PlanMaker = () => {
                         <Draggable onDrag={handleDrag01}
                                    position={{x: pos01.x, y: pos01.y}}
                                    bounds={pos02angled
-                                       ? {left: pos02.x + 30, top: 0, right: 720, bottom: 0}
-                                       : {left: 60, top: 0, right: 720, bottom: 0}}
+                                       ? {left: pos02.x + minDist, top: 0, right: maxWidth, bottom: 0}
+                                       : {left: minDist * 2, top: 0, right: maxWidth, bottom: 0}}
                         >
                             <div className={s.point} id="p01"/>
                             {/*<YourEffect id="p01"/>*/}
@@ -181,8 +185,8 @@ const PlanMaker = () => {
                         <Draggable onDrag={handleDrag02shadow}
                                    position={{x: pos02shadow.x, y: pos02shadow.y}}
                                    bounds={pos02angled
-                                       ? {left: pos02.x + 30, top: 30, right: 720, bottom: pos02.y - 30}
-                                       : {left: 60, top: 60, right: 720, bottom: 320}}
+                                       ? {left: pos02.x + minDist, top: minDist, right: maxWidth, bottom: pos02.y - minDist}
+                                       : {left: minDist * 2, top: minDist * 2, right: maxWidth, bottom: maxHeight}}
                         >
                             <div className={s.point} id="p02s"
                                  style={pos02angled ? {
@@ -278,15 +282,13 @@ const PlanMaker = () => {
             </div>
 
             <div className="button-box">
-                <div id="btn-create-angle"
-                     className="box_btn-style"
+                <div id="btn-create-angle" className="box_btn-style"
                      onClick={() => setAnglesMode(!anglesMode)}
                      style={anglesMode ? {background: "lightgreen"} : {}}
                 >Create
                     angled wall
                 </div>
-                <div id="bnt-labels"
-                     className="box_btn-style"
+                <div id="bnt-labels" className="box_btn-style"
                      onClick={() => setLabVis(!labVis)}
                 >Show/hide labels
                 </div>
