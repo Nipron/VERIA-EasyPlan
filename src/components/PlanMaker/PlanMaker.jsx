@@ -10,6 +10,11 @@ import {updateButton} from "../../redux/buttonsReducer";
 import Xarrow from "react-xarrows";
 import imgIco from '../../img/CornerButtons/CornerLine.svg';
 import imgCorner from '../../img/CornerButtons/SEcorner.svg';
+import round from '../../img/CornerButtons/round.svg';
+import compass from '../../img/CornerButtons/compass.svg';
+import compassUp from '../../img/CornerButtons/compassUp.svg';
+import styled from 'styled-components';
+import Sup from "../../elements/SuperPoint/Sup";
 
 const PlanMaker = () => {
 
@@ -63,6 +68,7 @@ const PlanMaker = () => {
     };
 
     const handleDrag02 = (e, d) => {
+        setCompassPoint(pos02)
         const {x, y} = pos02;
         setPos02({x: x + d.deltaX, y: y + d.deltaY});
         setDim07value(x);
@@ -132,6 +138,17 @@ const PlanMaker = () => {
         }
     }
 
+
+    const changeIcon = () => {
+
+    }
+
+    const [roundIcon, setRoundIcon] = useState(compass)
+
+
+    const [compassVisible, setCompassVisible] = useState(false);
+    const [compassPoint, setCompassPoint] = useState({x: 0, y: 0});
+
     return (
         <div className="content-section-grid">
             <div className="constructor-box">
@@ -166,6 +183,7 @@ const PlanMaker = () => {
                                        : {left: 60, top: 0, right: 720, bottom: 0}}
                         >
                             <div className={s.point} id="p01"/>
+                            {/*<YourEffect id="p01"/>*/}
                         </Draggable>
                         {/*<Draggable axis="both"
                            position={{x: pos04.x, y: pos04.y}}>
@@ -187,12 +205,19 @@ const PlanMaker = () => {
 
                         <Draggable onDrag={handleDrag02}
                                    position={{x: pos02.x, y: pos02.y}}
+                                   onStart={() => {
+                                       setCompassVisible(true);
+                                       setCompassPoint(pos02);
+                                   }}
+                                   onStop={() => {
+                                       setCompassVisible(false);
+                                       setCompassPoint({});
+                                   }}
                                    bounds={pos02angled
                                        ? {left: 30, top: pos02shadow.y + 30, right: pos02shadow.x - 30, bottom: 320}
                                        : {left: 60, top: 60, right: 720, bottom: 320}}
                         >
                             <div className={s.point} id="p02"/>
-
                         </Draggable>
 
                         <Draggable onDrag={handleDrag03}
@@ -228,7 +253,7 @@ const PlanMaker = () => {
                              style={{
                                  top: ((pos02.y + pos02shadow.y) / 2 - 8),
                                  left: ((pos02.x + pos02shadow.x) / 2 + 72),
-                                 visibility: labVis && pos02angled && !anglesMode  ? 'visible' : 'hidden'
+                                 visibility: labVis && pos02angled && !anglesMode ? 'visible' : 'hidden'
                              }}>
                     <span>{`${Math.round(Math.sqrt(
                         Math.pow(pos02.x - pos02shadow.x, 2)
@@ -254,7 +279,7 @@ const PlanMaker = () => {
                                 <input
                                     className={s.dimInput}
                                     type="number"
-                                    value={dim07value * 2}
+                                    value={(dim07value * 2).toString()}
                                     onChange={e => setDim07value(e.target.value / 2)}
                                     onKeyPress={e => (e.key === "Enter") && handleBlur()}
                                     autoFocus={true}
@@ -269,14 +294,61 @@ const PlanMaker = () => {
                             <span>{`${pos02.y * 2}cm`}</span>
                         </div>
                     </div>
+
+                    <div className={s.compass}
+                         style={{
+                             top: (compassPoint.y),
+                             left: (compassPoint.x),
+                             visibility: (compassVisible) ? "visible" : "hidden"
+                         }}>
+                        <div className={s.compassArrow}
+                             style={{
+                                 backgroundImage: `url(${compassUp})`,
+                                 top: -19,
+                                 left: -6
+                             }}>
+                        </div>
+                        <div className={s.compassArrow}
+                             style={{
+                                 backgroundImage: `url(${compassUp})`,
+                                 top: -6,
+                                 left: 7,
+                                 transform: "rotate(90deg)",
+                             }}>
+                        </div>
+                        <div className={s.compassArrow}
+                             style={{
+                                 backgroundImage: `url(${compassUp})`,
+                                 top: 7,
+                                 left: -6,
+                                 transform: "rotate(180deg)",
+                             }}>
+                        </div>
+                        <div className={s.compassArrow}
+                             style={{
+                                 backgroundImage: `url(${compassUp})`,
+                                 top: -6,
+                                 left: -19,
+                                 transform: "rotate(270deg)",
+                             }}>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div className="button-box">
-                <div id="btn-create-angle" className="box_btn-style" onClick={() => setAnglesMode(!anglesMode)}
+                <div id="btn-create-angle"
+                     className="box_btn-style"
+                     onClick={() => setAnglesMode(!anglesMode)}
+                     style={anglesMode ? {background: "lightgreen"} : {}}
                 >Create
                     angled wall
                 </div>
-                <div id="bnt-labels" className="box_btn-style" onClick={() => setLabVis(!labVis)}>Show/hide labels</div>
+                <div id="bnt-labels"
+                     className="box_btn-style"
+                     onClick={() => setLabVis(!labVis)}
+                >Show/hide labels
+                </div>
                 <div id="btn-help-room-size" className="box_btn-style-black"
                      onClick={() => setModalActive(true)}>Need help?
                 </div>
