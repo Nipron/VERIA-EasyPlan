@@ -11,11 +11,32 @@ import imgIco from '../../img/CornerButtons/CornerLine.svg';
 import imgCorner from '../../img/CornerButtons/SEcorner.svg';
 import CompassArrows from "../../elements/CompassArrows/CompassArrows";
 import DimInput from "../../elements/DimInput/DimInput";
+import {Stage, Layer, Star, Text, Line} from 'react-konva';
+
+const Canvas = props => {
+
+    const canvasRef = useRef(null)
+
+    useEffect(() => {
+
+        const canvas = canvasRef.current
+        const context = canvas.getContext('2d')
+        props.draw(context)
+
+        return () => {
+            window.cancelAnimationFrame(props.draw)
+        }
+
+    }, [props.draw])
+
+    return <canvas ref={canvasRef} {...props}/>
+}
+
 
 const PlanMaker = () => {
 
     const minDist = 30; //minimum distance between points/lines
-    const maxWidth = 720 ; //constructor max width
+    const maxWidth = 720; //constructor max width
     const maxHeight = 320; //constructor max height
 
     const position = useMousePosition();
@@ -141,17 +162,33 @@ const PlanMaker = () => {
     const [compassVisible, setCompassVisible] = useState(false);
     const [compassPoint, setCompassPoint] = useState({x: 0, y: 0});
 
+    {/*const polygon = ctx => {
+        ctx.fillStyle = 'red'
+        ctx.moveTo(0,0);
+        ctx.lineTo(pos01.x,pos01.y);
+        ctx.lineTo(pos02.x,pos02.y);
+        ctx.lineTo(pos03.x,pos03.y);
+        ctx.fill()}*/
+    }
+
+
     return (
+
+
         <div className="content-section-grid">
             <div className="constructor-box">
+
                 <div className={s.planMaker}>
+
+
+                    {/* <Canvas draw={polygon} style={{position: 'static'}}/>*/}
 
                     <div className={s.butT}
                          onClick={() => handleAngles(!pos02angled)}
                          style={{
                              backgroundImage: `url(${angIcon})`,
                              top: ((pos02.y + pos02shadow.y) / 2 - 20),
-                             left: ((pos02.x + pos02shadow.x) / 2 + 81),
+                             left: ((pos02.x + pos02shadow.x) / 2 + 31),
                              transform: "rotate(90deg)",
                              visibility: anglesMode ? 'visible' : 'hidden'
                          }}>
@@ -167,6 +204,8 @@ const PlanMaker = () => {
 
                     </div>
                     <div className={s.points}>
+
+
                         <div className={`${s.point} ${s.pointStart}`} id="pStart"/>
                         <Draggable onDrag={handleDrag01}
                                    position={{x: pos01.x, y: pos01.y}}
@@ -185,7 +224,12 @@ const PlanMaker = () => {
                         <Draggable onDrag={handleDrag02shadow}
                                    position={{x: pos02shadow.x, y: pos02shadow.y}}
                                    bounds={pos02angled
-                                       ? {left: pos02.x + minDist, top: minDist, right: maxWidth, bottom: pos02.y - minDist}
+                                       ? {
+                                           left: pos02.x + minDist,
+                                           top: minDist,
+                                           right: maxWidth,
+                                           bottom: pos02.y - minDist
+                                       }
                                        : {left: minDist * 2, top: minDist * 2, right: maxWidth, bottom: maxHeight}}
                         >
                             <div className={s.point} id="p02s"
@@ -206,8 +250,13 @@ const PlanMaker = () => {
                                        setCompassPoint({});
                                    }}
                                    bounds={pos02angled
-                                       ? {left: 30, top: pos02shadow.y + 30, right: pos02shadow.x - 30, bottom: 320}
-                                       : {left: 60, top: 60, right: 720, bottom: 320}}
+                                       ? {
+                                           left: minDist,
+                                           top: pos02shadow.y + minDist,
+                                           right: pos02shadow.x - minDist,
+                                           bottom: maxHeight
+                                       }
+                                       : {left: minDist * 2, top: minDist * 2, right: maxWidth, bottom: maxHeight}}
                         >
                             <div className={s.point} id="p02"/>
                         </Draggable>
@@ -215,8 +264,8 @@ const PlanMaker = () => {
                         <Draggable onDrag={handleDrag03}
                                    position={{x: pos03.x, y: pos03.y}}
                                    bounds={pos02angled
-                                       ? {left: 0, top: pos02shadow.y + 30, right: 0, bottom: 320}
-                                       : {left: 0, top: 60, right: 0, bottom: 320}}>
+                                       ? {left: 0, top: pos02shadow.y + minDist, right: 0, bottom: maxHeight}
+                                       : {left: 0, top: minDist * 2, right: 0, bottom: maxHeight}}>
                             <div className={s.point} id="p03"/>
                         </Draggable>
                     </div>
@@ -226,7 +275,7 @@ const PlanMaker = () => {
 
                         <div className={s.dimContainer}
                              style={{
-                                 top: (pos01.y - 10), left: Math.round((pos01.x) / 2 + 72),
+                                 top: (pos01.y - 10), left: Math.round((pos01.x) / 2 + 22),
                                  visibility: labVis ? 'visible' : 'hidden'
                              }}>
                             <span>{`${pos02shadow.x * 2}cm`}</span>
@@ -235,7 +284,7 @@ const PlanMaker = () => {
                         <div className={s.dimContainer}
                              style={{
                                  top: ((pos01.y + pos02shadow.y) / 2 - 10),
-                                 left: Math.round((pos01.x + pos02shadow.x) / 2 + 72),
+                                 left: Math.round((pos01.x + pos02shadow.x) / 2 + 22),
                                  visibility: labVis ? 'visible' : 'hidden'
                              }}>
                             <span>{`${pos02shadow.y * 2}cm`}</span>
@@ -244,7 +293,7 @@ const PlanMaker = () => {
                         <div className={s.dimContainer}
                              style={{
                                  top: ((pos02.y + pos02shadow.y) / 2 - 8),
-                                 left: ((pos02.x + pos02shadow.x) / 2 + 72),
+                                 left: ((pos02.x + pos02shadow.x) / 2 + 22),
                                  visibility: labVis && pos02angled && !anglesMode ? 'visible' : 'hidden'
                              }}>
                     <span>{`${Math.round(Math.sqrt(
@@ -256,7 +305,7 @@ const PlanMaker = () => {
 
                         <div className={s.dimContainer} style={{
                             top: ((pos02.y + pos03.y) / 2 - 6),
-                            left: Math.round((pos02.x) / 2 + 72),
+                            left: Math.round((pos02.x) / 2 + 22),
                             visibility: labVis ? 'visible' : 'hidden'
                         }}>
                             {dim07editMode
@@ -269,7 +318,7 @@ const PlanMaker = () => {
                         </div>
 
                         <div className={s.dimContainer} style={{
-                            top: ((pos03.y) / 2 - 10), left: 72,
+                            top: ((pos03.y) / 2 - 10), left: 22,
                             visibility: labVis ? 'visible' : 'hidden'
                         }}>
                             <span>{`${pos02.y * 2}cm`}</span>
@@ -278,7 +327,23 @@ const PlanMaker = () => {
 
                     <CompassArrows point={compassPoint} visible={compassVisible}/>
 
+                    <Stage width={maxWidth} height={maxHeight}>
+                        <Layer>
+                            <Line
+                                x={0}
+                                y={0}
+                                points={[0, 0, pos01.x, pos01.y, pos02shadow.x, pos02shadow.y, pos02.x, pos02.y, pos03.x, pos03.y]}
+                                closed
+                                stroke="black"
+                                fillLinearGradientStartPoint={{x: -50, y: -50}}
+                                fillLinearGradientEndPoint={{x: 50, y: 50}}
+                                fillLinearGradientColorStops={[0, 'red', 1, 'yellow']}
+                            />
+                        </Layer>
+                    </Stage>
+
                 </div>
+
             </div>
 
             <div className="button-box">
@@ -304,7 +369,8 @@ const PlanMaker = () => {
         </div>
 
 
-    );
+    )
+        ;
 }
 
 export default PlanMaker;
