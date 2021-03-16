@@ -7,14 +7,10 @@ import {HashLink as Link} from "react-router-hash-link";
 import ModalRoomSize from "../0Modal/ModalRoomSize";
 import {useDispatch} from "react-redux";
 import {updateButton} from "../../redux/buttonsReducer";
-import Xarrow from "react-xarrows";
 import imgIco from '../../img/CornerButtons/CornerLine.svg';
 import imgCorner from '../../img/CornerButtons/SEcorner.svg';
-import round from '../../img/CornerButtons/round.svg';
-import compass from '../../img/CornerButtons/compass.svg';
-import compassUp from '../../img/CornerButtons/compassUp.svg';
-import styled from 'styled-components';
-import Sup from "../../elements/SuperPoint/Sup";
+import CompassArrows from "../../elements/CompassArrows/CompassArrows";
+import DimInput from "../../elements/DimInput/DimInput";
 
 const PlanMaker = () => {
 
@@ -138,14 +134,6 @@ const PlanMaker = () => {
         }
     }
 
-
-    const changeIcon = () => {
-
-    }
-
-    const [roundIcon, setRoundIcon] = useState(compass)
-
-
     const [compassVisible, setCompassVisible] = useState(false);
     const [compassPoint, setCompassPoint] = useState({x: 0, y: 0});
 
@@ -262,29 +250,18 @@ const PlanMaker = () => {
                         </div>
 
 
-                        <div className={s.dimContainer}
-                             style={{
-                                 top: ((pos02.y + pos03.y) / 2 - 6),
-                                 left: Math.round((pos02.x) / 2 + 72),
-                                 visibility: labVis ? 'visible' : 'hidden'
-                             }}>
-
-                            {!dim07editMode &&
-                            <div>
-                                <span onDoubleClick={() => setDim07EditMode(true)}
-                                      style={{background: "lightgreen"}}>{`${dim07value * 2}cm`}</span>
-                            </div>}
-                            {dim07editMode &&
-                            <div>
-                                <input
-                                    className={s.dimInput}
-                                    type="number"
-                                    value={(dim07value * 2).toString()}
-                                    onChange={e => setDim07value(e.target.value / 2)}
-                                    onKeyPress={e => (e.key === "Enter") && handleBlur()}
-                                    autoFocus={true}
-                                    onBlur={handleBlur}/>
-                            </div>}
+                        <div className={s.dimContainer} style={{
+                            top: ((pos02.y + pos03.y) / 2 - 6),
+                            left: Math.round((pos02.x) / 2 + 72),
+                            visibility: labVis ? 'visible' : 'hidden'
+                        }}>
+                            {dim07editMode
+                                ? <DimInput value={dim07value}
+                                            setter={setDim07value}
+                                            action={handleBlur}/>
+                                : <span onDoubleClick={() => setDim07EditMode(true)}>
+                                    {`${dim07value * 2}cm`}
+                                  </span>}
                         </div>
 
                         <div className={s.dimContainer} style={{
@@ -295,44 +272,8 @@ const PlanMaker = () => {
                         </div>
                     </div>
 
-                    <div className={s.compass}
-                         style={{
-                             top: (compassPoint.y),
-                             left: (compassPoint.x),
-                             visibility: (compassVisible) ? "visible" : "hidden"
-                         }}>
-                        <div className={s.compassArrow}
-                             style={{
-                                 backgroundImage: `url(${compassUp})`,
-                                 top: -19,
-                                 left: -6
-                             }}>
-                        </div>
-                        <div className={s.compassArrow}
-                             style={{
-                                 backgroundImage: `url(${compassUp})`,
-                                 top: -6,
-                                 left: 7,
-                                 transform: "rotate(90deg)",
-                             }}>
-                        </div>
-                        <div className={s.compassArrow}
-                             style={{
-                                 backgroundImage: `url(${compassUp})`,
-                                 top: 7,
-                                 left: -6,
-                                 transform: "rotate(180deg)",
-                             }}>
-                        </div>
-                        <div className={s.compassArrow}
-                             style={{
-                                 backgroundImage: `url(${compassUp})`,
-                                 top: -6,
-                                 left: -19,
-                                 transform: "rotate(270deg)",
-                             }}>
-                        </div>
-                    </div>
+                    <CompassArrows point={compassPoint} visible={compassVisible}/>
+
                 </div>
             </div>
 
@@ -365,3 +306,4 @@ const PlanMaker = () => {
 }
 
 export default PlanMaker;
+

@@ -1,0 +1,12 @@
+.compass {
+    position: relative;
+}
+
+.compassArrow {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    background: no-repeat;
+    background-size: cover;
+    z-index: 100;
+}
