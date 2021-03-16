@@ -11,6 +11,7 @@ import {updateButton} from "../../redux/buttonsReducer";
 import PlanMaker from "../PlanMaker/PlanMaker";
 import PlanMakerL from "../PlanMaker/PlanMakerL";
 import ModalRoomSize from "../0Modal/ModalRoomSize";
+import PlanMakerT from "../PlanMaker/PlanMakerT";
 
 const RoomSize = () => {
 
@@ -38,7 +39,9 @@ const RoomSize = () => {
                 <div className="ellipse-faq-btn">?</div>
             </div>
 
-            <PlanMaker/>
+            {shapes.R && <PlanMaker/>}
+            {shapes.L && <PlanMaker/>}
+            {shapes.T && <PlanMakerT/>}
 
         </div>
     );

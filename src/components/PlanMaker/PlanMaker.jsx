@@ -195,14 +195,14 @@ const PlanMaker = () => {
                     </div>
 
 
-                    <div className={s.lines}>
+                    {/*  <div className={s.lines}>
                         <L from={"pStart"} to={"p01"}/>
                         <L from={"p01"} to={"p02s"}/>
                         {pos02angled && <L from={"p02s"} to={"p02"}/>}
                         <L from={"p02"} to={"p03"}/>
                         <L from={"p03"} to={"pStart"}/>
 
-                    </div>
+                    </div>*/}
                     <div className={s.points}>
 
 
@@ -275,7 +275,7 @@ const PlanMaker = () => {
 
                         <div className={s.dimContainer}
                              style={{
-                                 top: (pos01.y - 10), left: Math.round((pos01.x) / 2 + 22),
+                                 top: (pos01.y - 10), left: Math.round((pos01.x) / 2 + 20),
                                  visibility: labVis ? 'visible' : 'hidden'
                              }}>
                             <span>{`${pos02shadow.x * 2}cm`}</span>
@@ -284,7 +284,7 @@ const PlanMaker = () => {
                         <div className={s.dimContainer}
                              style={{
                                  top: ((pos01.y + pos02shadow.y) / 2 - 10),
-                                 left: Math.round((pos01.x + pos02shadow.x) / 2 + 22),
+                                 left: Math.round((pos01.x + pos02shadow.x) / 2 + 20),
                                  visibility: labVis ? 'visible' : 'hidden'
                              }}>
                             <span>{`${pos02shadow.y * 2}cm`}</span>
@@ -293,7 +293,7 @@ const PlanMaker = () => {
                         <div className={s.dimContainer}
                              style={{
                                  top: ((pos02.y + pos02shadow.y) / 2 - 8),
-                                 left: ((pos02.x + pos02shadow.x) / 2 + 22),
+                                 left: ((pos02.x + pos02shadow.x) / 2 + 20),
                                  visibility: labVis && pos02angled && !anglesMode ? 'visible' : 'hidden'
                              }}>
                     <span>{`${Math.round(Math.sqrt(
@@ -305,7 +305,7 @@ const PlanMaker = () => {
 
                         <div className={s.dimContainer} style={{
                             top: ((pos02.y + pos03.y) / 2 - 6),
-                            left: Math.round((pos02.x) / 2 + 22),
+                            left: Math.round((pos02.x) / 2 + 20),
                             visibility: labVis ? 'visible' : 'hidden'
                         }}>
                             {dim07editMode
@@ -318,7 +318,7 @@ const PlanMaker = () => {
                         </div>
 
                         <div className={s.dimContainer} style={{
-                            top: ((pos03.y) / 2 - 10), left: 22,
+                            top: ((pos03.y) / 2 - 10), left: 20,
                             visibility: labVis ? 'visible' : 'hidden'
                         }}>
                             <span>{`${pos02.y * 2}cm`}</span>
@@ -327,16 +327,20 @@ const PlanMaker = () => {
 
                     <CompassArrows point={compassPoint} visible={compassVisible}/>
 
-                    <Stage width={maxWidth} height={maxHeight}>
+                    <Stage width={maxWidth + 4 } height={maxHeight + 4}>
                         <Layer>
                             <Line
-                                x={0}
-                                y={0}
-                                points={[0, 0, pos01.x, pos01.y, pos02shadow.x, pos02shadow.y, pos02.x, pos02.y, pos03.x, pos03.y]}
+                                x={2}
+                                y={2}
+                                points={[0, 0, pos01.x, pos01.y,
+                                    pos02shadow.x, pos02shadow.y,
+                                    pos02.x , pos02.y,
+                                    pos03.x , pos03.y]}
                                 closed
-                                stroke="black"
+                                stroke="#868686"
+                                strokeWidth={5}
                                 fillLinearGradientStartPoint={{x: -50, y: -50}}
-                                fillLinearGradientEndPoint={{x: 50, y: 50}}
+                                fillLinearGradientEndPoint={{x: 250, y: 250}}
                                 fillLinearGradientColorStops={[0, 'red', 1, 'yellow']}
                             />
                         </Layer>

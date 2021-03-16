@@ -13,29 +13,29 @@ const CompassArrows = (props) => {
             <div className={s.compassArrow}
                  style={{
                      backgroundImage: `url(${compassArrow})`,
-                     top: -19,
-                     left: -6
+                     top: -17,
+                     left: -4
                  }}/>
             <div className={s.compassArrow}
                  style={{
                      backgroundImage: `url(${compassArrow})`,
-                     top: -6, left: 7,
+                     top: -4, left: 9,
                      transform: "rotate(90deg)",
                  }}/>
 
             <div className={s.compassArrow}
                  style={{
                      backgroundImage: `url(${compassArrow})`,
-                     top: 7,
-                     left: -6,
+                     top: 9,
+                     left: -4,
                      transform: "rotate(180deg)",
                  }}>
             </div>
             <div className={s.compassArrow}
                  style={{
                      backgroundImage: `url(${compassArrow})`,
-                     top: -6,
-                     left: -19,
+                     top: -4,
+                     left: -17,
                      transform: "rotate(270deg)",
                  }}>
             </div>
