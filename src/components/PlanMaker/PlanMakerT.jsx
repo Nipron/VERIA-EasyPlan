@@ -737,13 +737,13 @@ const PlanMakerT = () => {
                             const {x, y} = pos06;
                             setCompassPoint(pos06);
                             setPos06({x: x + d.deltaX, y: y + d.deltaY});
-                            setPos05({x: x, y: pos05.y})
                             setPos07shadow({x: pos07shadow.x, y: y})
-                            if (!pos05angled) {
-                                setPos05shadow({x: x, y: pos05shadow.y})
-                            }
                             if (!pos06angled) {
                                 setPos06shadow({x: x, y: y})
+                                setPos05({x: x, y: pos05.y})
+                                if (!pos05angled) {
+                                    setPos05shadow({x: x, y: pos05shadow.y})
+                                }
                             }
                             if (!pos07angled) {
                                 setPos07({x: pos07.x, y: y})
