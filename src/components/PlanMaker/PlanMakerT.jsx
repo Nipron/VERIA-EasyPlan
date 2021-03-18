@@ -15,7 +15,7 @@ import {Stage, Layer, Star, Text, Line} from 'react-konva';
 const PlanMakerT = () => {
 
     const ratio = 2; //ratio = cm / pixels
-    const minDist = 15; //minimum distance between points/lines
+    const minDist = 18; //minimum distance between points/lines
     const maxWidth = 720; //constructor max width
     const maxHeight = 320; //constructor max height
 
@@ -141,8 +141,8 @@ const PlanMakerT = () => {
             setPos04shadow({x: pos04shadow.x, y: pos04shadow.y - minDist});
         } else {
             setAngIcon(imgIco);
-            setPos04({x: pos04.x, y: pos04shadow.y});
-            setPos04shadow({x: pos04.x, y: pos04shadow.y});
+            setPos04({x: pos04shadow.x, y: pos04.y});
+            setPos04shadow({x: pos04shadow.x, y: pos04.y});
         }
     }
     const handleAngle05 = (ang) => {
@@ -167,8 +167,8 @@ const PlanMakerT = () => {
             setPos06shadow({x: pos06shadow.x, y: pos06shadow.y - minDist});
         } else {
             setAngIcon(imgIco);
-            setPos06({x: pos06.x, y: pos06shadow.y});
-            setPos06shadow({x: pos06.x, y: pos06shadow.y});
+            setPos06({x: pos06shadow.x, y: pos06.y});
+            setPos06shadow({x: pos06shadow.x, y: pos06.y});
         }
     }
     const handleAngle07 = (ang) => {
@@ -321,7 +321,12 @@ const PlanMakerT = () => {
 
                     {/* Points */}
                     <div className={s.points}>
+
+                        {/*    Point START    */}
+
                         <div className={`${s.point} ${s.pointStart}`} id="pStart"/>
+
+                        {/*    Point 01    */}
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos01shadow;
@@ -376,10 +381,10 @@ const PlanMakerT = () => {
                                    }}
                                    bounds={
                                        {
-                                           left: (pos01angled) ? pos01shadow.x + (minDist) : minDist * 2,
-                                           top: (pos01angled) ? minDist : 0,
-                                           right: (pos02angled) ? pos02.x - minDist : pos03.x - minDist,
-                                           bottom: (pos01angled) ? (pos02angled) ? pos02shadow.y - minDist : pos02.y - minDist : 0
+                                           left: (pos01angled && pos01shadow.x + (minDist)) || minDist * 2,
+                                           top: (pos01angled && minDist) || 2,
+                                           right: (pos02angled && pos02.x - minDist) || (pos03angled && pos03shadow.x - 2 * minDist) || pos03shadow.x - 3 * minDist,
+                                           bottom: (!pos01angled && 2) || (pos02angled && pos02shadow.y - minDist) || (pos02.y - 2 * minDist)
                                        }
                                    }
                         >
@@ -463,51 +468,78 @@ const PlanMakerT = () => {
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos03shadow;
+                            setCompassPoint(pos03shadow);
                             setPos03shadow({x: x + d.deltaX, y: y + d.deltaY});
-                            setPos01({x: x, y: pos01.y});
+                            if (pos03angled) {
+                                setPos02({x: pos02.x, y: y})
+                                if (!pos02angled) {
+                                    setPos02shadow({x: pos02shadow.x, y: y})
+                                }
+                            }
                         }}
                                    position={{x: pos03shadow.x, y: pos03shadow.y}}
                                    onStart={() => {
                                        setCompassVisible(true);
-                                       setCompassPoint(pos02shadow);
+                                       setCompassPoint(pos03shadow);
                                    }}
                                    onStop={() => {
                                        setCompassVisible(false);
                                        setCompassPoint({});
                                    }}
-                                   bounds={pos03angled
-                                       ? {
-                                           left: pos01shadow.x + minDist,
-                                           top: pos01.y + minDist,
-                                           right: pos02.x - minDist,
-                                           bottom: pos02.y - minDist
+                                   bounds={
+                                       {
+                                           left: (pos02angled && pos02.x + minDist) || pos02.x + 2 * minDist,
+                                           top: (pos02angled && pos02shadow.y + minDist) || (pos01angled && pos01.y + 2 * minDist) || pos01.y + 3 * minDist,
+                                           right: (pos03angled && pos03.x - minDist) || maxWidth,
+                                           bottom: (pos03angled && pos03.y - minDist) || (pos04angled && pos04shadow.y - 2 * minDist) || pos04.y - 3 * minDist
                                        }
-                                       : {left: minDist * 2, top: minDist * 2, right: maxWidth, bottom: maxHeight}}
+                                   }
                         >
                             <div className={s.point} id="p03s"
                                  style={pos03angled ? {visibility: 'visible'} : {visibility: 'hidden'}}/>
                         </Draggable>
 
+
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos03;
-                            setPos03({x: x + d.deltaX, y: y + d.deltaY});
-                            setPos03shadow({x: x + d.deltaX, y: y + d.deltaY});
+                            setCompassPoint(pos03);
+                            setPos03({x: x + d.deltaX, y: y + d.deltaY,});
+                            setPos04shadow({x: x, y: pos04shadow.y});
 
-                            setPos04({x: x, y: pos04.y});
-                            setPos04shadow({x: x, y: pos04.y});
+                            if (!pos03angled) {
+                                setPos03shadow({x: x, y: y})
+                                setPos02shadow({x: pos02shadow.x, y: y})
+                                if (!pos02angled) {
+                                    setPos02({x: pos02.x, y: y})
+                                }
+                            }
+                            if (!pos04angled) {
+                                setPos04({x: x, y: pos04.y})
+                            }
 
-                            setPos02({x: pos02.x, y: y});
-                            setPos02shadow({x: pos02shadow.x, y: y});
                         }}
                                    position={{x: pos03.x, y: pos03.y}}
-                                   bounds={pos03angled
-                                       ? {left: 0, top: pos02shadow.y + minDist, right: 0, bottom: maxHeight}
-                                       : {
-                                           left: pos02.x + minDist,
-                                           top: minDist,
+                                   onStart={() => {
+                                       setCompassVisible(true);
+                                       setCompassPoint(pos03);
+                                   }}
+                                   onStop={() => {
+                                       setCompassVisible(false);
+                                       setCompassPoint({});
+                                   }}
+                                   bounds={
+                                       {
+                                           left: (pos03angled && Math.max(pos03shadow.x + minDist,
+                                               (pos04angled && pos04.x + minDist)))
+                                               || Math.max((pos02angled && pos02.x + 2 * minDist)
+                                                   || pos02.x + 3 * minDist, (pos05angled && pos05shadow.x + 2 * minDist)
+                                                   || pos05.x + 3 * minDist),
+                                           top: (pos03angled && pos03shadow.y + minDist) || (pos02angled && pos02shadow.y + minDist) || pos01.y + 2 * minDist,
                                            right: maxWidth,
-                                           bottom: pos04.y - minDist
-                                       }}>
+                                           bottom: (pos04angled && pos04shadow.y - minDist) || (pos04.y - 2 * minDist)
+                                       }
+                                   }
+                        >
                             <div className={s.point} id="p03"/>
                         </Draggable>
 
@@ -515,50 +547,82 @@ const PlanMakerT = () => {
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos04shadow;
+                            setCompassPoint(pos04shadow);
                             setPos04shadow({x: x + d.deltaX, y: y + d.deltaY});
+                            setPos03({x: x, y: pos03.y});
+                            if (!pos03angled) {
+                                setPos03shadow({x: x, y: pos03shadow.y})
+                            }
+
                         }}
                                    position={{x: pos04shadow.x, y: pos04shadow.y}}
                                    onStart={() => {
                                        setCompassVisible(true);
-                                       setCompassPoint(pos02shadow);
+                                       setCompassPoint(pos04shadow);
                                    }}
                                    onStop={() => {
                                        setCompassVisible(false);
                                        setCompassPoint({});
                                    }}
-                                   bounds={pos04angled
-                                       ? {
-                                           left: pos01shadow.x + minDist,
-                                           top: pos01.y + minDist,
-                                           right: pos02.x - minDist,
-                                           bottom: pos02.y - minDist
+                                   bounds={
+                                       {
+                                           left: (pos04angled && Math.max(pos04.x + minDist,
+                                               (pos03angled && pos03shadow.x + minDist) ||
+                                               (pos02angled && pos02.x + 2 * minDist
+                                                   || pos02.x + 3 * minDist))) || 0,
+                                           top: (pos04angled && (pos03angled && pos03.y + minDist || pos03.y + 2 * minDist)) || 0,
+                                           right: maxWidth,
+                                           bottom: (pos04angled && pos04.y - minDist) || maxHeight
                                        }
-                                       : {left: minDist * 2, top: minDist * 2, right: maxWidth, bottom: maxHeight}}
+                                   }
                         >
-                            <div className={s.point} id="p03s"
+                            <div className={s.point} id="p04s"
                                  style={pos04angled ? {visibility: 'visible'} : {visibility: 'hidden'}}/>
                         </Draggable>
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos04;
+                            setCompassPoint(pos04);
                             setPos04({x: x + d.deltaX, y: y + d.deltaY});
-                            setPos04shadow({x: x + d.deltaX, y: y + d.deltaY});
-
-                            setPos05({x: pos05.x, y: y});
+                            if (!pos04angled) {
+                                setPos04shadow({x: x, y: y})
+                                setPos03({x: x, y: pos03.y});
+                                if (!pos03angled) {
+                                    setPos03shadow({x: x, y: pos03shadow.y});
+                                }
+                            }
                             setPos05shadow({x: pos05shadow.x, y: y});
+                            if (!pos05angled) {
+                                setPos05({x: pos05.x, y: y});
+                            }
 
-                            setPos03({x: x, y: pos03.y});
-                            setPos03shadow({x: x, y: pos03.y});
+
                         }}
                                    position={{x: pos04.x, y: pos04.y}}
-                                   bounds={pos05angled
-                                       ? {left: 0, top: pos02shadow.y + minDist, right: 0, bottom: maxHeight}
-                                       : {
-                                           left: Math.max(pos02.x + minDist, pos05.x + minDist),
-                                           top: pos03.y + minDist,
-                                           right: maxWidth,
-                                           bottom: maxHeight - minDist
-                                       }}>
+                                   onStart={() => {
+                                       setCompassVisible(true);
+                                       setCompassPoint(pos04);
+                                   }}
+                                   onStop={() => {
+                                       setCompassVisible(false);
+                                       setCompassPoint({});
+                                   }}
+                                   bounds={
+                                       {
+                                           left: (pos04angled && (pos05angled
+                                               && pos05shadow.x + minDist
+                                               || pos05shadow.x + 2 * minDist))
+                                               || Math.max((pos05angled
+                                                   && pos05shadow.x + 2 * minDist
+                                                   || pos05shadow.x + 3 * minDist),
+                                                   (pos02angled && pos02.x + 2 * minDist
+                                                       || pos02.x + 3 * minDist)),
+                                           top: (pos04angled && pos04shadow.y + minDist) || (pos03angled && pos03.y + 2 * minDist) || pos03.y + 3 * minDist,
+                                           right: (pos04angled && pos04shadow.x - minDist) || maxWidth,
+                                           bottom: (pos05angled && pos05.y - minDist) || (pos06angled && pos06shadow.y - 2 * minDist) || pos06.y - 3 * minDist
+                                       }
+                                   }
+                        >
                             <div className={s.point} id="p04"/>
                         </Draggable>
 
@@ -566,50 +630,72 @@ const PlanMakerT = () => {
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos05shadow;
+                            setCompassPoint(pos05shadow);
                             setPos05shadow({x: x + d.deltaX, y: y + d.deltaY});
+                            setPos04({x: pos04.x, y: y})
+                            if (!pos04angled) {
+                                setPos04shadow({x: pos04shadow.x, y: y})
+                            }
                         }}
                                    position={{x: pos05shadow.x, y: pos05shadow.y}}
                                    onStart={() => {
                                        setCompassVisible(true);
-                                       setCompassPoint(pos02shadow);
+                                       setCompassPoint(pos05shadow);
                                    }}
                                    onStop={() => {
                                        setCompassVisible(false);
                                        setCompassPoint({});
                                    }}
-                                   bounds={pos03angled
-                                       ? {
-                                           left: pos01shadow.x + minDist,
-                                           top: pos01.y + minDist,
-                                           right: pos02.x - minDist,
-                                           bottom: pos02.y - minDist
+                                   bounds={
+                                       {
+                                           left: (pos05angled && pos05.x + minDist) || 0,
+                                           top: (pos04angled && pos04shadow.y + minDist) || (pos03angled && pos03.y + 2 * minDist) || pos03.y + 3 * minDist,
+                                           right: (pos04angled && pos04.x - minDist) || pos04.x - 2 * minDist,
+                                           bottom: (pos05angled && pos05.y - minDist) || maxHeight
                                        }
-                                       : {left: minDist * 2, top: minDist * 2, right: maxWidth, bottom: maxHeight}}
+                                   }
                         >
-                            <div className={s.point} id="p03s"
+                            <div className={s.point} id="p05s"
                                  style={pos05angled ? {visibility: 'visible'} : {visibility: 'hidden'}}/>
                         </Draggable>
 
+
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos05;
-                            setPos05({x: x + d.deltaX, y: y + d.deltaY});
-                            setPos05shadow({x: x + d.deltaX, y: y + d.deltaY});
-
-                            setPos06({x: x, y: pos06.y});
+                            setCompassPoint(pos05);
+                            setPos05({x: x + d.deltaX, y: y + d.deltaY,});
                             setPos06shadow({x: x, y: pos06shadow.y});
 
-                            setPos04({x: pos04.x, y: y});
-                            setPos04shadow({x: pos04shadow.x, y: y});
+                            if (!pos05angled) {
+                                setPos05shadow({x: x, y: y})
+                                setPos04({x: pos04.x, y: y})
+                                if (!pos04angled) {
+                                    setPos04shadow({x: pos04shadow.x, y: y})
+                                }
+                            }
+                            if (!pos06angled) {
+                                setPos06({x: x, y: pos06.y})
+                            }
+
                         }}
                                    position={{x: pos05.x, y: pos05.y}}
-                                   bounds={pos05angled
-                                       ? {left: 0, top: pos02shadow.y + minDist, right: 0, bottom: maxHeight}
-                                       : {
-                                           left: minDist,
-                                           top: pos03.y + minDist,
-                                           right: pos04.x - minDist,
-                                           bottom: pos06.y - minDist
-                                       }}>
+                                   onStart={() => {
+                                       setCompassVisible(true);
+                                       setCompassPoint(pos05);
+                                   }}
+                                   onStop={() => {
+                                       setCompassVisible(false);
+                                       setCompassPoint({});
+                                   }}
+                                   bounds={
+                                       {
+                                           left: (pos06angled && pos06.x + minDist) || (pos07angled && pos07shadow.x + 2 * minDist) || pos07shadow.x + 3 * minDist,
+                                           top: (pos05angled && pos05shadow.y + minDist) || (pos04angled && pos04shadow.y + minDist) || pos03.y + 2 * minDist,
+                                           right: (pos05angled && pos05shadow.x - minDist) || (pos04angled && pos04.x - 2 * minDist) || pos04.x - 3 * minDist,
+                                           bottom: (pos06angled && pos06shadow.y - minDist) || (pos06shadow.y - 2 * minDist)
+                                       }
+                                   }
+                        >
                             <div className={s.point} id="p05"/>
                         </Draggable>
 
@@ -617,50 +703,72 @@ const PlanMakerT = () => {
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos06shadow;
+                            setCompassPoint(pos06shadow);
                             setPos06shadow({x: x + d.deltaX, y: y + d.deltaY});
+                            setPos05({x: x, y: pos05.y});
+                            if (!pos05angled) {
+                                setPos05shadow({x: x, y: pos05shadow.y})
+                            }
+
                         }}
                                    position={{x: pos06shadow.x, y: pos06shadow.y}}
                                    onStart={() => {
                                        setCompassVisible(true);
-                                       setCompassPoint(pos02shadow);
+                                       setCompassPoint(pos06shadow);
                                    }}
                                    onStop={() => {
                                        setCompassVisible(false);
                                        setCompassPoint({});
                                    }}
-                                   bounds={pos06angled
-                                       ? {
-                                           left: pos01shadow.x + minDist,
-                                           top: pos01.y + minDist,
-                                           right: pos02.x - minDist,
-                                           bottom: pos02.y - minDist
+                                   bounds={
+                                       {
+                                           left: (pos06angled && pos06.x + minDist) || 0,
+                                           top: (pos06angled && (pos05angled && pos05.y + minDist || pos05.y + 2 * minDist)) || 0,
+                                           right: (pos05angled && pos05shadow.x - minDist) || (pos04angled && pos04.x - 2 * minDist) || pos04.x - 3 * minDist,
+                                           bottom: (pos06angled && pos06.y - minDist) || maxHeight
                                        }
-                                       : {left: minDist * 2, top: minDist * 2, right: maxWidth, bottom: maxHeight}}
+                                   }
                         >
-                            <div className={s.point} id="p03s"
+                            <div className={s.point} id="p06s"
                                  style={pos06angled ? {visibility: 'visible'} : {visibility: 'hidden'}}/>
                         </Draggable>
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos06;
+                            setCompassPoint(pos06);
                             setPos06({x: x + d.deltaX, y: y + d.deltaY});
-                            setPos06shadow({x: x + d.deltaX, y: y + d.deltaY});
+                            setPos05({x: x, y: pos05.y})
+                            setPos07shadow({x: pos07shadow.x, y: y})
+                            if (!pos05angled) {
+                                setPos05shadow({x: x, y: pos05shadow.y})
+                            }
+                            if (!pos06angled) {
+                                setPos06shadow({x: x, y: y})
+                            }
+                            if (!pos07angled) {
+                                setPos07({x: pos07.x, y: y})
+                            }
 
-                            setPos07({x: pos07.x, y: y});
-                            setPos07shadow({x: pos07shadow.x, y: y});
 
-                            setPos05({x: x, y: pos05.y});
-                            setPos05shadow({x: x, y: pos05shadow.y});
                         }}
                                    position={{x: pos06.x, y: pos06.y}}
-                                   bounds={pos06angled
-                                       ? {left: 0, top: pos02shadow.y + minDist, right: 0, bottom: maxHeight}
-                                       : {
-                                           left: minDist,
-                                           top: pos05.y + minDist,
-                                           right: pos04.x - minDist,
+                                   onStart={() => {
+                                       setCompassVisible(true);
+                                       setCompassPoint(pos06);
+                                   }}
+                                   onStop={() => {
+                                       setCompassVisible(false);
+                                       setCompassPoint({});
+                                   }}
+                                   bounds={
+                                       {
+                                           left: ((pos07angled && pos07shadow.x + minDist) || pos07shadow.x + 2 * minDist) + (!pos06angled && minDist),
+                                           top: (pos06angled && pos06shadow.y + minDist) || (pos05angled && pos05.y + 2 * minDist) || pos05.y + 3 * minDist,
+                                           right: (pos06angled && pos06shadow.x - minDist) || (pos05angled && pos05shadow.x - minDist) || (pos04angled && pos04.x - 2 * minDist) || pos04.x - 3 * minDist,
                                            bottom: maxHeight
-                                       }}>
+                                       }
+                                   }
+                        >
                             <div className={s.point} id="p06"/>
                         </Draggable>
 
@@ -668,43 +776,68 @@ const PlanMakerT = () => {
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos07shadow;
+                            setCompassPoint(pos07shadow);
                             setPos07shadow({x: x + d.deltaX, y: y + d.deltaY});
+                            setPos06({x: pos06.x, y: y})
+                            if (!pos06angled) {
+                                setPos06shadow({x: pos06shadow.x, y: y})
+                            }
                         }}
-                                   position={{x: pos02shadow.x, y: pos02shadow.y}}
+                                   position={{x: pos07shadow.x, y: pos07shadow.y}}
                                    onStart={() => {
                                        setCompassVisible(true);
-                                       setCompassPoint(pos02shadow);
+                                       setCompassPoint(pos07shadow);
                                    }}
                                    onStop={() => {
                                        setCompassVisible(false);
                                        setCompassPoint({});
                                    }}
-                                   bounds={pos07angled
-                                       ? {
-                                           left: pos01shadow.x + minDist,
-                                           top: pos01.y + minDist,
-                                           right: pos02.x - minDist,
-                                           bottom: pos02.y - minDist
+                                   bounds={
+                                       {
+                                           left: (pos07angled && pos07.x + minDist) || 0,
+                                           top: (pos07angled && Math.max(pos07.y + minDist, (pos06angled && pos06shadow.y + minDist) || (pos05angled && pos05.y + 2 * minDist) || pos05.y + 3 * minDist))
+                                               || 0,
+                                           right: (pos06angled && pos06.x - minDist) || pos06.x - 2 * minDist,
+                                           bottom: maxHeight
                                        }
-                                       : {left: minDist * 2, top: minDist * 2, right: maxWidth, bottom: maxHeight}}
+                                   }
                         >
-                            <div className={s.point} id="p02s"
+                            <div className={s.point} id="p07s"
                                  style={pos07angled ? {visibility: 'visible'} : {visibility: 'hidden'}}/>
                         </Draggable>
 
 
                         <Draggable onDrag={(e, d) => {
                             const {x, y} = pos07;
+                            setCompassPoint(pos07);
                             setPos07({x: x + d.deltaX, y: y + d.deltaY});
-                            setPos07shadow({x: x + d.deltaX, y: y + d.deltaY});
 
-                            setPos06({x: pos06.x, y: y});
-                            setPos06shadow({x: pos06shadow.x, y: y});
+                            if (!pos07angled) {
+                                setPos07shadow({x: x, y: y});
+                                setPos06({x: pos06.x, y: y})
+                                if (!pos06angled) {
+                                    setPos06shadow({x: pos06shadow.x, y: y})
+                                }
+                            }
                         }}
                                    position={{x: pos07.x, y: pos07.y}}
-                                   bounds={pos07angled
-                                       ? {left: 0, top: pos02shadow.y + minDist, right: 0, bottom: maxHeight}
-                                       : {left: 0, top: pos05.y + minDist, right: 0, bottom: maxHeight}}>
+                                   onStart={() => {
+                                       setCompassVisible(true);
+                                       setCompassPoint(pos07);
+                                   }}
+                                   onStop={() => {
+                                       setCompassVisible(false);
+                                       setCompassPoint({});
+                                   }}
+                                   bounds={
+                                       {
+                                           left: 0,
+                                           top: (pos07angled && minDist) || (pos06angled && pos06shadow.y + minDist) || (pos05angled && pos05.y + 2 * minDist) || pos05.y + 3 * minDist,
+                                           right: 0,
+                                           bottom: (pos07angled && pos07shadow.y - minDist) || maxHeight
+                                       }
+                                   }
+                        >
                             <div className={s.point} id="p07"/>
                         </Draggable>
 
