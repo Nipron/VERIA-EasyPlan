@@ -1,7 +1,6 @@
 import React, {useRef, useEffect, useState} from 'react';
 import s from './PlanMaker.module.css';
 import Draggable from 'react-draggable';
-import {useMousePosition} from "../hooks/useMousePosition";
 import {HashLink as Link} from "react-router-hash-link";
 import ModalRoomSize from "../0Modal/ModalRoomSize";
 import {useDispatch} from "react-redux";
@@ -25,7 +24,6 @@ const PlanMakerT = () => {
         dispatch(updateButton(page))
     };
 
-    const [angIcon, setAngIcon] = useState(imgDiagonal);
     const [angIcon01, setAngIcon01] = useState(imgDiagonal);
     const [angIcon02, setAngIcon02] = useState(imgDiagonal);
     const [angIcon03, setAngIcon03] = useState(imgDiagonal);
@@ -66,41 +64,22 @@ const PlanMakerT = () => {
     const [pos07angled, setPos07angled] = useState(false);
 
     const [dim00to01SeditMode, setDim00to01SeditMode] = useState(false);
-    const [dim01Sto01editMode, setDim01Sto01editMode] = useState(false);
     const [dim01to02SeditMode, setDim01to02SeditMode] = useState(false);
-    const [dim02Sto02editMode, setDim02Sto02editMode] = useState(false);
     const [dim02to03SeditMode, setDim02to03SeditMode] = useState(false);
-    const [dim03Sto03editMode, setDim03Sto03editMode] = useState(false);
     const [dim03to04SeditMode, setDim03to04SeditMode] = useState(false);
-    const [dim04Sto04editMode, setDim04Sto04editMode] = useState(false);
     const [dim04to05SeditMode, setDim04to05SeditMode] = useState(false);
-    const [dim05Sto05editMode, setDim05Sto05editMode] = useState(false);
     const [dim05to06SeditMode, setDim05to06SeditMode] = useState(false);
-    const [dim06Sto06editMode, setDim06Sto06editMode] = useState(false);
     const [dim06to07SeditMode, setDim06to07SeditMode] = useState(false);
-    const [dim07Sto07editMode, setDim07Sto07editMode] = useState(false);
     const [dim07to00editMode, setDim07to00editMode] = useState(false);
 
-    const [dim07editMode, setDim07EditMode] = useState(false);
-
-
-    const [dim00to01Svalue, setDim00to01Svalue] = useState(false);
-    const [dim01Sto01value, setDim01Sto01value] = useState(false);
-    const [dim01to02Svalue, setDim01to02Svalue] = useState(false);
-    const [dim02Sto02value, setDim02Sto02value] = useState(false);
-    const [dim02to03Svalue, setDim02to03Svalue] = useState(false);
-    const [dim03Sto03value, setDim03Sto03value] = useState(false);
-    const [dim03to04Svalue, setDim03to04Svalue] = useState(false);
-    const [dim04Sto04value, setDim04Sto04value] = useState(false);
-    const [dim04to05Svalue, setDim04to05Svalue] = useState(false);
-    const [dim05Sto05value, setDim05Sto05value] = useState(false);
-    const [dim05to06Svalue, setDim05to06Svalue] = useState(false);
-    const [dim06Sto06value, setDim06Sto06value] = useState(false);
-    const [dim06to07Svalue, setDim06to07Svalue] = useState(false);
-    const [dim07Sto07value, setDim07Sto07value] = useState(false);
-    const [dim07to00value, setDim07to00value] = useState(false);
-
-    const [dim07value, setDim07value] = useState(0);
+    const [dim00to01Svalue, setDim00to01Svalue] = useState(0);
+    const [dim01to02Svalue, setDim01to02Svalue] = useState(0);
+    const [dim02to03Svalue, setDim02to03Svalue] = useState(0);
+    const [dim03to04Svalue, setDim03to04Svalue] = useState(0);
+    const [dim04to05Svalue, setDim04to05Svalue] = useState(0);
+    const [dim05to06Svalue, setDim05to06Svalue] = useState(0);
+    const [dim06to07Svalue, setDim06to07Svalue] = useState(0);
+    const [dim07to00value, setDim07to00value] = useState(0);
 
     const handleAngle01 = (ang) => {
         setAnglesMode(false);
@@ -194,9 +173,7 @@ const PlanMakerT = () => {
         }
     }
 
-
     useEffect(() => {
-        setDim07value(pos02.x)
 
         setDim00to01Svalue(pos01shadow.x - pos00.x);
         setDim02to03Svalue(pos03shadow.x - pos02.x);
@@ -225,37 +202,6 @@ const PlanMakerT = () => {
 
     }, [pos01, pos01shadow, pos02, pos02shadow, pos03, pos03shadow, pos04, pos04shadow,
         pos05, pos05shadow, pos06, pos06shadow, pos07, pos07shadow]);
-
-    const handleInputChange = (e) => {
-        let newDim = e.target.value / 2;
-        if (newDim < pos03.x) setDim07value(pos03.x)
-        else if (newDim > pos02.x) setDim07value(pos02.x)
-        else setDim07value(newDim)
-    }
-
-    const handleBlur = () => {
-        setDim07EditMode(false);
-        {/*  let newDim = dim07value;
-        if (pos02angled) {
-            if (newDim < pos03.x + minDist) newDim = pos03.x + minDist
-            if (newDim > pos02.x + maxWidth - pos02shadow.x) newDim = pos02.x + maxWidth - pos02shadow.x
-            setDim07value(newDim);
-            setPos01({x: newDim + pos02shadow.x - pos02.x, y: pos01.y});
-            setPos02({x: newDim, y: pos02.y});
-            setPos02shadow({x: newDim + pos02shadow.x - pos02.x, y: pos02shadow.y});
-
-        } else {
-            if (newDim < pos03.x + minDist) newDim = pos03.x + minDist
-            if (newDim > maxWidth) newDim = maxWidth
-            setDim07value(newDim);
-            setPos01({x: newDim, y: pos01.y});
-            setPos02({x: newDim, y: pos02.y});
-            setPos02shadow({x: newDim, y: pos02shadow.y});
-        }
-
-        */
-        }
-    }
 
     return (
         <div className="content-section-grid">
@@ -528,9 +474,9 @@ const PlanMakerT = () => {
 
                             if (!pos03angled) {
                                 setPos03shadow({x: x, y: y})
-                                setPos02shadow({x: pos02shadow.x, y: y})
+                                setPos02({x: pos02.x, y: y})
                                 if (!pos02angled) {
-                                    setPos02({x: pos02.x, y: y})
+                                    setPos02shadow({x: pos02shadow.x, y: y})
                                 }
                             }
                             if (!pos04angled) {
@@ -636,7 +582,8 @@ const PlanMakerT = () => {
                                                    && pos05shadow.x + 2 * minDist
                                                    || pos05shadow.x + 3 * minDist),
                                                    (pos02angled && pos02.x + 2 * minDist
-                                                       || pos02.x + 3 * minDist)),
+                                                       || pos02.x + 3 * minDist),
+                                                   (pos03angled && pos03shadow.x + minDist)),
                                            top: (pos04angled && pos04shadow.y + minDist) || (pos03angled && pos03.y + 2 * minDist) || pos03.y + 3 * minDist,
                                            right: (pos04angled && pos04shadow.x - minDist) || maxWidth,
                                            bottom: (pos05angled && pos05.y - minDist) || (pos06angled && pos06shadow.y - 2 * minDist) || pos06.y - 3 * minDist
