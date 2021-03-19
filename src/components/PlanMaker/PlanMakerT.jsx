@@ -860,7 +860,7 @@ const PlanMakerT = () => {
                                             }
                                             }/>
                                 : <span onDoubleClick={() => setDim00to01SeditMode(true)}>
-                                    {`${dim00to01Svalue * 2}cm`}
+                                    {`${Math.round(dim00to01Svalue) * 2}cm`}
                                   </span>}
                         </div>
 
@@ -904,7 +904,7 @@ const PlanMakerT = () => {
                                             }
                                             }/>
                                 : <span onDoubleClick={() => setDim02to03SeditMode(true)}>
-                                    {`${dim02to03Svalue * 2}cm`}
+                                    {`${Math.round(dim02to03Svalue) * 2}cm`}
                                   </span>}
                         </div>
 
@@ -947,7 +947,7 @@ const PlanMakerT = () => {
                                             }
                                             }/>
                                 : <span onDoubleClick={() => setDim04to05SeditMode(true)}>
-                                    {`${dim04to05Svalue * 2}cm`}
+                                    {`${Math.round(dim04to05Svalue) * 2}cm`}
                                   </span>}
                         </div>
 
@@ -997,7 +997,7 @@ const PlanMakerT = () => {
                                             }
                                             }/>
                                 : <span onDoubleClick={() => setDim06to07SeditMode(true)}>
-                                    {`${dim06to07Svalue * 2}cm`}
+                                    {`${Math.round(dim06to07Svalue) * 2}cm`}
                                   </span>}
                         </div>
 
@@ -1042,7 +1042,7 @@ const PlanMakerT = () => {
                                             }
                                             }/>
                                 : <span onDoubleClick={() => setDim01to02SeditMode(true)}>
-                                    {`${dim01to02Svalue * 2}cm`}
+                                    {`${Math.round(dim01to02Svalue) * 2}cm`}
                                   </span>}
                         </div>
 
@@ -1081,7 +1081,7 @@ const PlanMakerT = () => {
                                             }
                                             }/>
                                 : <span onDoubleClick={() => setDim03to04SeditMode(true)}>
-                                    {`${dim03to04Svalue * 2}cm`}
+                                    {`${Math.round(dim03to04Svalue) * 2}cm`}
                                   </span>}
                         </div>
 
@@ -1116,7 +1116,7 @@ const PlanMakerT = () => {
                                             }
                                             }/>
                                 : <span onDoubleClick={() => setDim05to06SeditMode(true)}>
-                                    {`${dim05to06Svalue * 2}cm`}
+                                    {`${Math.round(dim05to06Svalue) * 2}cm`}
                                   </span>}
                         </div>
 
@@ -1151,7 +1151,7 @@ const PlanMakerT = () => {
                                             }
                                             }/>
                                 : <span onDoubleClick={() => setDim07to00editMode(true)}>
-                                    {`${dim07to00value * 2}cm`}
+                                    {`${Math.round(dim07to00value) * 2}cm`}
                                   </span>}
                         </div>
 
