@@ -100,7 +100,7 @@ const ColdSpots = () => {
                     <Stage width={1220} height={320}>
                         <Layer name="main-layer">
                             <Line
-                                x={302}
+                                x={320}
                                 y={2}
                                 points={room}
                                 closed

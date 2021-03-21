@@ -511,7 +511,7 @@ const PlanMakerT = () => {
                                                || Math.max((pos02angled && pos02.x + 2 * minDist)
                                                    || pos02.x + 3 * minDist, (pos05angled && pos05shadow.x + 2 * minDist)
                                                    || pos05.x + 3 * minDist),
-                                           top: (pos03angled && pos03shadow.y + minDist) || (pos02angled && pos02shadow.y + minDist) || pos01.y + 2 * minDist,
+                                           top: (pos03angled && pos03shadow.y + minDist) || (pos02angled && pos02shadow.y + minDist) || (pos01angled && pos01.y + 2 * minDist) || minDist,
                                            right: maxWidth,
                                            bottom: (pos04angled && pos04shadow.y - minDist) || (pos04.y - 2 * minDist)
                                        }
@@ -1277,7 +1277,6 @@ const PlanMakerT = () => {
                                     pos07shadow.x, pos07shadow.y,
                                     pos07.x, pos07.y]}
                                 closed
-                                draggable
                                 stroke="#868686"
                                 strokeWidth={5}
                                 fillLinearGradientStartPoint={{x: -50, y: -50}}
