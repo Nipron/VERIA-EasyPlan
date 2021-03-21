@@ -137,7 +137,6 @@
   box-sizing: border-box;
   box-shadow: 1px 6px 6px rgba(0, 0, 0, 0.15), inset 0px -6px 11px rgba(0, 0, 0, 0.25), inset 0px 6px 11px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  visibility: hidden;
 }
 
 .modal-title-coldspot {
@@ -245,6 +244,7 @@ input[type=number] {
 .coldspot-geometry-figure-selector ul li:first-child {
   margin-left: 0;
 }
+
 
 #figure-1 {
   background: url("../img/square.svg");

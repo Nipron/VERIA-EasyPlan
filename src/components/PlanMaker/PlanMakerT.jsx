@@ -10,6 +10,7 @@ import imgCorner from '../../img/CornerButtons/SEcorner.svg';
 import CompassArrows from "../../elements/CompassArrows/CompassArrows";
 import DimInput from "../../elements/DimInput/DimInput";
 import {Stage, Layer, Star, Text, Line} from 'react-konva';
+import {updateRoom} from "../../redux/roomReducer";
 
 const PlanMakerT = () => {
 
@@ -22,6 +23,15 @@ const PlanMakerT = () => {
     const dispatch = useDispatch();
     const handleClick = (page) => {
         dispatch(updateButton(page))
+        dispatch(updateRoom([pos00.x, pos00.y,
+            pos01.x, pos01.y,
+            pos02.x, pos02.y,
+            pos03.x, pos03.y,
+            pos04.x, pos04.y,
+            pos05.x, pos05.y,
+            pos06.x, pos06.y,
+            pos07.x, pos07.y,
+        ]))
     };
 
     const [angIcon01, setAngIcon01] = useState(imgDiagonal);
@@ -812,7 +822,7 @@ const PlanMakerT = () => {
 
                     </div>
 
-
+                    {/* Dimensions */}
                     <div className={s.dimensions}>
 
                         {/* X horizontal dimensions */}

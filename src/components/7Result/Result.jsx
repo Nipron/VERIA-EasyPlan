@@ -1,6 +1,14 @@
 import React from 'react';
+import {useSelector} from "react-redux";
+import {Layer, Line, Stage} from "react-konva";
 
 const Result = () => {
+
+    let room = useSelector(state => state.room);
+    let coldSpot = useSelector(state => state.coldSpot);
+
+
+
     return (
         <div>
             <div className="info-section">
@@ -18,9 +26,37 @@ const Result = () => {
 
             <div className="content-section-grid">
                 <div className="constructor-box">
-                    <span className="calculation-process">Calculation Project...</span>
+
+                    <Stage width={1220} height={320}>
+                        <Layer name="main-layer">
+                            <Line
+                                x={302}
+                                y={2}
+                                points={room}
+                                closed
+                                stroke="#868686"
+                                strokeWidth={5}
+                                fill="yellow"
+                            />
+                        </Layer>
+                        <Layer name="chair01">
+                            <Line
+                                x={0}
+                                y={0}
+                                points={coldSpot}
+                                closed
+                                stroke="#868686"
+                                strokeWidth={2}
+                                fill={"green"}
+                            />
+                        </Layer>
+                    </Stage>
+
+
+
+                    {/*<span className="calculation-process">Calculation Project...</span>
                     <span className="printing-project">Printing Project...</span>
-                    <span className="calculation-complete">Calculation complete</span>
+                    <span className="calculation-complete">Calculation complete</span>*/}
                     <div className="block-button">
                         <div className="btn-notes-loading">Add Notes</div>
                         <div className="btn-list-loading">List of Parts / Where to Buy</div>

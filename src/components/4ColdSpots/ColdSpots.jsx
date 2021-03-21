@@ -10,18 +10,40 @@ import Modal from "../0Modal/Modal";
 import coldSpot from '../../img/frame_with_coldspot.png';
 import coldSpotWrong from '../../img/frame_with_coldspot_wrong_position.png';
 import {Layer, Line, Stage} from "react-konva";
+import {updateColdSpot} from "../../redux/coldSpotReducer";
+
 
 const ColdSpots = () => {
 
+    let room = useSelector(state => state.room)
+
     const [color, setColor] = useState('grey');
-
-    const [modalActive, setModalActive] = useState(true);
-
+    const [modalActive, setModalActive] = useState(false);
+    const [modalHelpActive, setModalHelpActive] = useState(true);
     const buttons = useSelector(state => state.buttons);
     const dispatch = useDispatch();
 
+    const [width, setWidth] = useState(25);
+    const [height, setHeight] = useState(25);
+    const [cold01visible, setCold01visible] = useState(false);
+
+    const [coldSpotFirst00, setColdSpotFirst00] = useState({x: 0, y: 0})
+    const [coldSpotFirst01, setColdSpotFirst01] = useState({x: 0, y: 0})
+    const [coldSpotFirst02, setColdSpotFirst02] = useState({x: 0, y: 0})
+    const [coldSpotFirst03, setColdSpotFirst03] = useState({x: 0, y: 0})
+
     const handleClick = (page) => {
         dispatch(updateButton(page))
+        dispatch(updateColdSpot([coldSpotFirst00.x, coldSpotFirst00.y,
+            coldSpotFirst01.x, coldSpotFirst01.y,
+            coldSpotFirst02.x, coldSpotFirst02.y,
+            coldSpotFirst03.x, coldSpotFirst03.y,
+        ]))
+    }
+
+    const handleAdd = () => {
+        setModalActive(false);
+        setCold01visible(true);
     }
 
     const handleDragMove = (e) => {
@@ -30,9 +52,14 @@ const ColdSpots = () => {
         const layer = stage.findOne(".main-layer");
 
         let p01 = e.target.position()
-        let p02 = {x: p01.x + 50, y: p01.y};
-        let p03 = {x: p01.x + 0, y: p01.y + 50};
-        let p04 = {x: p01.x + 50, y: p01.y + 50};
+        let p02 = {x: p01.x + width, y: p01.y};
+        let p03 = {x: p01.x + width, y: p01.y + height};
+        let p04 = {x: p01.x + 0, y: p01.y + height};
+
+        setColdSpotFirst00(p01);
+        setColdSpotFirst01(p02);
+        setColdSpotFirst02(p03);
+        setColdSpotFirst03(p04);
 
         if (!layer.getIntersection(p01)
             && !layer.getIntersection(p02)
@@ -70,12 +97,12 @@ const ColdSpots = () => {
             <div className="content-section-grid">
                 <div className="constructor-box">
 
-                    <Stage width={720} height={320}>
+                    <Stage width={1220} height={320}>
                         <Layer name="main-layer">
                             <Line
-                                x={100}
-                                y={100}
-                                points={[0, 0, 200, 0, 250, 200, 0, 180]}
+                                x={302}
+                                y={2}
+                                points={room}
                                 closed
                                 stroke="#868686"
                                 strokeWidth={5}
@@ -84,14 +111,27 @@ const ColdSpots = () => {
                         </Layer>
                         <Layer name="chair01">
                             <Line
-                                x={0}
+                                x={600}
                                 y={0}
+                                points={[0, 0, width, 0, width, height, 0, height]}
+                                closed
+                                draggable
+                                stroke="#868686"
+                                strokeWidth={2}
+                                fill={color}
+                                visible={cold01visible}
+                                onDragMove={handleDragMove}
+                            />
+                            <Line
+                                x={600}
+                                y={100}
                                 points={[0, 0, 50, 0, 50, 50, 0, 50]}
                                 closed
                                 draggable
                                 stroke="#868686"
                                 strokeWidth={2}
                                 fill={color}
+                                visible={false}
                                 onDragMove={handleDragMove}
                             />
                         </Layer>
@@ -101,9 +141,11 @@ const ColdSpots = () => {
                     <span id="square"></span>
                 </div>
                 <div className="button-box">
-                    <div id="btn-add-cold-spot" className="box_btn-style">Add Cold Spot</div>
+                    <div id="btn-add-cold-spot" className="box_btn-style"
+                         onClick={() => setModalActive(true)}>Add Cold Spot
+                    </div>
                     <div id="btn-help-cold-spot" className="box_btn-style-black"
-                         onClick={() => setModalActive(true)}>Need help?
+                         onClick={() => setModalHelpActive(true)}>Need help?
                     </div>
 
                     <div className="bin-area">
@@ -115,6 +157,31 @@ const ColdSpots = () => {
                 </div>
             </div>
             <Modal active={modalActive} setActive={setModalActive}>
+                <div className="modal-window-cold-spot">
+                    <h1 className="modal-title-coldspot">Add Cold Spot</h1>
+                    <span className="modal-btn-close-add-modal" onClick={() => setModalActive(false)}></span>
+                    <form className="form-coldspot" id="coldspot" method="GET" action="">
+                        <label className="form-coldspot-lable">width:</label>
+                        <input name="width" type="number" value={(width * 2).toString()}
+                               onChange={e => setWidth(e.target.value / 2)}/>
+                        <label className="form-coldspot-lable">height:</label>
+                        <input name="height" type="number" value={(height * 2).toString()}
+                               onChange={e => setHeight(e.target.value / 2)}/>
+                    </form>
+                    <span className="coldspot-geometry-figure-selector">
+          <ul>
+            <li id="figure-1"></li>
+            <li id="figure-2"></li>
+            <li id="figure-3"></li>
+            <li id="figure-4"></li>
+            <li id="figure-5"></li>
+          </ul>
+        </span>
+                    <button onClick={handleAdd}>add</button>
+                </div>
+            </Modal>
+
+            <Modal active={modalHelpActive} setActive={setModalHelpActive}>
                 <div className="modal-window-cold-spot-help">
                     <h1 className="modal-title">Add Cold Spots</h1>
                     <span className="modal-btn-close" onClick={() => setModalActive(false)}></span>
@@ -152,7 +219,7 @@ const ColdSpots = () => {
                     {/*}   <a href="">
                         <span className="modal-btn-skip">skip</span>
                     </a> */}
-                    <div className="modal-btn-continue" onClick={() => setModalActive(false)}>continue</div>
+                    <div className="modal-btn-continue" onClick={() => setModalHelpActive(false)}>continue</div>
                 </div>
             </Modal>
         </div>

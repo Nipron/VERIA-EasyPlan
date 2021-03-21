@@ -24,11 +24,6 @@ const RoomShape = () => {
         dispatch(updateShape(shape))
     }
 
-    console.log(Math.atan(20/20))
-    console.log(Math.atan(7/10))
-    console.log(Math.atan(12/10))
-
-
     if (!buttons[2]) return <Redirect to="/"/>
 
     return (
