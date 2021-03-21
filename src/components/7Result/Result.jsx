@@ -37,7 +37,6 @@ const Result = () => {
                 formArrayOfSquares(squareCoordinates, twoDArray)
             }
             threeDArray.push(twoDArray)
-
         }
 
         var singletArray = threeDArray
@@ -47,55 +46,14 @@ const Result = () => {
         var quadruplet3DArray = []
         formDuplets(singletArray, singletArrayCopy)
         singletArray = JSON.parse(JSON.stringify(singletArrayCopy))
-        duplet3DArray.map(duplets => {
-
-        })
-
-        singletArray.map(singlets => {
-
-        })
-
-
-        formTriplets(singletArray, duplet3DArray, triplet3DArray)
-        triplet3DArray.map(triplet => {
-
-        })
-
-        duplet3DArray.map(duplets => {
-
-        })
-
-        singletArray.map(singlets => {
-
-        })
 
         formQuadruplets(duplet3DArray, quadruplet3DArray)
 
-        quadruplet3DArray.map(triplet => {
-
-        })
-
-        triplet3DArray.map(triplet => {
-
-        })
-
-        duplet3DArray.map(duplets => {
-
-        })
-
-        singletArray.map(singlets => {
-
-        })
-
-
         function formDuplets(singletArray, singletArrayCopy) {
             for (var yIndex = 0; yIndex < singletArray.length; yIndex++) {
-                // enter y axis, start with 0th index
-                // loop through x axis
                 var duplets = []
                 var singlets = []
                 for (var xIndex = 0; xIndex < singletArray[yIndex].length - 1;) {
-                    // check if this block intersects with the next block
                     var doesIntersectNextBlock = geometric.polygonIntersectsPolygon(singletArray[yIndex][xIndex], singletArray[yIndex][xIndex + 1])
                     if (doesIntersectNextBlock) {
                         var dupletPolygon = [singletArray[yIndex][xIndex][0],
@@ -108,7 +66,6 @@ const Result = () => {
                     } else {
                         singlets.push(singletArray[yIndex][xIndex])
                     }
-                    // push the last element to singlets as well if the second last element isn't duplet
                     if (xIndex === singletArray[yIndex].length - 2) singlets.push(singletArray[yIndex][xIndex + 1])
                     xIndex++
                 }
@@ -118,8 +75,6 @@ const Result = () => {
         }
         function formTriplets(singletArray, duplet3DArray, triplet3DArray) {
             for (var yIndex = 0; yIndex < duplet3DArray.length; yIndex++) {
-                // enter y axis, start with 0th index
-                // loop through x axis
                 var triplets = []
                 for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length; xIndex++) {
                     // check if this block intersects with any singlets in this y coodinate
@@ -153,11 +108,8 @@ const Result = () => {
         }
         function formQuadruplets(duplet3DArray, quadruplet3DArray) {
             for (var yIndex = 0; yIndex < duplet3DArray.length; yIndex++) {
-                // enter y axis, start with 0th index
-                // loop through x axis
                 var quadruplets = []
-                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length-1;) {
-                    // check if this block intersects with the next block
+                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length - 1;) {
                     var doesIntersectNextBlock = geometric.polygonIntersectsPolygon(duplet3DArray[yIndex][xIndex], duplet3DArray[yIndex][xIndex + 1])
                     if (doesIntersectNextBlock) {
                         var quadrupletPolygon = [duplet3DArray[yIndex][xIndex][0],
@@ -166,7 +118,7 @@ const Result = () => {
                             duplet3DArray[yIndex][xIndex + 1][3]]
                         quadruplets.push(quadrupletPolygon)
                         duplet3DArray[yIndex][xIndex] = null
-                        duplet3DArray[yIndex][xIndex+1] = null
+                        duplet3DArray[yIndex][xIndex + 1] = null
 
                         xIndex++
                     }
@@ -198,14 +150,9 @@ const Result = () => {
             }
             return false
         }
-
         function formArrayOfSquares(squareCoordinates, twoDArray) {
-            // var isInBiggerPolygon = geometric.polygonInPolygon(squareCoordinates, polygonCoordinates)
-            // if (!isInBiggerPolygon) {
-            //     return
-            // }
             var isOnBiggerPolygon = polygonOnPolygon(squareCoordinates, polygonCoordinates)
-            if(!isOnBiggerPolygon){
+            if (!isOnBiggerPolygon) {
                 return
             }
             var isInsideAnyColdSpot = isInAnyColdSpot(squareCoordinates)
@@ -218,24 +165,16 @@ const Result = () => {
             }
             twoDArray.push(squareCoordinates)
         }
-
-        // will use this function to cover the square boxes on the edges of polygon
         function polygonOnPolygon(polygonA, polygonB) {
-
-
             var smallerSquarePolygon = [
                 [polygonA[0][0] + 0.05, polygonA[0][1] + 0.05],
                 [polygonA[1][0] + 0.05, polygonA[1][1] - 0.05],
                 [polygonA[2][0] - 0.05, polygonA[2][1] - 0.05],
                 [polygonA[3][0] - 0.05, polygonA[3][1] + 0.05]
             ]
-
-            //   console.log('geometric.polygonInPolygon(smallerSquarePolygon, polygonB)', geometric.polygonInPolygon(smallerSquarePolygon, polygonB))
             return geometric.polygonInPolygon(smallerSquarePolygon, polygonB)
         }
-
-        // will return quadruplets  and quintuplets as well
-        return  {quadruplet3DArray, singletArray, duplet3DArray, triplet3DArray}
+        return {quadruplet3DArray, singletArray, duplet3DArray, triplet3DArray}
     }
 
     let room = useSelector(state => state.room);
@@ -322,8 +261,7 @@ const Result = () => {
                                 SuperMats.map(mat => <Line
                                     x={320}
                                     y={0}
-                                    points={mat
-                                    }
+                                    points={mat}
                                     closed
                                     stroke="#868686"
                                     strokeWidth={2}
