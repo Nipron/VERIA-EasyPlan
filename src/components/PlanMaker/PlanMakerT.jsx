@@ -39,10 +39,10 @@ const PlanMakerT = () => {
     const [square, setSquare] = useState(0);
 
     const pos00 = {x: 0, y: 0};
-    const [pos01shadow, setPos01shadow] = useState({x: 180, y: 0});
-    const [pos01, setPos01] = useState({x: 180, y: 0});
-    const [pos02shadow, setPos02shadow] = useState({x: 180, y: 120});
-    const [pos02, setPos02] = useState({x: 180, y: 120});
+    const [pos01shadow, setPos01shadow] = useState({x: 150, y: 0});
+    const [pos01, setPos01] = useState({x: 150, y: 0});
+    const [pos02shadow, setPos02shadow] = useState({x: 150, y: 120});
+    const [pos02, setPos02] = useState({x: 150, y: 120});
     const [pos03shadow, setPos03shadow] = useState({x: 320, y: 120});
     const [pos03, setPos03] = useState({x: 320, y: 120});
     const [pos04shadow, setPos04shadow] = useState({x: 320, y: 220});
@@ -310,7 +310,7 @@ const PlanMakerT = () => {
                                    }}
                                    bounds={pos01angled
                                        ? {
-                                           left: minDist,
+                                           left: 2 * minDist,
                                            top: 0,
                                            right: pos01.x - minDist,
                                            bottom: 0
@@ -347,7 +347,7 @@ const PlanMakerT = () => {
                                    }}
                                    bounds={
                                        {
-                                           left: (pos01angled && pos01shadow.x + (minDist)) || minDist * 2,
+                                           left: (pos01angled && pos01shadow.x + minDist) || minDist * 3,
                                            top: (pos01angled && minDist) || 2,
                                            right: (pos02angled && pos02.x - minDist) || (pos03angled && pos03shadow.x - 2 * minDist) || pos03shadow.x - 3 * minDist,
                                            bottom: (!pos01angled && 2) || (pos02angled && pos02shadow.y - minDist) || (pos02.y - 2 * minDist)
@@ -420,7 +420,7 @@ const PlanMakerT = () => {
                                    }}
                                    bounds={
                                        {
-                                           left: (pos02angled && pos02shadow.x + minDist) || (pos01angled && pos01shadow.x + minDist) || 2 * minDist,
+                                           left: (pos02angled && pos02shadow.x + minDist) || (pos01angled && pos01shadow.x + minDist) || 3 * minDist,
                                            top: (pos02angled && pos02shadow.y + minDist) || (pos01angled && pos01.y + 2 * minDist) || 3 * minDist,
                                            right: pos03shadow.x - minDist - (!pos02angled && minDist) - (!pos03angled && minDist),
                                            bottom: (pos03angled && pos03.y - minDist) || (pos04angled && pos04shadow.y - 2 * minDist) || pos04.y - 3 * minDist
@@ -471,6 +471,9 @@ const PlanMakerT = () => {
                             setCompassPoint(pos03);
                             setPos03({x: x + d.deltaX, y: y + d.deltaY,});
                             setPos04shadow({x: x, y: pos04shadow.y});
+                            if (!pos04angled) {
+                                setPos04({x: x, y: pos04.y})
+                            }
 
                             if (!pos03angled) {
                                 setPos03shadow({x: x, y: y})
@@ -479,9 +482,7 @@ const PlanMakerT = () => {
                                     setPos02shadow({x: pos02shadow.x, y: y})
                                 }
                             }
-                            if (!pos04angled) {
-                                setPos04({x: x, y: pos04.y})
-                            }
+
 
                         }}
                                    position={{x: pos03.x, y: pos03.y}}
@@ -657,9 +658,9 @@ const PlanMakerT = () => {
                                    bounds={
                                        {
                                            left: (pos06angled && pos06.x + minDist) || (pos07angled && pos07shadow.x + 2 * minDist) || pos07shadow.x + 3 * minDist,
-                                           top: (pos05angled && pos05shadow.y + minDist) || (pos04angled && pos04shadow.y + minDist) || pos03.y + 2 * minDist,
+                                           top: (pos05angled && pos05shadow.y + minDist) || (pos04angled && pos04shadow.y + minDist) || (pos03angled && pos03.y + 2 * minDist) || pos03.y + 3 * minDist,
                                            right: (pos05angled && pos05shadow.x - minDist) || (pos04angled && pos04.x - 2 * minDist) || pos04.x - 3 * minDist,
-                                           bottom: (pos06angled && pos06shadow.y - minDist) || (pos06shadow.y - 2 * minDist)
+                                           bottom: (pos05angled && ((pos06angled && pos06shadow.y - minDist) || pos06shadow.y - 2 * minDist)) || (pos06angled && pos06shadow.y - 2 * minDist) || (pos06shadow.y - 3 * minDist)
                                        }
                                    }
                         >
@@ -799,7 +800,7 @@ const PlanMakerT = () => {
                                    bounds={
                                        {
                                            left: 0,
-                                           top: (pos07angled && minDist) || (pos06angled && pos06shadow.y + minDist) || (pos05angled && pos05.y + 2 * minDist) || pos05.y + 3 * minDist,
+                                           top: (pos07angled && 2 * minDist) || (pos06angled && pos06shadow.y + minDist) || (pos05angled && pos05.y + 2 * minDist) || pos05.y + 3 * minDist,
                                            right: 0,
                                            bottom: (pos07angled && pos07shadow.y - minDist) || maxHeight
                                        }
@@ -1266,6 +1267,7 @@ const PlanMakerT = () => {
                                     pos07shadow.x, pos07shadow.y,
                                     pos07.x, pos07.y]}
                                 closed
+                                draggable
                                 stroke="#868686"
                                 strokeWidth={5}
                                 fillLinearGradientStartPoint={{x: -50, y: -50}}

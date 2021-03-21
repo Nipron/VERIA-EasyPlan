@@ -9,6 +9,7 @@ import Modal from "../0Modal/Modal";
 
 import coldSpot from '../../img/frame_with_coldspot.png';
 import coldSpotWrong from '../../img/frame_with_coldspot_wrong_position.png';
+import {Layer, Line, Stage} from "react-konva";
 
 const ColdSpots = () => {
 
@@ -20,11 +21,68 @@ const ColdSpots = () => {
     const handleClick = (page) => {
         dispatch(updateButton(page))
     }
+    const [color, setColor] = useState('grey');
 
-    if (!buttons[4]) return <Redirect to="/"/>
+    const handleDragMove = (e) => {
+
+        const stage = e.target.getStage();
+        const layer = stage.findOne(".main-layer");
+
+        let p01 = e.target.position()
+        let p02 = {x: p01.x + 50, y: p01.y};
+        let p03 = {x: p01.x + 0, y: p01.y + 50};
+        let p04 = {x: p01.x + 50, y: p01.y + 50};
+
+        if (!layer.getIntersection(p01)
+            && !layer.getIntersection(p02)
+            && !layer.getIntersection(p03)
+            && !layer.getIntersection(p04)
+        ) setColor("grey")
+        if (layer.getIntersection(p01)
+            || layer.getIntersection(p02)
+            || layer.getIntersection(p03)
+            || layer.getIntersection(p04)
+        ) setColor("red")
+        if (layer.getIntersection(p01)
+            && layer.getIntersection(p02)
+            && layer.getIntersection(p03)
+            && layer.getIntersection(p04)
+        ) setColor("green")
+    }
 
     return (
         <div>
+
+            <Stage width={720} height={320}>
+                <Layer name="main-layer">
+                    <Line
+                        x={100}
+                        y={100}
+                        points={[0, 0, 200, 0, 250, 200, 0, 180]}
+                        closed
+                        stroke="#868686"
+                        strokeWidth={5}
+                        fill="yellow"
+                    />
+                </Layer>
+                <Layer name="chair01">
+                    <Line
+                        x={0}
+                        y={0}
+                        points={[0, 0, 50, 0, 50, 50, 0, 50]}
+                        closed
+                        draggable
+                        stroke="#868686"
+                        strokeWidth={2}
+                        fill={color}
+                        onDragMove={handleDragMove}
+                    />
+                </Layer>
+            </Stage>
+
+
+
+
             <div className="info-section">
                 <div>
                     <h2>Cold spots</h2>
@@ -39,6 +97,35 @@ const ColdSpots = () => {
 
             <div className="content-section-grid">
                 <div className="constructor-box">
+
+                    <Stage width={720} height={320}>
+                        <Layer name="main-layer">
+                            <Line
+                                x={100}
+                                y={100}
+                                points={[0, 0, 200, 0, 250, 200, 0, 180]}
+                                closed
+                                stroke="#868686"
+                                strokeWidth={5}
+                                fill="yellow"
+                            />
+                        </Layer>
+                        <Layer name="chair01">
+                            <Line
+                                x={0}
+                                y={0}
+                                points={[0, 0, 50, 0, 50, 50, 0, 50]}
+                                closed
+                                draggable
+                                stroke="#868686"
+                                strokeWidth={2}
+                                fill={color}
+                                onDragMove={handleDragMove}
+                            />
+                        </Layer>
+                    </Stage>
+
+
                     <span id="square"></span>
                 </div>
                 <div className="button-box">
