@@ -13,6 +13,8 @@ import {Layer, Line, Stage} from "react-konva";
 
 const ColdSpots = () => {
 
+    const [color, setColor] = useState('grey');
+
     const [modalActive, setModalActive] = useState(true);
 
     const buttons = useSelector(state => state.buttons);
@@ -21,7 +23,6 @@ const ColdSpots = () => {
     const handleClick = (page) => {
         dispatch(updateButton(page))
     }
-    const [color, setColor] = useState('grey');
 
     const handleDragMove = (e) => {
 
@@ -50,39 +51,10 @@ const ColdSpots = () => {
         ) setColor("green")
     }
 
+    if (!buttons[4]) return <Redirect to="/"/>
+
     return (
         <div>
-
-            <Stage width={720} height={320}>
-                <Layer name="main-layer">
-                    <Line
-                        x={100}
-                        y={100}
-                        points={[0, 0, 200, 0, 250, 200, 0, 180]}
-                        closed
-                        stroke="#868686"
-                        strokeWidth={5}
-                        fill="yellow"
-                    />
-                </Layer>
-                <Layer name="chair01">
-                    <Line
-                        x={0}
-                        y={0}
-                        points={[0, 0, 50, 0, 50, 50, 0, 50]}
-                        closed
-                        draggable
-                        stroke="#868686"
-                        strokeWidth={2}
-                        fill={color}
-                        onDragMove={handleDragMove}
-                    />
-                </Layer>
-            </Stage>
-
-
-
-
             <div className="info-section">
                 <div>
                     <h2>Cold spots</h2>
