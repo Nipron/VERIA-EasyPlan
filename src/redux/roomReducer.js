@@ -2,7 +2,7 @@
 const UPDATE_ROOM = "UPDATE_ROOM";
 
 //Initial state
-let roomCoordinatesInitialState = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let roomCoordinatesInitialState = [];
 
 //Action creators
 export const updateRoom = room => {

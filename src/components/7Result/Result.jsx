@@ -331,7 +331,9 @@ const Result = () => {
                                 closed
                                 stroke="#868686"
                                 strokeWidth={5}
-                                fill="yellow"
+                                fillLinearGradientStartPoint={{x: -50, y: -50}}
+                                fillLinearGradientEndPoint={{x: 250, y: 250}}
+                                fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
                             />
                         </Layer>
                         <Layer name="chair01">

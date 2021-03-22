@@ -23,7 +23,11 @@ const RoomShape = () => {
     const handleClick = (page, shape) => {
         dispatch(updateButton(page))
         dispatch(updateShape(shape))
-        if (shape = "T") dispatch(updateRoom([0, 0, 150, 0, 150, 0, 150, 110,
+        if (shapes.R) dispatch(updateRoom([0, 0, 350, 0, 350, 0, 350, 300, 350, 300, 0, 300, 0, 300]))
+        if (shapes.L) dispatch(updateRoom([0, 0, 150, 0, 150, 0, 150, 110,
+            150, 110, 350, 110, 350, 110, 350, 300,
+            350, 300, 0, 300, 0, 300]))
+        if (shapes.T) dispatch(updateRoom([0, 0, 150, 0, 150, 0, 150, 110,
             150, 110, 350, 110, 350, 110, 350, 240,
             350, 240, 180, 240, 180, 240, 180, 300,
             180, 300, 0, 300, 0, 300]))

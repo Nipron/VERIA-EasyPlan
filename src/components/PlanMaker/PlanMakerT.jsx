@@ -18,12 +18,14 @@ const PlanMakerT = () => {
     const ratio = 2; //ratio = cm / pixels
     const minDist = 18; //minimum distance between points/lines
     const maxWidth = 720; //constructor max width
-    const maxHeight = 320; //constructor max height
+    const maxHeight = 315; //constructor max height
 
     const dispatch = useDispatch();
     const room = useSelector(state => state.room);
     const shapes = useSelector(state => state.shapes);
     const angles = useSelector(state => state.angles);
+
+    console.log(angles)
 
     const [modalActive, setModalActive] = useState(false);
 
@@ -1300,7 +1302,7 @@ const PlanMakerT = () => {
                                 strokeWidth={5}
                                 fillLinearGradientStartPoint={{x: -50, y: -50}}
                                 fillLinearGradientEndPoint={{x: 250, y: 250}}
-                                fillLinearGradientColorStops={[0, 'red', 1, 'yellow']}
+                                fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
                             />
                         </Layer>
                     </Stage>
