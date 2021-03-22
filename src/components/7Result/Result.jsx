@@ -33,13 +33,11 @@ const Result = () => {
             var twoDArray = []
             for (b = minX, j = 0; b < maxX; b++, j++) {
                 var squareCoordinates = [[b, a], [b, a + 1], [b + 1, a + 1], [b + 1, a]]
-                console.log('squareCoordinates:\n\n',squareCoordinates)
                 formArrayOfSquares(squareCoordinates, twoDArray)
             }
             threeDArray.push(twoDArray)
 
         }
-        console.log('threeDArray:\n\n', threeDArray)
         var singletArray = threeDArray
         var duplet3DArray = []
         var singletArrayCopy = []
@@ -49,21 +47,13 @@ const Result = () => {
         singletArray = JSON.parse(JSON.stringify(singletArrayCopy))
         formTriplets(singletArray, duplet3DArray, triplet3DArray)
         formQuadruplets(duplet3DArray, quadruplet3DArray)
-        console.log('quadruplet array: \n')
         quadruplet3DArray.map(triplet => {
-            console.log(triplet)
         })
-        console.log('triplets array: \n')
         triplet3DArray.map(triplet => {
-            console.log(triplet)
         })
-        console.log('duplets array: \n')
         duplet3DArray.map(duplets => {
-            console.log(duplets)
         })
-        console.log('singletArray: \n')
         singletArray.map(singlets => {
-            console.log(singlets)
         })
         const roomArea = getRoomArea()
 
@@ -95,6 +85,7 @@ const Result = () => {
                 singletArrayCopy.push(singlets)
             }
         }
+
         function formTriplets(singletArray, duplet3DArray, triplet3DArray) {
             for (var yIndex = 0; yIndex < duplet3DArray.length; yIndex++) {
                 // enter y axis, start with 0th index
@@ -130,12 +121,13 @@ const Result = () => {
                 triplet3DArray.push(triplets)
             }
         }
+
         function formQuadruplets(duplet3DArray, quadruplet3DArray) {
             for (var yIndex = 0; yIndex < duplet3DArray.length; yIndex++) {
                 // enter y axis, start with 0th index
                 // loop through x axis
                 var quadruplets = []
-                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length-1;) {
+                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length - 1;) {
                     // check if this block intersects with the next block
                     var doesIntersectNextBlock = geometric.polygonIntersectsPolygon(duplet3DArray[yIndex][xIndex], duplet3DArray[yIndex][xIndex + 1])
                     if (doesIntersectNextBlock) {
@@ -145,7 +137,7 @@ const Result = () => {
                             duplet3DArray[yIndex][xIndex + 1][3]]
                         quadruplets.push(quadrupletPolygon)
                         duplet3DArray[yIndex][xIndex] = null
-                        duplet3DArray[yIndex][xIndex+1] = null
+                        duplet3DArray[yIndex][xIndex + 1] = null
 
                         xIndex++
                     }
@@ -159,6 +151,7 @@ const Result = () => {
                 quadruplet3DArray.push(quadruplets)
             }
         }
+
         function isInAnyColdSpot(squareCoordinates) {
             for (var i = 0; i < coldSpotCoordinates.length; i++) {
                 var isInsideColdSpot = geometric.polygonInPolygon(squareCoordinates, coldSpotCoordinates[i])
@@ -168,6 +161,7 @@ const Result = () => {
             }
             return false
         }
+
         function doesIntersectAnyColdSpot(squareCoordinates) {
             for (var i = 0; i < coldSpotIndividualPoints.length; i++) {
                 var doesIntersectColdSpot = geometric.pointInPolygon(coldSpotIndividualPoints[i], squareCoordinates)
@@ -184,7 +178,7 @@ const Result = () => {
             //     return
             // }
             var isOnBiggerPolygon = polygonOnPolygon(squareCoordinates, polygonCoordinates)
-            if(!isOnBiggerPolygon){
+            if (!isOnBiggerPolygon) {
                 return
             }
             var isInsideAnyColdSpot = isInAnyColdSpot(squareCoordinates)
@@ -208,23 +202,46 @@ const Result = () => {
             ]
             return geometric.polygonInPolygon(smallerSquarePolygon, polygonB)
         }
-        function getRoomArea(){
+
+        function getRoomArea() {
             return geometric.polygonArea(polygonCoordinates)
         }
 
         // will return quadruplets  and quintuplets as well
-        return  {quadruplet3DArray, singletArray, duplet3DArray, triplet3DArray, roomArea}
-            }
-
-    let roomToFormula = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+        return {quadruplet3DArray, singletArray, duplet3DArray, triplet3DArray, roomArea}
+    }
 
     let room = useSelector(state => state.room);
     let coldSpot = useSelector(state => state.coldSpot);
 
+    let roomClockwise = [];
+    roomClockwise.push(room[0]);
+    roomClockwise.push(room[1]);
+
+    for (let i = 0; i < (room.length - 2) / 2; i++) {
+        roomClockwise.push(room[room.length - (2 * i + 1) - 1])
+        roomClockwise.push(room[room.length - (2 * i) - 1])
+    }
+
+    let roomNoDoubles = []
+    roomNoDoubles.push(roomClockwise[0]);
+    roomNoDoubles.push(roomClockwise[1]);
+
+    for (let i = 0; i < (roomClockwise.length - 2) / 4; i++) {
+        roomNoDoubles.push(roomClockwise[i * 4 + 2]);
+        roomNoDoubles.push(roomClockwise[i * 4 + 3]);
+        if (!((roomClockwise[i * 4 + 2] === roomClockwise[i * 4 + 4]) && (roomClockwise[i * 4 + 3] === roomClockwise[i * 4 + 5]))) {
+            roomNoDoubles.push(roomClockwise[i * 4 + 4]);
+            roomNoDoubles.push(roomClockwise[i * 4 + 5]);
+        }
+    }
+
+    let roomToFormula = [];
 
 
-    room.forEach((x, i) => {
+    roomNoDoubles.forEach((x, i) => {
         if (i % 2 === 0) {
+            roomToFormula.push([]);
             roomToFormula[i / 2].push((x * 0.02).toFixed(2))
         } else {
             roomToFormula[(i - 1) / 2].push((x * 0.02).toFixed(2))
@@ -232,7 +249,7 @@ const Result = () => {
     })
 
     let coldSpotToFormula = [[], [], [], []];
-    coldSpot.forEach((x, i) => {
+    coldSpot.reverse().forEach((x, i) => {
         if (i % 2 === 0) {
             coldSpotToFormula[i / 2].push(((x) * 0.02).toFixed(2))
         } else {
@@ -240,20 +257,19 @@ const Result = () => {
         }
     })
 
-    console.log("ROOM COORDINATES")
-    console.log(roomToFormula)
-    console.log("COLD SPOT COORDINATES")
-    console.log(coldSpotToFormula)
+     console.log("ROOM COORDINATES")
+     console.log(roomToFormula)
+     console.log("COLD SPOT COORDINATES")
+     console.log(coldSpotToFormula)
 
     let mats = calc(roomToFormula, [coldSpotToFormula])
 
     console.log("MATS")
     console.log(mats)
+
     let SuperMats = []
 
-    const matGroups = Object.values(mats)
-
-    matGroups.forEach(group => {
+    Object.values(mats).forEach(group => {
         if (group.length > 0) {
             group.forEach(x => {
                 if (x.length > 0) {

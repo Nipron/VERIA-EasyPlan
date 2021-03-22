@@ -15,13 +15,14 @@ import {updateColdSpot} from "../../redux/coldSpotReducer";
 
 const ColdSpots = () => {
 
+    const dispatch = useDispatch();
+    const buttons = useSelector(state => state.buttons);
     let room = useSelector(state => state.room);
 
     const [color, setColor] = useState('grey');
     const [modalActive, setModalActive] = useState(false);
-    const [modalHelpActive, setModalHelpActive] = useState(true);
-    const buttons = useSelector(state => state.buttons);
-    const dispatch = useDispatch();
+
+    const [modalHelpActive, setModalHelpActive] = useState(!buttons[5]); //shows modal only first time on page
 
     const [width, setWidth] = useState(25);
     const [height, setHeight] = useState(25);
@@ -35,10 +36,9 @@ const ColdSpots = () => {
     const handleClick = (page) => {
         dispatch(updateButton(page))
         dispatch(updateColdSpot([coldSpotFirst00.x - 320, coldSpotFirst00.y,
-            coldSpotFirst01.x - 320, coldSpotFirst01.y,
-            coldSpotFirst02.x - 320, coldSpotFirst02.y,
             coldSpotFirst03.x - 320, coldSpotFirst03.y,
-        ]))
+            coldSpotFirst02.x - 320, coldSpotFirst02.y,
+            coldSpotFirst01.x - 320, coldSpotFirst01.y]))
     }
 
     const handleAdd = () => {

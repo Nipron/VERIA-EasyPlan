@@ -11,6 +11,7 @@ import CompassArrows from "../../elements/CompassArrows/CompassArrows";
 import DimInput from "../../elements/DimInput/DimInput";
 import {Stage, Layer, Star, Text, Line} from 'react-konva';
 import {updateRoom} from "../../redux/roomReducer";
+import {updateAngles} from "../../redux/anglesReducer";
 
 const PlanMakerT = () => {
 
@@ -21,6 +22,8 @@ const PlanMakerT = () => {
 
     const dispatch = useDispatch();
     const room = useSelector(state => state.room);
+    const shapes = useSelector(state => state.shapes);
+    const angles = useSelector(state => state.angles);
 
     const [modalActive, setModalActive] = useState(false);
 
@@ -54,14 +57,15 @@ const PlanMakerT = () => {
     const [pos07shadow, setPos07shadow] = useState({x: room[26], y: room[27]});
     const [pos07, setPos07] = useState({x: room[28], y: room[29]});
 
-    const pos00angled = false;
-    const [pos01angled, setPos01angled] = useState(false);
-    const [pos02angled, setPos02angled] = useState(false);
-    const [pos03angled, setPos03angled] = useState(false);
-    const [pos04angled, setPos04angled] = useState(false);
-    const [pos05angled, setPos05angled] = useState(false);
-    const [pos06angled, setPos06angled] = useState(false);
-    const [pos07angled, setPos07angled] = useState(false);
+    const pos00angled = angles[0];
+    const [pos01angled, setPos01angled] = useState(angles[1]);
+    const [pos02angled, setPos02angled] = useState(angles[2]);
+    const [pos03angled, setPos03angled] = useState(angles[3]);
+    const [pos04angled, setPos04angled] = useState(angles[4]);
+    const [pos05angled, setPos05angled] = useState(angles[5]);
+    const [pos06angled, setPos06angled] = useState(angles[6]);
+    const [pos07angled, setPos07angled] = useState(angles[7]);
+
 
     const [dim00to01SeditMode, setDim00to01SeditMode] = useState(false);
     const [dim01to02SeditMode, setDim01to02SeditMode] = useState(false);
@@ -191,6 +195,11 @@ const PlanMakerT = () => {
             pos07shadow.x, pos07shadow.y,
             pos07.x, pos07.y,
         ]))
+        dispatch(updateAngles([pos00angled, pos01angled,
+            pos02angled, pos03angled,
+            pos04angled, pos05angled,
+            pos06angled, pos07angled
+        ]))
     };
 
     useEffect(() => {
@@ -267,7 +276,7 @@ const PlanMakerT = () => {
                                  top: ((pos04.y + pos04shadow.y) / 2 - 20),
                                  left: ((pos04.x + pos04shadow.x) / 2 + 31),
                                  transform: "rotate(90deg)",
-                                 visibility: anglesMode ? 'visible' : 'hidden'
+                                 visibility: (anglesMode && !shapes.L) ? 'visible' : 'hidden'
                              }}>
                         </div>
 

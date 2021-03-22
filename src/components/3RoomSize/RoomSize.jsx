@@ -39,9 +39,7 @@ const RoomSize = () => {
                 <div className="ellipse-faq-btn">?</div>
             </div>
 
-            {shapes.R && <PlanMaker/>}
-            {shapes.L && <PlanMaker/>}
-            {shapes.T && <PlanMakerT/>}
+            <PlanMakerT/>
 
         </div>
     );
