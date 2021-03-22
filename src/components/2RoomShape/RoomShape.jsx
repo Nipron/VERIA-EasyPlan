@@ -11,6 +11,7 @@ import s from "./RoomShape.module.css";
 import {updateShape} from "../../redux/shapesReducer";
 import {updateButton} from "../../redux/buttonsReducer";
 import {updateRoom} from "../../redux/roomReducer";
+import {updateAngles} from "../../redux/anglesReducer";
 
 const RoomShape = () => {
 
@@ -23,6 +24,7 @@ const RoomShape = () => {
     const handleClick = (page, shape) => {
         dispatch(updateButton(page))
         dispatch(updateShape(shape))
+        dispatch(updateAngles([false, false, false, false, false, false, false, false]))
         if (shapes.R) dispatch(updateRoom([0, 0, 350, 0, 350, 0, 350, 300, 350, 300, 0, 300, 0, 300]))
         if (shapes.L) dispatch(updateRoom([0, 0, 150, 0, 150, 0, 150, 110,
             150, 110, 350, 110, 350, 110, 350, 300,
