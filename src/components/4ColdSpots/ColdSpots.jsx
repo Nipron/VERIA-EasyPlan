@@ -20,7 +20,7 @@ const ColdSpots = () => {
     let room = useSelector(state => state.room);
 
     const [color, setColor] = useState('grey');
-    const [modalActive, setModalActive] = useState(false);
+    const [modalActive, setModalActive] = useState(!buttons[5]);
 
     const [modalHelpActive, setModalHelpActive] = useState(!buttons[5]); //shows modal only first time on page
 
