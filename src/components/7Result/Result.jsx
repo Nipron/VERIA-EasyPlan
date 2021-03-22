@@ -33,12 +33,13 @@ const Result = () => {
             var twoDArray = []
             for (b = minX, j = 0; b < maxX; b++, j++) {
                 var squareCoordinates = [[b, a], [b, a + 1], [b + 1, a + 1], [b + 1, a]]
-
+                console.log('squareCoordinates:\n\n',squareCoordinates)
                 formArrayOfSquares(squareCoordinates, twoDArray)
             }
             threeDArray.push(twoDArray)
-        }
 
+        }
+        console.log('threeDArray:\n\n', threeDArray)
         var singletArray = threeDArray
         var duplet3DArray = []
         var singletArrayCopy = []
@@ -46,14 +47,34 @@ const Result = () => {
         var quadruplet3DArray = []
         formDuplets(singletArray, singletArrayCopy)
         singletArray = JSON.parse(JSON.stringify(singletArrayCopy))
-
+        formTriplets(singletArray, duplet3DArray, triplet3DArray)
         formQuadruplets(duplet3DArray, quadruplet3DArray)
+        console.log('quadruplet array: \n')
+        quadruplet3DArray.map(triplet => {
+            console.log(triplet)
+        })
+        console.log('triplets array: \n')
+        triplet3DArray.map(triplet => {
+            console.log(triplet)
+        })
+        console.log('duplets array: \n')
+        duplet3DArray.map(duplets => {
+            console.log(duplets)
+        })
+        console.log('singletArray: \n')
+        singletArray.map(singlets => {
+            console.log(singlets)
+        })
+        const roomArea = getRoomArea()
 
         function formDuplets(singletArray, singletArrayCopy) {
             for (var yIndex = 0; yIndex < singletArray.length; yIndex++) {
+                // enter y axis, start with 0th index
+                // loop through x axis
                 var duplets = []
                 var singlets = []
                 for (var xIndex = 0; xIndex < singletArray[yIndex].length - 1;) {
+                    // check if this block intersects with the next block
                     var doesIntersectNextBlock = geometric.polygonIntersectsPolygon(singletArray[yIndex][xIndex], singletArray[yIndex][xIndex + 1])
                     if (doesIntersectNextBlock) {
                         var dupletPolygon = [singletArray[yIndex][xIndex][0],
@@ -66,6 +87,7 @@ const Result = () => {
                     } else {
                         singlets.push(singletArray[yIndex][xIndex])
                     }
+                    // push the last element to singlets as well if the second last element isn't duplet
                     if (xIndex === singletArray[yIndex].length - 2) singlets.push(singletArray[yIndex][xIndex + 1])
                     xIndex++
                 }
@@ -75,6 +97,8 @@ const Result = () => {
         }
         function formTriplets(singletArray, duplet3DArray, triplet3DArray) {
             for (var yIndex = 0; yIndex < duplet3DArray.length; yIndex++) {
+                // enter y axis, start with 0th index
+                // loop through x axis
                 var triplets = []
                 for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length; xIndex++) {
                     // check if this block intersects with any singlets in this y coodinate
@@ -108,8 +132,11 @@ const Result = () => {
         }
         function formQuadruplets(duplet3DArray, quadruplet3DArray) {
             for (var yIndex = 0; yIndex < duplet3DArray.length; yIndex++) {
+                // enter y axis, start with 0th index
+                // loop through x axis
                 var quadruplets = []
-                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length - 1;) {
+                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length-1;) {
+                    // check if this block intersects with the next block
                     var doesIntersectNextBlock = geometric.polygonIntersectsPolygon(duplet3DArray[yIndex][xIndex], duplet3DArray[yIndex][xIndex + 1])
                     if (doesIntersectNextBlock) {
                         var quadrupletPolygon = [duplet3DArray[yIndex][xIndex][0],
@@ -118,7 +145,7 @@ const Result = () => {
                             duplet3DArray[yIndex][xIndex + 1][3]]
                         quadruplets.push(quadrupletPolygon)
                         duplet3DArray[yIndex][xIndex] = null
-                        duplet3DArray[yIndex][xIndex + 1] = null
+                        duplet3DArray[yIndex][xIndex+1] = null
 
                         xIndex++
                     }
@@ -150,9 +177,14 @@ const Result = () => {
             }
             return false
         }
+
         function formArrayOfSquares(squareCoordinates, twoDArray) {
+            // var isInBiggerPolygon = geometric.polygonInPolygon(squareCoordinates, polygonCoordinates)
+            // if (!isInBiggerPolygon) {
+            //     return
+            // }
             var isOnBiggerPolygon = polygonOnPolygon(squareCoordinates, polygonCoordinates)
-            if (!isOnBiggerPolygon) {
+            if(!isOnBiggerPolygon){
                 return
             }
             var isInsideAnyColdSpot = isInAnyColdSpot(squareCoordinates)
@@ -165,41 +197,58 @@ const Result = () => {
             }
             twoDArray.push(squareCoordinates)
         }
+
+        // will use this function to cover the square boxes on the edges of polygon
         function polygonOnPolygon(polygonA, polygonB) {
             var smallerSquarePolygon = [
-                [polygonA[0][0] + 0.05, polygonA[0][1] + 0.05],
-                [polygonA[1][0] + 0.05, polygonA[1][1] - 0.05],
-                [polygonA[2][0] - 0.05, polygonA[2][1] - 0.05],
-                [polygonA[3][0] - 0.05, polygonA[3][1] + 0.05]
+                [polygonA[0][0] + 0.1, polygonA[0][1] + 0.1],
+                [polygonA[1][0] + 0.1, polygonA[1][1] - 0.1],
+                [polygonA[2][0] - 0.1, polygonA[2][1] - 0.1],
+                [polygonA[3][0] - 0.1, polygonA[3][1] + 0.1]
             ]
             return geometric.polygonInPolygon(smallerSquarePolygon, polygonB)
         }
-        return {quadruplet3DArray, singletArray, duplet3DArray, triplet3DArray}
-    }
+        function getRoomArea(){
+            return geometric.polygonArea(polygonCoordinates)
+        }
+
+        // will return quadruplets  and quintuplets as well
+        return  {quadruplet3DArray, singletArray, duplet3DArray, triplet3DArray, roomArea}
+            }
+
+    let roomToFormula = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
 
     let room = useSelector(state => state.room);
     let coldSpot = useSelector(state => state.coldSpot);
 
-    let roomToFormula = [[], [], [], [], [], [], [], []];
+
+
     room.forEach((x, i) => {
         if (i % 2 === 0) {
-            roomToFormula[i / 2].push(x * 0.02)
+            roomToFormula[i / 2].push((x * 0.02).toFixed(2))
         } else {
-            roomToFormula[(i - 1) / 2].push(x * 0.02)
+            roomToFormula[(i - 1) / 2].push((x * 0.02).toFixed(2))
         }
     })
 
     let coldSpotToFormula = [[], [], [], []];
     coldSpot.forEach((x, i) => {
         if (i % 2 === 0) {
-            coldSpotToFormula[i / 2].push((x - 300) * 0.02)
+            coldSpotToFormula[i / 2].push(((x) * 0.02).toFixed(2))
         } else {
-            coldSpotToFormula[(i - 1) / 2].push(x * 0.02)
+            coldSpotToFormula[(i - 1) / 2].push((x * 0.02).toFixed(2))
         }
     })
+
+    console.log("ROOM COORDINATES")
+    console.log(roomToFormula)
+    console.log("COLD SPOT COORDINATES")
     console.log(coldSpotToFormula)
 
-    let mats = calc(roomToFormula, [coldSpotToFormula, coldSpotToFormula])
+    let mats = calc(roomToFormula, [coldSpotToFormula])
+
+    console.log("MATS")
+    console.log(mats)
     let SuperMats = []
 
     const matGroups = Object.values(mats)
@@ -249,7 +298,7 @@ const Result = () => {
                         </Layer>
                         <Layer name="chair01">
                             <Line
-                                x={0}
+                                x={320}
                                 y={0}
                                 points={coldSpot}
                                 closed

@@ -3,7 +3,7 @@ import s from './PlanMaker.module.css';
 import Draggable from 'react-draggable';
 import {HashLink as Link} from "react-router-hash-link";
 import ModalRoomSize from "../0Modal/ModalRoomSize";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {updateButton} from "../../redux/buttonsReducer";
 import imgDiagonal from '../../img/CornerButtons/CornerLine.svg';
 import imgCorner from '../../img/CornerButtons/SEcorner.svg';
@@ -19,20 +19,10 @@ const PlanMakerT = () => {
     const maxWidth = 720; //constructor max width
     const maxHeight = 320; //constructor max height
 
-    const [modalActive, setModalActive] = useState(false);
     const dispatch = useDispatch();
-    const handleClick = (page) => {
-        dispatch(updateButton(page))
-        dispatch(updateRoom([pos00.x, pos00.y,
-            pos01.x, pos01.y,
-            pos02.x, pos02.y,
-            pos03.x, pos03.y,
-            pos04.x, pos04.y,
-            pos05.x, pos05.y,
-            pos06.x, pos06.y,
-            pos07.x, pos07.y,
-        ]))
-    };
+    const room = useSelector(state => state.room);
+
+    const [modalActive, setModalActive] = useState(false);
 
     const [angIcon01, setAngIcon01] = useState(imgDiagonal);
     const [angIcon02, setAngIcon02] = useState(imgDiagonal);
@@ -48,21 +38,21 @@ const PlanMakerT = () => {
     const [compassPoint, setCompassPoint] = useState({x: 0, y: 0});
     const [square, setSquare] = useState(0);
 
-    const pos00 = {x: 0, y: 0};
-    const [pos01shadow, setPos01shadow] = useState({x: 150, y: 0});
-    const [pos01, setPos01] = useState({x: 150, y: 0});
-    const [pos02shadow, setPos02shadow] = useState({x: 150, y: 120});
-    const [pos02, setPos02] = useState({x: 150, y: 120});
-    const [pos03shadow, setPos03shadow] = useState({x: 320, y: 120});
-    const [pos03, setPos03] = useState({x: 320, y: 120});
-    const [pos04shadow, setPos04shadow] = useState({x: 320, y: 220});
-    const [pos04, setPos04] = useState({x: 320, y: 220});
-    const [pos05shadow, setPos05shadow] = useState({x: 180, y: 220});
-    const [pos05, setPos05] = useState({x: 180, y: 220});
-    const [pos06shadow, setPos06shadow] = useState({x: 180, y: 300});
-    const [pos06, setPos06] = useState({x: 180, y: 300});
-    const [pos07shadow, setPos07shadow] = useState({x: 0, y: 300});
-    const [pos07, setPos07] = useState({x: 0, y: 300});
+    const pos00 = {x: room[0], y: room[1]};
+    const [pos01shadow, setPos01shadow] = useState({x: room[2], y: room[3]});
+    const [pos01, setPos01] = useState({x: room[4], y: room[5]});
+    const [pos02shadow, setPos02shadow] = useState({x: room[6], y: room[7]});
+    const [pos02, setPos02] = useState({x: room[8], y: room[9]});
+    const [pos03shadow, setPos03shadow] = useState({x: room[10], y: room[11]});
+    const [pos03, setPos03] = useState({x: room[12], y: room[13]});
+    const [pos04shadow, setPos04shadow] = useState({x: room[14], y: room[15]});
+    const [pos04, setPos04] = useState({x: room[16], y: room[17]});
+    const [pos05shadow, setPos05shadow] = useState({x: room[18], y: room[19]});
+    const [pos05, setPos05] = useState({x: room[20], y: room[21]});
+    const [pos06shadow, setPos06shadow] = useState({x: room[22], y: room[23]});
+    const [pos06, setPos06] = useState({x: room[24], y: room[25]});
+    const [pos07shadow, setPos07shadow] = useState({x: room[26], y: room[27]});
+    const [pos07, setPos07] = useState({x: room[28], y: room[29]});
 
     const pos00angled = false;
     const [pos01angled, setPos01angled] = useState(false);
@@ -182,6 +172,26 @@ const PlanMakerT = () => {
             setPos07shadow({x: pos07.x, y: pos07shadow.y});
         }
     }
+
+    const handleClick = (page) => {
+        dispatch(updateButton(page))
+        dispatch(updateRoom([pos00.x, pos00.y,
+            pos01shadow.x, pos01shadow.y,
+            pos01.x, pos01.y,
+            pos02shadow.x, pos02shadow.y,
+            pos02.x, pos02.y,
+            pos03shadow.x, pos03shadow.y,
+            pos03.x, pos03.y,
+            pos04shadow.x, pos04shadow.y,
+            pos04.x, pos04.y,
+            pos05shadow.x, pos05shadow.y,
+            pos05.x, pos05.y,
+            pos06shadow.x, pos06shadow.y,
+            pos06.x, pos06.y,
+            pos07shadow.x, pos07shadow.y,
+            pos07.x, pos07.y,
+        ]))
+    };
 
     useEffect(() => {
 
@@ -545,9 +555,9 @@ const PlanMakerT = () => {
                                        {
                                            left: (pos04angled && Math.max(pos04.x + minDist,
                                                (pos03angled && pos03shadow.x + minDist) ||
-                                               (pos02angled && pos02.x + 2 * minDist
+                                               (pos02angled && (pos02.x + 2 * minDist)
                                                    || pos02.x + 3 * minDist))) || 0,
-                                           top: (pos04angled && (pos03angled && pos03.y + minDist || pos03.y + 2 * minDist)) || 0,
+                                           top: (pos04angled && (pos03angled && (pos03.y + minDist) || pos03.y + 2 * minDist)) || 0,
                                            right: maxWidth,
                                            bottom: (pos04angled && pos04.y - minDist) || maxHeight
                                        }
@@ -587,17 +597,17 @@ const PlanMakerT = () => {
                                    bounds={
                                        {
                                            left: (pos04angled && (pos05angled
-                                               && pos05shadow.x + minDist
-                                               || pos05shadow.x + 2 * minDist))
+                                               && (pos05shadow.x + minDist)
+                                               || (pos05shadow.x + 2 * minDist)))
                                                || Math.max((pos05angled
-                                                   && pos05shadow.x + 2 * minDist
-                                                   || pos05shadow.x + 3 * minDist),
-                                                   (pos02angled && pos02.x + 2 * minDist
-                                                       || pos02.x + 3 * minDist),
-                                                   (pos03angled && pos03shadow.x + minDist)),
-                                           top: (pos04angled && pos04shadow.y + minDist) || (pos03angled && pos03.y + 2 * minDist) || pos03.y + 3 * minDist,
-                                           right: (pos04angled && pos04shadow.x - minDist) || maxWidth,
-                                           bottom: (pos05angled && pos05.y - minDist) || (pos06angled && pos06shadow.y - 2 * minDist) || pos06.y - 3 * minDist
+                                                   && (pos05shadow.x + 2 * minDist)
+                                                   || (pos05shadow.x + 3 * minDist)),
+                                                   (pos02angled && (pos02.x + 2 * minDist)
+                                                       || (pos02.x + 3 * minDist)),
+                                                   (pos03angled && (pos03shadow.x + minDist))),
+                                           top: (pos04angled && (pos04shadow.y + minDist)) || (pos03angled && (pos03.y + 2 * minDist)) || (pos03.y + 3 * minDist),
+                                           right: (pos04angled && (pos04shadow.x - minDist)) || maxWidth,
+                                           bottom: (pos05angled && (pos05.y - minDist)) || (pos06angled && (pos06shadow.y - 2 * minDist)) || (pos06.y - 3 * minDist)
                                        }
                                    }
                         >
@@ -890,7 +900,7 @@ const PlanMakerT = () => {
                                                 let oldValue = pos03shadow.x - pos02.x;
                                                 let maxDelta = maxWidth - pos03.x;
                                                 let minDelta = ((pos02.x > pos05shadow.x)
-                                                        && ((pos02angled && (pos03angled && (pos02.x - pos03shadow.x) + minDist - 1
+                                                        && ((pos02angled && (pos03angled && ((pos02.x - pos03shadow.x) + minDist - 1)
                                                         || (pos02.x - pos03shadow.x) + 2 * minDist - 1))
                                                         || (pos03angled && (pos02.x - pos03shadow.x) + 2 * minDist - 1)
                                                         || ((pos02.x - pos03shadow.x) + 3 * minDist - 1))

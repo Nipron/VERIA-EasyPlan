@@ -10,6 +10,7 @@ import s from "./RoomShape.module.css";
 
 import {updateShape} from "../../redux/shapesReducer";
 import {updateButton} from "../../redux/buttonsReducer";
+import {updateRoom} from "../../redux/roomReducer";
 
 const RoomShape = () => {
 
@@ -22,6 +23,10 @@ const RoomShape = () => {
     const handleClick = (page, shape) => {
         dispatch(updateButton(page))
         dispatch(updateShape(shape))
+        if (shape = "T") dispatch(updateRoom([0, 0, 150, 0, 150, 0, 150, 120,
+            150, 120, 350, 120, 350, 120, 350, 220,
+            350, 220, 180, 220, 180, 220, 180, 300,
+            180, 300, 0, 300, 0, 300]))
     }
 
     if (!buttons[2]) return <Redirect to="/"/>
@@ -41,7 +46,7 @@ const RoomShape = () => {
                 <div className="content-box">
                     <div className="object-container">
                         <div className="rectangular"><img src={shapeR} alt="rectangular"/></div>
-                        <Link to="/roomsize" onClick={() => handleClick(3,"R")}
+                        <Link to="/roomsize" onClick={() => handleClick(3, "R")}
                               className={`${s.btnShapeSelection} ${shapes.R && s.active}`}
                         >
                             Rectangular
@@ -49,7 +54,7 @@ const RoomShape = () => {
                     </div>
                     <div className="object-container">
                         <div className="rectangular"><img src={shapeL} alt="rectangular-l"/></div>
-                        <Link to="/roomsize" onClick={() => handleClick(3,"L")}
+                        <Link to="/roomsize" onClick={() => handleClick(3, "L")}
                               className={`${s.btnShapeSelection} ${shapes.L && s.active}`}
                         >
                             L-Shaped
@@ -57,7 +62,7 @@ const RoomShape = () => {
                     </div>
                     <div className="object-container">
                         <div className="rectangular"><img src={shapeT} alt="rectangular-t"/></div>
-                        <Link to="/roomsize" onClick={() => handleClick(3,"T")}
+                        <Link to="/roomsize" onClick={() => handleClick(3, "T")}
                               className={`${s.btnShapeSelection} ${shapes.T && s.active}`}
                         >
                             T-Shaped

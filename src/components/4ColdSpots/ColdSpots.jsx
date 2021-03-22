@@ -15,7 +15,7 @@ import {updateColdSpot} from "../../redux/coldSpotReducer";
 
 const ColdSpots = () => {
 
-    let room = useSelector(state => state.room)
+    let room = useSelector(state => state.room);
 
     const [color, setColor] = useState('grey');
     const [modalActive, setModalActive] = useState(false);
@@ -34,10 +34,10 @@ const ColdSpots = () => {
 
     const handleClick = (page) => {
         dispatch(updateButton(page))
-        dispatch(updateColdSpot([coldSpotFirst00.x, coldSpotFirst00.y,
-            coldSpotFirst01.x, coldSpotFirst01.y,
-            coldSpotFirst02.x, coldSpotFirst02.y,
-            coldSpotFirst03.x, coldSpotFirst03.y,
+        dispatch(updateColdSpot([coldSpotFirst00.x - 320, coldSpotFirst00.y,
+            coldSpotFirst01.x - 320, coldSpotFirst01.y,
+            coldSpotFirst02.x - 320, coldSpotFirst02.y,
+            coldSpotFirst03.x - 320, coldSpotFirst03.y,
         ]))
     }
 
@@ -122,7 +122,7 @@ const ColdSpots = () => {
                                 visible={cold01visible}
                                 onDragMove={handleDragMove}
                             />
-                            <Line
+                            {/*<Line
                                 x={600}
                                 y={100}
                                 points={[0, 0, 50, 0, 50, 50, 0, 50]}
@@ -133,7 +133,7 @@ const ColdSpots = () => {
                                 fill={color}
                                 visible={false}
                                 onDragMove={handleDragMove}
-                            />
+                            />*/}
                         </Layer>
                     </Stage>
 
