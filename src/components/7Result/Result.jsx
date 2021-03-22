@@ -249,7 +249,7 @@ const Result = () => {
     })
 
     let coldSpotToFormula = [[], [], [], []];
-    coldSpot.reverse().forEach((x, i) => {
+    coldSpot.forEach((x, i) => {
         if (i % 2 === 0) {
             coldSpotToFormula[i / 2].push(((x) * 0.02).toFixed(2))
         } else {
@@ -260,6 +260,7 @@ const Result = () => {
      console.log("ROOM COORDINATES")
      console.log(roomToFormula)
      console.log("COLD SPOT COORDINATES")
+     console.log(coldSpot)
      console.log(coldSpotToFormula)
 
     let mats = calc(roomToFormula, [coldSpotToFormula])
