@@ -236,48 +236,69 @@ const Result = () => {
         }
     }
 
-    let roomToFormula = [];
 
+    let roomToFormula = [];
 
     roomNoDoubles.forEach((x, i) => {
         if (i % 2 === 0) {
             roomToFormula.push([]);
-            roomToFormula[i / 2].push((x * 0.02).toFixed(2))
+            roomToFormula[i / 2].push(x * 0.02)
         } else {
-            roomToFormula[(i - 1) / 2].push((x * 0.02).toFixed(2))
+            roomToFormula[(i - 1) / 2].push(x * 0.02)
         }
     })
 
     let coldSpotToFormula = [[], [], [], []];
     coldSpot.forEach((x, i) => {
         if (i % 2 === 0) {
-            coldSpotToFormula[i / 2].push(((x) * 0.02).toFixed(2))
-        } else {
-            coldSpotToFormula[(i - 1) / 2].push((x * 0.02).toFixed(2))
+            coldSpotToFormula[i / 2].push(x * 0.02)} else {
+            coldSpotToFormula[(i - 1) / 2].push(x * 0.02)
         }
     })
 
-     console.log("ROOM COORDINATES")
-     console.log(roomToFormula)
-     console.log("COLD SPOT COORDINATES")
-     console.log(coldSpot)
-     console.log(coldSpotToFormula)
+    let zz = [[0, 0], [0, 6], [3.6, 6], [3.6, 5.28],
+        [5.74, 4.92], [10.04, 4.92], [13.08, 4.56], [13.08, 1.44], [9.44, 1.08], [5.24, 1.08],
+        [3.00, 0.72], [3, 0]]
+
+    let coldZ = [[2.68, 0.92],[2.68, 1.42],[3.18, 1.42],[3.18, 0.92]]
+
+    let ZZZ = calc(zz, [coldZ])
 
     let mats = calc(roomToFormula, [coldSpotToFormula])
 
-    console.log("MATS")
+    console.log("ROOM COORDINATES")
+    console.log(roomToFormula)
+
+    console.log("____________________________")
+
+    console.log("COLD SPOT COORDINATES")
+    console.log(coldSpotToFormula)
+
+    console.log("____________________________")
+
+    console.log("RESULT MATS")
     console.log(mats)
+
+    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+
+
 
     let SuperMats = []
 
+    let SuperZ = []
+
+
     Object.values(mats).forEach(group => {
         if (group.length > 0) {
-            group.forEach(x => {
-                if (x.length > 0) {
-                    SuperMats.push([x[0][0][0] * 50, x[0][0][1] * 50,
-                        x[0][1][0] * 50, x[0][1][1] * 50,
-                        x[0][2][0] * 50, x[0][2][1] * 50,
-                        x[0][3][0] * 50, x[0][3][1] * 50])
+            group.forEach(row => {
+                if (row.length > 0) {
+                    row.forEach( mat => {
+                        if (mat.length > 0) {
+                        SuperMats.push([mat[0][0] * 50, mat[0][1] * 50,
+                            mat[1][0] * 50, mat[1][1] * 50,
+                            mat[2][0] * 50, mat[2][1] * 50,
+                            mat[3][0] * 50, mat[3][1] * 50]) }
+                    })
                 }
             })
         }
@@ -332,6 +353,17 @@ const Result = () => {
                                     stroke="#868686"
                                     strokeWidth={2}
                                     fill={"brown"}
+                                />)
+                            }
+                            {
+                                SuperZ.map(mat => <Line
+                                    x={320}
+                                    y={0}
+                                    points={mat}
+                                    closed
+                                    stroke="#868686"
+                                    strokeWidth={2}
+                                    fill={"grey"}
                                 />)
                             }
                         </Layer>

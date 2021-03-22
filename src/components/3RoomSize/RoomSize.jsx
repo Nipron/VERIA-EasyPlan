@@ -12,6 +12,7 @@ import PlanMaker from "../PlanMaker/PlanMaker";
 import PlanMakerL from "../PlanMaker/PlanMakerL";
 import ModalRoomSize from "../0Modal/ModalRoomSize";
 import PlanMakerT from "../PlanMaker/PlanMakerT";
+import PlanMakerR from "../PlanMaker/PlanMakerR";
 
 const RoomSize = () => {
 
@@ -39,7 +40,9 @@ const RoomSize = () => {
                 <div className="ellipse-faq-btn">?</div>
             </div>
 
-            <PlanMakerT/>
+            {shapes.R && <PlanMakerR/>}
+            {shapes.L && <PlanMakerL/>}
+            {shapes.T && <PlanMakerT/>}
 
         </div>
     );
