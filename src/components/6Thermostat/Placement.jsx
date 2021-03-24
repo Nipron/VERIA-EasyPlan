@@ -32,7 +32,7 @@ const Placement = () => {
     const pos07 = {x: startX + room[28], y: startY + room[29]}
 
     //const center = {x: pos00.x + Math.min(pos01s.x - pos00.x, pos06.x - pos00.x) / 2, y: (pos03.y + pos04s.y) / 2}
-    const center = {x: pos07.x + 90, y: pos03.y + 30}
+    const center = {x: pos07.x + 30, y: pos03.y + 30}
 
     const [thermX, setThermX] = useState(pos00.x);
     const [thermY, setThermY] = useState(pos00.y);
@@ -102,9 +102,7 @@ const Placement = () => {
 
                                     const degree = (point) => {
                                         let currentDeg = Math.atan((center.y - point.y) / (center.x - point.x)) - Math.PI / 2 - startDegFromAxisX
-                                        if (point.x > center.x) {
-                                            currentDeg += Math.PI
-                                        }
+                                        if (point.x > center.x) {currentDeg += Math.PI}
                                         if (currentDeg < 0) {
                                             currentDeg += 2 * Math.PI
                                         }
@@ -114,7 +112,6 @@ const Placement = () => {
                                     if (degree(B) < 1) {
                                         return ((degree(cursor) >= degree(A)) && (degree(cursor) < degree(B) + 360))
                                     }
-
                                     if ((degree(cursor) >= degree(A)) && (degree(cursor) < degree(B))) {
                                     }
 
