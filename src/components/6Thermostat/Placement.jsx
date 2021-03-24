@@ -31,7 +31,8 @@ const Placement = () => {
     const pos07s = {x: startX + room[26], y: startY + room[27]}
     const pos07 = {x: startX + room[28], y: startY + room[29]}
 
-    const center = {x: pos00.x + Math.min(pos01s.x - pos00.x, pos06.x - pos00.x) / 2, y: (pos03.y + pos04s.y) / 2 + 300}
+    //const center = {x: pos00.x + Math.min(pos01s.x - pos00.x, pos06.x - pos00.x) / 2, y: (pos03.y + pos04s.y) / 2}
+    const center = {x: pos07.x + 90, y: pos03.y + 30}
 
     const [thermX, setThermX] = useState(pos00.x);
     const [thermY, setThermY] = useState(pos00.y);
@@ -51,6 +52,8 @@ const Placement = () => {
         dispatch(updateButton(page))
     }
 
+    const [p, setP] = useState({x: startX, y: 200})
+
 
     if (!buttons[6]) return <Redirect to="/"/>
 
@@ -60,13 +63,11 @@ const Placement = () => {
         let cursor = e.target.position();
 
         if (layer.getIntersection(cursor)) {
-            setThermX(330)
+            setThermX(600)
             setThermY(30)
         }
 
     }
-
-
 
 
     return (
@@ -84,34 +85,45 @@ const Placement = () => {
                 <div className="constructor-box">
                     <div className={s.planMaker}>
                         <div className={s.points}>
+                            <Draggable position={{x: center.x, y: center.y}}>
+                                <div className={s.thermostat3}/>
+                            </Draggable>
                             <Draggable onDrag={(e, d) => {
                                 let x = thermX;
                                 let y = thermY;
                                 setThermX(x + d.deltaX)
                                 setThermY(y + d.deltaY)
 
-                                const SuperSector = (x, y, A, B) => ((center.y - A.y) * (center.y - B.y) > 0)
-                                    && ((center.x - x) / (center.y - y + 0.01) <= (center.x - A.x) / (center.y - A.y + 0.01))
-                                    && ((center.x - x) / (center.y - y + 0.01) > (center.x - B.x) / (center.y - B.y + 0.01))
+                                const sector = (A, B) => {
 
-                                console.log( SuperSector(984, 260, pos04s, pos04))
+                                    let cursor = {x, y}
+                                    const Deg = 180 / Math.PI
+                                    const startDegFromAxisX = Math.atan((center.y - pos00.y) / (center.x - pos00.x)) - Math.PI / 2
 
+                                    const degree = (point) => {
+                                        let currentDeg = Math.atan((center.y - point.y) / (center.x - point.x)) - Math.PI / 2 - startDegFromAxisX
+                                        if (point.x > center.x) {
+                                            currentDeg += Math.PI
+                                        }
+                                        if (currentDeg < 0) {
+                                            currentDeg += 2 * Math.PI
+                                        }
+                                        return currentDeg * Deg
+                                    }   //Degree form line center--->pos00 clockwise
 
-                                const sector = (A, B) => ((center.y - A.y) * (center.y - B.y) > 0)
-                                    && ((center.x - x) / (center.y - y + 0.01) <= (center.x - A.x) / (center.y - A.y + 0.01))
-                                    && ((center.x - x) / (center.y - y + 0.01) > (center.x - B.x) / (center.y - B.y + 0.01))
+                                    if (degree(B) < 1) {
+                                        return ((degree(cursor) >= degree(A)) && (degree(cursor) < degree(B) + 360))
+                                    }
 
+                                    if ((degree(cursor) >= degree(A)) && (degree(cursor) < degree(B))) {
+                                    }
 
-                                if (sector(pos07, pos00)) {
-                                    setLeft(pos00.x);
-                                    setRight(pos00.x);
-                                    setTop(pos00.y - 1);
-                                    setBottom(pos07.y + 1);
+                                    return ((degree(cursor) >= degree(A)) && (degree(cursor) < degree(B)))
                                 }
 
                                 if (sector(pos00, pos01s)) {
-                                    setLeft(pos00.x);
-                                    setRight(pos01s.x + 2);
+                                    setLeft(pos00.x - 1);
+                                    setRight(pos01s.x + 1);
                                     setTop(pos00.y);
                                     setBottom(pos00.y);
                                 }
@@ -139,11 +151,9 @@ const Placement = () => {
 
                                 if (sector(pos02, pos03s)) {
                                     setLeft(pos02.x - 1);
-                                    setRight(pos03s.x);
+                                    setRight(pos03s.x + 1);
                                     setTop(pos02.y);
                                     setBottom(pos02.y);
-                                    console.log(x);
-                                    console.log(y);
                                 }
 
                                 if (sector(pos03s, pos03)) {
@@ -151,8 +161,6 @@ const Placement = () => {
                                     setRight(pos03s.x + (y - pos03s.y) * (pos03.x - pos03s.x) / (pos03.y - pos03s.y));
                                     setTop(pos03s.y - 1);
                                     setBottom(pos03.y + 1);
-                                    console.log(x);
-                                    console.log(y);
                                 }
 
                                 if (sector(pos03, pos04s)) {
@@ -160,19 +168,63 @@ const Placement = () => {
                                     setRight(pos03.x);
                                     setTop(pos03.y - 1);
                                     setBottom(pos04s.y + 1);
-                                    console.log(x);
-                                    console.log(y);
-
-
                                 }
 
                                 if (sector(pos04s, pos04)) {
-                                    setLeft(pos04.x + (y - pos04s.y) * (pos04s.x - pos04.x) / (pos04.y - pos04s.y));
-                                    setRight(pos04.x + (y - pos04s.y) * (pos04s.x - pos04.x) / (pos04.y - pos04s.y));
+                                    setLeft(pos04s.x + (y - pos04s.y) * (pos04.x - pos04s.x) / (pos04.y - pos04s.y));
+                                    setRight(pos04s.x + (y - pos04s.y) * (pos04.x - pos04s.x) / (pos04.y - pos04s.y));
                                     setTop(pos04s.y - 1);
                                     setBottom(pos04.y + 1);
                                 }
 
+                                if (sector(pos04, pos05s)) {
+                                    setLeft(pos05s.x - 1);
+                                    setRight(pos04.x + 1);
+                                    setTop(pos04.y);
+                                    setBottom(pos04.y);
+                                }
+
+                                if (sector(pos05s, pos05)) {
+                                    setLeft(pos05s.x + (y - pos05s.y) * (pos05.x - pos05s.x) / (pos05.y - pos05s.y));
+                                    setRight(pos05s.x + (y - pos05s.y) * (pos05.x - pos05s.x) / (pos05.y - pos05s.y));
+                                    setTop(pos05s.y - 1);
+                                    setBottom(pos05.y + 1);
+                                }
+
+                                if (sector(pos05, pos06s)) {
+                                    setLeft(pos05.x);
+                                    setRight(pos05.x);
+                                    setTop(pos05.y - 1);
+                                    setBottom(pos06s.y + 1);
+                                }
+
+                                if (sector(pos06s, pos06)) {
+                                    setLeft(pos06s.x + (y - pos06s.y) * (pos06.x - pos06s.x) / (pos06.y - pos06s.y));
+                                    setRight(pos06s.x + (y - pos06s.y) * (pos06.x - pos06s.x) / (pos06.y - pos06s.y));
+                                    setTop(pos06s.y - 1);
+                                    setBottom(pos06.y + 1);
+                                }
+
+                                if (sector(pos06, pos07s)) {
+                                    setLeft(pos07s.x - 2);
+                                    setRight(pos06.x + 2);
+                                    setTop(pos06.y);
+                                    setBottom(pos06.y);
+                                }
+
+                                if (sector(pos07s, pos07)) {
+                                    setLeft(pos07.x + (y - pos07.y) * (pos07.x - pos07s.x) / (pos07.y - pos07s.y));
+                                    setRight(pos07.x + (y - pos07.y) * (pos07.x - pos07s.x) / (pos07.y - pos07s.y));
+                                    setTop(pos07.y - 2);
+                                    setBottom(pos07s.y + 2);
+                                }
+
+                                if (sector(pos07, pos00)) {
+                                    setLeft(pos00.x);
+                                    setRight(pos00.x);
+                                    setTop(pos00.y - 1);
+                                    setBottom(pos07.y + 1);
+                                }
 
                             }
                             }
@@ -189,6 +241,7 @@ const Placement = () => {
                                                bottom: bottom
                                            }
                                        }
+
                             >
                                 <div className={s.thermostat}/>
                             </Draggable>
@@ -235,7 +288,8 @@ const Placement = () => {
                 </div>
             </div>
         </div>
-    );
+    )
+        ;
 };
 
 export default Placement;

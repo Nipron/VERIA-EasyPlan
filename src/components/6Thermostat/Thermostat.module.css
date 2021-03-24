@@ -43,6 +43,22 @@
     position: static;
 }
 
+.thermostat2 {
+    width: 12px;
+    height: 1px;
+    border-radius: 50%;
+    background: red;
+    position: static;
+}
+
+.thermostat3 {
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: green;
+    position: static;
+}
+
 
 
 
