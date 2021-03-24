@@ -20,3 +20,29 @@
     color: #595454;
     text-decoration: none;
 }
+
+.planMaker {
+    text-align: center;
+    position: unset;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    margin: 100px;
+}
+
+.points {
+    position: relative;
+    z-index: 7;
+}
+
+.thermostat {
+    width: 35px;
+    height: 35px;
+    background: url("../../img/ThermostatButton/thermostat.svg");
+    position: static;
+}
+
+
+
+

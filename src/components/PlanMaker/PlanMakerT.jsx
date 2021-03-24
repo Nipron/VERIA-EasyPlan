@@ -25,8 +25,6 @@ const PlanMakerT = () => {
     const shapes = useSelector(state => state.shapes);
     const angles = useSelector(state => state.angles);
 
-    console.log(angles)
-
     const [modalActive, setModalActive] = useState(false);
 
     const [angIcon01, setAngIcon01] = useState(imgDiagonal);
@@ -411,7 +409,7 @@ const PlanMakerT = () => {
                                    }}
                                    bounds={
                                        {
-                                           left: (pos01angled) ? pos01shadow.x + (minDist) : minDist * 2,
+                                           left: (pos01angled) ? pos01shadow.x + minDist : minDist * 3,
                                            top: pos01.y + minDist + (!pos01angled && minDist),
                                            right: (pos02angled) ? pos02.x - minDist : maxWidth,
                                            bottom: (pos02angled) ? pos02.y - minDist : maxHeight
