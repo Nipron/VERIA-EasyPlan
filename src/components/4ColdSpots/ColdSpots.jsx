@@ -12,26 +12,94 @@ import coldSpotWrong from '../../img/frame_with_coldspot_wrong_position.png';
 import {Layer, Line, Stage} from "react-konva";
 import {updateColdSpot} from "../../redux/coldSpotReducer";
 
+import squareWhite from '../../img/ColdSpotIcons/squareWhite.svg';
+import squareGrey from '../../img/ColdSpotIcons/squareGrey.svg';
+import triangle1white from '../../img/ColdSpotIcons/triangle1white.svg';
+import triangle1grey from '../../img/ColdSpotIcons/triangle1grey.svg';
+import triangle2white from '../../img/ColdSpotIcons/triangle2white.svg';
+import triangle2grey from '../../img/ColdSpotIcons/triangle2grey.svg';
+import triangle3white from '../../img/ColdSpotIcons/triangle3white.svg';
+import triangle3grey from '../../img/ColdSpotIcons/triangle3grey.svg';
+import triangle4white from '../../img/ColdSpotIcons/triangle4white.svg';
+import triangle4grey from '../../img/ColdSpotIcons/triangle4grey.svg';
+
+
+const ColdSpot = spot => <Line
+    x={600}
+    y={0}
+    points={[0, 0, spot.width, 0, spot.width, spot.height, 0, spot.height]}
+    closed
+    draggable
+    stroke="#868686"
+    strokeWidth={2}
+    fill={spot.color}
+    visible={spot.cold01visible}
+    onDragMove={(e, spot) => spot.handleDragMove(e, spot)}
+/>
+
 
 const ColdSpots = () => {
 
     const dispatch = useDispatch();
     const buttons = useSelector(state => state.buttons);
-    let room = useSelector(state => state.room);
+    const room = useSelector(state => state.room);
+    let spots = useSelector(state => state.coldSpots);
 
     const [color, setColor] = useState('grey');
     const [modalActive, setModalActive] = useState(!buttons[5]);
-
     const [modalHelpActive, setModalHelpActive] = useState(!buttons[5]); //shows modal only first time on page
 
     const [width, setWidth] = useState(25);
     const [height, setHeight] = useState(25);
-    const [cold01visible, setCold01visible] = useState(false);
+    const [figure, setFigure] = useState(1);
+    const [currentColdSpot, setCurrentColdSpot] = useState(0);
 
+    const [figure01picture, setFigure01picture] = useState(squareGrey)
+    const [figure02picture, setFigure02picture] = useState(triangle1white)
+    const [figure03picture, setFigure03picture] = useState(triangle2white)
+    const [figure04picture, setFigure04picture] = useState(triangle3white)
+    const [figure05picture, setFigure05picture] = useState(triangle4white)
+
+    const [cold01visible, setCold01visible] = useState(false);
     const [coldSpotFirst00, setColdSpotFirst00] = useState({x: 0, y: 0})
     const [coldSpotFirst01, setColdSpotFirst01] = useState({x: 0, y: 0})
     const [coldSpotFirst02, setColdSpotFirst02] = useState({x: 0, y: 0})
     const [coldSpotFirst03, setColdSpotFirst03] = useState({x: 0, y: 0})
+
+    const [spot00, setSpot00] = useState({
+        width: spots[0].width, height: spots[0].height, figure: spots[0].figure,
+        A: spots[0].A, B: spots[0].B, C: spots[0].C, D: spots[0].D,
+        visible: spots[0].visible, color: spots[0].color, onDragMove: spots[0].onDragMove,
+        points: []
+    });
+
+    const [spot01, setSpot01] = useState({
+        width: spots[1].width, height: spots[1].height, figure: spots[1].figure,
+        A: spots[1].A, B: spots[1].B, C: spots[1].C, D: spots[1].D,
+        visible: spots[1].visible, color: spots[1].color, onDragMove: spots[1].onDragMove,
+        points: []
+    });
+
+    const [spot02, setSpot02] = useState({
+        width: spots[2].width, height: spots[2].height, figure: spots[2].figure,
+        A: spots[2].A, B: spots[2].B, C: spots[2].C, D: spots[2].D,
+        visible: spots[2].visible, color: spots[2].color, onDragMove: spots[2].onDragMove,
+        points: []
+    });
+
+    const [spot03, setSpot03] = useState({
+        width: spots[3].width, height: spots[3].height, figure: spots[3].figure,
+        A: spots[3].A, B: spots[3].B, C: spots[3].C, D: spots[3].D,
+        visible: spots[3].visible, color: spots[3].color, onDragMove: spots[3].onDragMove,
+        points: []
+    });
+
+    const [spot04, setSpot04] = useState({
+        width: spots[4].width, height: spots[4].height, figure: spots[4].figure,
+        A: spots[4].A, B: spots[4].B, C: spots[4].C, D: spots[4].D,
+        visible: spots[4].visible, color: spots[4].color, onDragMove: spots[4].onDragMove,
+        points: []
+    });
 
     const handleClick = (page) => {
         dispatch(updateButton(page))
@@ -42,41 +110,236 @@ const ColdSpots = () => {
     }
 
     const handleAdd = () => {
+        let pts = [];
+        if (figure === 1) {
+            pts = [0, 0, width, 0, width, height, 0, height]
+        }
+        if (figure === 2) {
+            pts = [0, 0, width / 2, height / 2, width, height, 0, height]
+        }
+        if (figure === 3) {
+            pts = [0, 0, width, 0, width / 2, height / 2, 0, height]
+        }
+        if (figure === 4) {
+            pts = [0, 0, width, 0, width, height, width / 2, height / 2,]
+        }
+        if (figure === 5) {
+            pts = [width / 2, height / 2, width, 0, width, height, 0, height]
+        }
+
+        if (currentColdSpot === 0) {
+            setSpot00({
+                width: width,
+                height: height,
+                figure: figure,
+                visible: true,
+                color: "red",
+                onDragMove: handleDragMove00,
+                points: pts
+            })
+            spots[0] = spot00;
+        }
+
+        if (currentColdSpot === 1) {
+            setSpot01({
+                width: width,
+                height: height,
+                figure: figure,
+                visible: true,
+                color: "red",
+                onDragMove: handleDragMove01,
+                points: pts
+            })
+            spots[1] = spot01;
+        }
+
+        if (currentColdSpot === 2) {
+            setSpot02({
+                width: width,
+                height: height,
+                figure: figure,
+                visible: true,
+                color: "red",
+                onDragMove: handleDragMove02,
+                points: pts
+            })
+            spots[2] = spot02;
+        }
+
+        if (currentColdSpot === 3) {
+            setSpot03({
+                width: width,
+                height: height,
+                figure: figure,
+                visible: true,
+                color: "red",
+                onDragMove: handleDragMove03,
+                points: pts
+            })
+            spots[3] = spot03;
+        }
+
+        if (currentColdSpot === 4) {
+            setSpot04({
+                width: width,
+                height: height,
+                figure: figure,
+                visible: true,
+                color: "red",
+                onDragMove: handleDragMove04,
+                points: pts
+            })
+            spots[4] = spot04;
+        }
+
+
+        setCurrentColdSpot(currentColdSpot + 1)
         setModalActive(false);
-        setCold01visible(true);
     }
 
-    const handleDragMove = (e) => {
-
+    const handleDragMove00 = (e) => {
         const stage = e.target.getStage();
         const layer = stage.findOne(".main-layer");
 
-        let p01 = e.target.position()
-        let p02 = {x: p01.x + width, y: p01.y};
-        let p03 = {x: p01.x + width, y: p01.y + height};
-        let p04 = {x: p01.x + 0, y: p01.y + height};
+        let A = e.target.position()
+        let B = {x: A.x + width, y: A.y};
+        let C = {x: A.x + width, y: A.y + height};
+        let D = {x: A.x, y: A.y + height};
 
-        setColdSpotFirst00(p01);
-        setColdSpotFirst01(p02);
-        setColdSpotFirst02(p03);
-        setColdSpotFirst03(p04);
+        setSpot00({...spot00, A: A, B: B, C: C, D: D});
 
-        if (!layer.getIntersection(p01)
-            && !layer.getIntersection(p02)
-            && !layer.getIntersection(p03)
-            && !layer.getIntersection(p04)
-        ) setColor("grey")
-        if (layer.getIntersection(p01)
-            || layer.getIntersection(p02)
-            || layer.getIntersection(p03)
-            || layer.getIntersection(p04)
-        ) setColor("red")
-        if (layer.getIntersection(p01)
-            && layer.getIntersection(p02)
-            && layer.getIntersection(p03)
-            && layer.getIntersection(p04)
-        ) setColor("green")
+        if (((spot00.figure === 5) ? true : layer.getIntersection(A))
+            && ((spot00.figure === 2) ? true : layer.getIntersection(B))
+            && ((spot00.figure === 3) ? true : layer.getIntersection(C))
+            && ((spot00.figure === 4) ? true : layer.getIntersection(D))
+            && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
+            setSpot00({...spot00, color: "yellow"})
+        else {
+            setSpot00({...spot00, color: "red"})
+        }
     }
+
+    const handleDragMove01 = (e) => {
+        const stage = e.target.getStage();
+        const layer = stage.findOne(".main-layer");
+
+        let A = e.target.position()
+        let B = {x: A.x + width, y: A.y};
+        let C = {x: A.x + width, y: A.y + height};
+        let D = {x: A.x, y: A.y + height};
+
+        setSpot01({...spot01, A: A, B: B, C: C, D: D});
+
+        if (((spot01.figure === 5) ? true : layer.getIntersection(A))
+            && ((spot01.figure === 2) ? true : layer.getIntersection(B))
+            && ((spot01.figure === 3) ? true : layer.getIntersection(C))
+            && ((spot01.figure === 4) ? true : layer.getIntersection(D))
+            && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
+            setSpot01({...spot01, color: "yellow"})
+        else {
+            setSpot01({...spot01, color: "red"})
+        }
+    }
+
+    const handleDragMove02 = (e) => {
+        const stage = e.target.getStage();
+        const layer = stage.findOne(".main-layer");
+
+        let A = e.target.position()
+        let B = {x: A.x + width, y: A.y};
+        let C = {x: A.x + width, y: A.y + height};
+        let D = {x: A.x, y: A.y + height};
+
+        setSpot02({...spot02, A: A, B: B, C: C, D: D});
+
+        if (((spot02.figure === 5) ? true : layer.getIntersection(A))
+            && ((spot02.figure === 2) ? true : layer.getIntersection(B))
+            && ((spot02.figure === 3) ? true : layer.getIntersection(C))
+            && ((spot02.figure === 4) ? true : layer.getIntersection(D))
+            && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
+            setSpot02({...spot02, color: "yellow"})
+        else {
+            setSpot02({...spot02, color: "red"})
+        }
+    }
+
+    const handleDragMove03 = (e) => {
+        const stage = e.target.getStage();
+        const layer = stage.findOne(".main-layer");
+
+        let A = e.target.position()
+        let B = {x: A.x + width, y: A.y};
+        let C = {x: A.x + width, y: A.y + height};
+        let D = {x: A.x, y: A.y + height};
+
+        setSpot03({...spot03, A: A, B: B, C: C, D: D});
+
+        if (((spot03.figure === 5) ? true : layer.getIntersection(A))
+            && ((spot03.figure === 2) ? true : layer.getIntersection(B))
+            && ((spot03.figure === 3) ? true : layer.getIntersection(C))
+            && ((spot03.figure === 4) ? true : layer.getIntersection(D))
+            && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
+            setSpot03({...spot03, color: "yellow"})
+        else {
+            setSpot03({...spot03, color: "red"})
+        }
+    }
+
+    const handleDragMove04 = (e) => {
+        const stage = e.target.getStage();
+        const layer = stage.findOne(".main-layer");
+
+        let A = e.target.position()
+        let B = {x: A.x + width, y: A.y};
+        let C = {x: A.x + width, y: A.y + height};
+        let D = {x: A.x, y: A.y + height};
+
+        setSpot04({...spot04, A: A, B: B, C: C, D: D});
+
+        console.log(spot04);
+
+        if (((spot04.figure === 5) ? true : layer.getIntersection(A))
+            && ((spot04.figure === 2) ? true : layer.getIntersection(B))
+            && ((spot04.figure === 3) ? true : layer.getIntersection(C))
+            && ((spot04.figure === 4) ? true : layer.getIntersection(D))
+            && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
+            setSpot04({...spot04, color: "yellow"})
+        else {
+            setSpot04({...spot04, color: "red"})
+        }
+    }
+
+
+    /*   const handleDragMove = (e) => {
+           const stage = e.target.getStage();
+           const layer = stage.findOne(".main-layer");
+
+           let p01 = e.target.position()
+           let p02 = {x: p01.x + width, y: p01.y};
+           let p03 = {x: p01.x + width, y: p01.y + height};
+           let p04 = {x: p01.x + 0, y: p01.y + height};
+
+           setColdSpotFirst00(p01);
+           setColdSpotFirst01(p02);
+           setColdSpotFirst02(p03);
+           setColdSpotFirst03(p04);
+
+           if (!layer.getIntersection(p01)
+               && !layer.getIntersection(p02)
+               && !layer.getIntersection(p03)
+               && !layer.getIntersection(p04)
+           ) setColor("grey")
+           if (layer.getIntersection(p01)
+               || layer.getIntersection(p02)
+               || layer.getIntersection(p03)
+               || layer.getIntersection(p04)
+           ) setColor("red")
+           if (layer.getIntersection(p01)
+               && layer.getIntersection(p02)
+               && layer.getIntersection(p03)
+               && layer.getIntersection(p04)
+           ) setColor("green")
+       }*/
 
     if (!buttons[4]) return <Redirect to="/"/>
 
@@ -111,31 +374,75 @@ const ColdSpots = () => {
                                 fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
                             />
                         </Layer>
-                        <Layer name="chair01">
+                        <Layer name="coldSpot1">
                             <Line
                                 x={600}
                                 y={0}
-                                points={[0, 0, width, 0, width, height, 0, height]}
+                                points={spot00.points}
                                 closed
                                 draggable
                                 stroke="#868686"
                                 strokeWidth={2}
-                                fill={color}
-                                visible={cold01visible}
-                                onDragMove={handleDragMove}
+                                fill={spot00.color}
+                                visible={spot00.visible}
+                                onDragMove={handleDragMove00}
                             />
-                            {/*<Line
+                        </Layer>
+                        <Layer>
+                            <Line
                                 x={600}
-                                y={100}
-                                points={[0, 0, 50, 0, 50, 50, 0, 50]}
+                                y={0}
+                                points={spot01.points}
                                 closed
                                 draggable
                                 stroke="#868686"
                                 strokeWidth={2}
-                                fill={color}
-                                visible={false}
-                                onDragMove={handleDragMove}
-                            />*/}
+                                fill={spot01.color}
+                                visible={spot01.visible}
+                                onDragMove={handleDragMove01}
+                            />
+                        </Layer>
+                        <Layer>
+                            <Line
+                                x={600}
+                                y={0}
+                                points={spot02.points}
+                                closed
+                                draggable
+                                stroke="#868686"
+                                strokeWidth={2}
+                                fill={spot02.color}
+                                visible={spot02.visible}
+                                onDragMove={handleDragMove02}
+                            />
+                        </Layer>
+                        <Layer>
+                            <Line
+                                x={600}
+                                y={0}
+                                points={spot03.points}
+                                closed
+                                draggable
+                                stroke="#868686"
+                                strokeWidth={2}
+                                fill={spot03.color}
+                                visible={spot03.visible}
+                                onDragMove={handleDragMove03}
+                            />
+                        </Layer>
+                        <Layer>
+                            <Line
+                                x={600}
+                                y={0}
+                                points={spot04.points}
+                                closed
+                                draggable
+                                stroke="#868686"
+                                strokeWidth={2}
+                                fill={spot04.color}
+                                visible={spot04.visible}
+                                onDragMove={handleDragMove04}
+                            />
                         </Layer>
                     </Stage>
 
@@ -144,7 +451,18 @@ const ColdSpots = () => {
                 </div>
                 <div className="button-box">
                     <div id="btn-add-cold-spot" className="box_btn-style"
-                         onClick={() => setModalActive(true)}>Add Cold Spot
+                         onClick={() => {
+                             setModalActive(true);
+                             setFigure(1);
+                             setWidth(25);
+                             setHeight(25);
+                             setFigure01picture(squareGrey);
+                             setFigure02picture(triangle1white);
+                             setFigure03picture(triangle2white);
+                             setFigure04picture(triangle3white);
+                             setFigure05picture(triangle4white);
+                         }
+                         }>Add Cold Spot
                     </div>
                     <div id="btn-help-cold-spot" className="box_btn-style-black"
                          onClick={() => setModalHelpActive(true)}>Need help?
@@ -172,11 +490,61 @@ const ColdSpots = () => {
                     </form>
                     <span className="coldspot-geometry-figure-selector">
           <ul>
-            <li id="figure-1"></li>
-            <li id="figure-2"></li>
-            <li id="figure-3"></li>
-            <li id="figure-4"></li>
-            <li id="figure-5"></li>
+            <li id="figure-1"
+                style={{backgroundImage: `url(${figure01picture})`}}
+                onClick={() => {
+                    setFigure(1);
+                    setFigure01picture(squareGrey)
+                    setFigure02picture(triangle1white)
+                    setFigure03picture(triangle2white)
+                    setFigure04picture(triangle3white)
+                    setFigure05picture(triangle4white)
+
+                }}></li>
+            <li id="figure-2"
+                style={{backgroundImage: `url(${figure02picture})`}}
+                onClick={() => {
+                    setFigure(2);
+                    setFigure01picture(squareWhite)
+                    setFigure02picture(triangle1grey)
+                    setFigure03picture(triangle2white)
+                    setFigure04picture(triangle3white)
+                    setFigure05picture(triangle4white)
+
+                }}></li>
+            <li id="figure-3"
+                style={{backgroundImage: `url(${figure03picture})`}}
+                onClick={() => {
+                    setFigure(3);
+                    setFigure01picture(squareWhite)
+                    setFigure02picture(triangle1white)
+                    setFigure03picture(triangle2grey)
+                    setFigure04picture(triangle3white)
+                    setFigure05picture(triangle4white)
+
+                }}></li>
+            <li id="figure-4"
+                style={{backgroundImage: `url(${figure04picture})`}}
+                onClick={() => {
+                    setFigure(4);
+                    setFigure01picture(squareWhite)
+                    setFigure02picture(triangle1white)
+                    setFigure03picture(triangle2white)
+                    setFigure04picture(triangle3grey)
+                    setFigure05picture(triangle4white)
+
+                }}></li>
+            <li id="figure-5"
+                style={{backgroundImage: `url(${figure05picture})`}}
+                onClick={() => {
+                    setFigure(5);
+                    setFigure01picture(squareWhite)
+                    setFigure02picture(triangle1white)
+                    setFigure03picture(triangle2white)
+                    setFigure04picture(triangle3white)
+                    setFigure05picture(triangle4grey)
+
+                }}></li>
           </ul>
         </span>
                     <button onClick={handleAdd}>add</button>

@@ -1,245 +1,148 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import {Layer, Line, Stage} from "react-konva";
-import {floorMatCalculator} from "../../calculator/calculator";
-import * as geometric from "geometric";
+import {matGroups} from "../../data/matGroups";
+
 
 const Result = () => {
 
-    let calc = (polygonCoordinates, coldSpotCoordinates) => {
-
-        var coldSpotIndividualPoints = []
-        for (var i = 0; i < coldSpotCoordinates.length; i++) {
-            coldSpotIndividualPoints.push(...coldSpotCoordinates[i])
-        }
-        var polyXCoordinates = []
-        var polyYCoordinates = []
-        for (var i = 0; i < polygonCoordinates.length; i++) {
-            var x = polygonCoordinates[i][0]
-            var y = polygonCoordinates[i][1]
-            polyXCoordinates.push(x)
-            polyYCoordinates.push(y)
-        }
-
-        var minX = Math.min(...polyXCoordinates)
-        var minY = Math.min(...polyYCoordinates)
-        var maxX = Math.max(...polyXCoordinates)
-        var maxY = Math.max(...polyYCoordinates)
-        var rectangleCoordinates = [[minX, minY], [minX, maxY], [maxX, maxY], [maxX, minY]]
-
-        var threeDArray = []
-        var a, i, b, j
-        for (a = minY, i = 0; a < maxY; a++, i++) {
-            var twoDArray = []
-            for (b = minX, j = 0; b < maxX; b++, j++) {
-                var squareCoordinates = [[b, a], [b, a + 1], [b + 1, a + 1], [b + 1, a]]
-                formArrayOfSquares(squareCoordinates, twoDArray)
-            }
-            threeDArray.push(twoDArray)
-
-        }
-        var singletArray = threeDArray
-        var duplet3DArray = []
-        var singletArrayCopy = []
-        var triplet3DArray = []
-        var quadruplet3DArray = []
-        formDuplets(singletArray, singletArrayCopy)
-        singletArray = JSON.parse(JSON.stringify(singletArrayCopy))
-        formTriplets(singletArray, duplet3DArray, triplet3DArray)
-        formQuadruplets(duplet3DArray, quadruplet3DArray)
-        quadruplet3DArray.map(triplet => {
-        })
-        triplet3DArray.map(triplet => {
-        })
-        duplet3DArray.map(duplets => {
-        })
-        singletArray.map(singlets => {
-        })
-        const roomArea = getRoomArea()
-
-        function formDuplets(singletArray, singletArrayCopy) {
-            for (var yIndex = 0; yIndex < singletArray.length; yIndex++) {
-                // enter y axis, start with 0th index
-                // loop through x axis
-                var duplets = []
-                var singlets = []
-                for (var xIndex = 0; xIndex < singletArray[yIndex].length - 1;) {
-                    // check if this block intersects with the next block
-                    var doesIntersectNextBlock = geometric.polygonIntersectsPolygon(singletArray[yIndex][xIndex], singletArray[yIndex][xIndex + 1])
-                    if (doesIntersectNextBlock) {
-                        var dupletPolygon = [singletArray[yIndex][xIndex][0],
-                            singletArray[yIndex][xIndex][1],
-                            singletArray[yIndex][xIndex + 1][2],
-                            singletArray[yIndex][xIndex + 1][3]]
-                        duplets.push(dupletPolygon)
-
-                        xIndex++
-                    } else {
-                        singlets.push(singletArray[yIndex][xIndex])
-                    }
-                    // push the last element to singlets as well if the second last element isn't duplet
-                    if (xIndex === singletArray[yIndex].length - 2) singlets.push(singletArray[yIndex][xIndex + 1])
-                    xIndex++
-                }
-                duplet3DArray.push(duplets)
-                singletArrayCopy.push(singlets)
-            }
-        }
-
-        function formTriplets(singletArray, duplet3DArray, triplet3DArray) {
-            for (var yIndex = 0; yIndex < duplet3DArray.length; yIndex++) {
-                // enter y axis, start with 0th index
-                // loop through x axis
-                var triplets = []
-                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length; xIndex++) {
-                    // check if this block intersects with any singlets in this y coodinate
-                    var doesIntersectAnySinglet = false;
-                    for (var x = 0; x < singletArray[yIndex].length; x++) {
-                        if (!(duplet3DArray[yIndex][xIndex] && singletArray[yIndex][x])) {
-                            continue
-                        }
-                        doesIntersectAnySinglet = geometric.polygonIntersectsPolygon(duplet3DArray[yIndex][xIndex], singletArray[yIndex][x])
-                        if (doesIntersectAnySinglet) {
-                            var tripletPolygon = [duplet3DArray[yIndex][xIndex][0],
-                                duplet3DArray[yIndex][xIndex][1],
-                                singletArray[yIndex][x][2],
-                                singletArray[yIndex][x][3]]
-                            triplets.push(tripletPolygon)
-                            duplet3DArray[yIndex][xIndex] = null
-                            singletArray[yIndex][x] = null
-                        }
-                    }
-                    singletArray[yIndex] = singletArray[yIndex].filter(function (el) {
-                        return el != null;
-                    });
-                }
-                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length; xIndex++) {
-                    duplet3DArray[yIndex] = duplet3DArray[yIndex].filter(function (el) {
-                        return el != null;
-                    });
-                }
-                triplet3DArray.push(triplets)
-            }
-        }
-
-        function formQuadruplets(duplet3DArray, quadruplet3DArray) {
-            for (var yIndex = 0; yIndex < duplet3DArray.length; yIndex++) {
-                // enter y axis, start with 0th index
-                // loop through x axis
-                var quadruplets = []
-                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length - 1;) {
-                    // check if this block intersects with the next block
-                    var doesIntersectNextBlock = geometric.polygonIntersectsPolygon(duplet3DArray[yIndex][xIndex], duplet3DArray[yIndex][xIndex + 1])
-                    if (doesIntersectNextBlock) {
-                        var quadrupletPolygon = [duplet3DArray[yIndex][xIndex][0],
-                            duplet3DArray[yIndex][xIndex][1],
-                            duplet3DArray[yIndex][xIndex + 1][2],
-                            duplet3DArray[yIndex][xIndex + 1][3]]
-                        quadruplets.push(quadrupletPolygon)
-                        duplet3DArray[yIndex][xIndex] = null
-                        duplet3DArray[yIndex][xIndex + 1] = null
-
-                        xIndex++
-                    }
-                    xIndex++
-                }
-                for (var xIndex = 0; xIndex < duplet3DArray[yIndex].length; xIndex++) {
-                    duplet3DArray[yIndex] = duplet3DArray[yIndex].filter(function (el) {
-                        return el != null;
-                    });
-                }
-                quadruplet3DArray.push(quadruplets)
-            }
-        }
-
-        function isInAnyColdSpot(squareCoordinates) {
-            for (var i = 0; i < coldSpotCoordinates.length; i++) {
-                var isInsideColdSpot = geometric.polygonInPolygon(squareCoordinates, coldSpotCoordinates[i])
-                if (isInsideColdSpot) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        function doesIntersectAnyColdSpot(squareCoordinates) {
-            for (var i = 0; i < coldSpotIndividualPoints.length; i++) {
-                var doesIntersectColdSpot = geometric.pointInPolygon(coldSpotIndividualPoints[i], squareCoordinates)
-                if (doesIntersectColdSpot) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        function formArrayOfSquares(squareCoordinates, twoDArray) {
-            // var isInBiggerPolygon = geometric.polygonInPolygon(squareCoordinates, polygonCoordinates)
-            // if (!isInBiggerPolygon) {
-            //     return
-            // }
-            var isOnBiggerPolygon = polygonOnPolygon(squareCoordinates, polygonCoordinates)
-            if (!isOnBiggerPolygon) {
-                return
-            }
-            var isInsideAnyColdSpot = isInAnyColdSpot(squareCoordinates)
-            if (isInsideAnyColdSpot) {
-                return
-            }
-            var doesIntersectColdSpot = doesIntersectAnyColdSpot(squareCoordinates)
-            if (doesIntersectColdSpot) {
-                return
-            }
-            twoDArray.push(squareCoordinates)
-        }
-
-        // will use this function to cover the square boxes on the edges of polygon
-        function polygonOnPolygon(polygonA, polygonB) {
-            var smallerSquarePolygon = [
-                [polygonA[0][0] + 0.1, polygonA[0][1] + 0.1],
-                [polygonA[1][0] + 0.1, polygonA[1][1] - 0.1],
-                [polygonA[2][0] - 0.1, polygonA[2][1] - 0.1],
-                [polygonA[3][0] - 0.1, polygonA[3][1] + 0.1]
-            ]
-            return geometric.polygonInPolygon(smallerSquarePolygon, polygonB)
-        }
-
-        function getRoomArea() {
-            return geometric.polygonArea(polygonCoordinates)
-        }
-
-        // will return quadruplets  and quintuplets as well
-        return {quadruplet3DArray, singletArray, duplet3DArray, triplet3DArray, roomArea}
-    }
-
     let room = useSelector(state => state.room);
-    let coldSpot = useSelector(state => state.coldSpot);
+    let d = 4; //1 px = 2 cm;  d - minimum distance between wall and mat
+    //r = room with bounds (d)
+    let r = [room[0] + d, room[1] + d,
+        room[2] - d, room[3] + d, room[4] - d, room[5] + d,
+        room[6] - d, room[7] + d, room[8] - d, room[9] + d,
+        room[10] - d, room[11] + d, room[12] - d, room[13] + d,
+        room[14] - d, room[15] - d, room[16] - d, room[17] - d,
+        room[18] - d, room[19] - d, room[20] - d, room[21] - d,
+        room[22] - d, room[23] - d, room[24] - d, room[25] - d,
+        room[26] + d, room[27] - d, room[28] + d, room[29] - d
+    ]
 
-    let roomClockwise = [];
-    roomClockwise.push(room[0]);
-    roomClockwise.push(room[1]);
+    //const matGroups = [{x: 50, y: 10}, {x: 10, y: 50}]
+    // let coldSpots = useSelector(state => state.coldSpots);
 
-    for (let i = 0; i < (room.length - 2) / 2; i++) {
-        roomClockwise.push(room[room.length - (2 * i + 1) - 1])
-        roomClockwise.push(room[room.length - (2 * i) - 1])
-    }
-
-    let roomNoDoubles = []
-    roomNoDoubles.push(roomClockwise[0]);
-    roomNoDoubles.push(roomClockwise[1]);
-
-    for (let i = 0; i < (roomClockwise.length - 2) / 4; i++) {
-        roomNoDoubles.push(roomClockwise[i * 4 + 2]);
-        roomNoDoubles.push(roomClockwise[i * 4 + 3]);
-        if (!((roomClockwise[i * 4 + 2] === roomClockwise[i * 4 + 4]) && (roomClockwise[i * 4 + 3] === roomClockwise[i * 4 + 5]))) {
-            roomNoDoubles.push(roomClockwise[i * 4 + 4]);
-            roomNoDoubles.push(roomClockwise[i * 4 + 5]);
+    const isPointInsideRoom = (x, y) => {
+        if ((y > r[29]) && (y <= r[27])
+            && (x <= r[0] + (y - r[29]) * (r[26] - r[28]) / (r[27] - r[29]))) {
+            //   console.log("A")
+            return false
         }
+        if ((y >= r[3]) && (y < r[5])) {
+            //   console.log("B")
+            return ((x >= r[0]) && (x <= r[2] + (y - r[3]) * (r[4] - r[2]) / (r[5] - r[3])))
+        }
+        if ((y >= r[5]) && (y < r[7])) {
+            //    console.log("C")
+            return ((x >= r[0]) && (x <= r[6]))
+        }
+        if ((y >= r[7]) && (y < r[9])) {
+            //    console.log("D")
+            return ((x >= r[0]) && (x <= r[6] + (y - r[7]) * (r[8] - r[6]) / (r[9] - r[7])))
+        }
+        if ((y >= r[11]) && (y < r[13])) {
+            //    console.log("E")
+            return ((x >= r[0]) && (x <= r[10] + (y - r[11]) * (r[12] - r[10]) / (r[13] - r[11])))
+        }
+        if ((y >= r[13]) && (y < r[15])) {
+            //    console.log("F")
+            return ((x >= r[0]) && (x <= r[14]))
+        }
+        if ((y >= r[15]) && (y <= r[17])) {
+            //    console.log("G")
+            return ((x >= r[0]) && (x <= r[16] + (r[17] - y) * (r[14] - r[16]) / (r[17] - r[15])))
+        }
+        if ((y > r[19]) && (y <= r[21])) {
+            //    console.log("H")
+            return ((x >= r[0]) && (x <= r[20] + (r[21] - y) * (r[18] - r[20]) / (r[21] - r[19])))
+        }
+        if ((y > r[21]) && (y <= r[23])) {
+            //   console.log("I")
+            return ((x >= r[0]) && (x <= r[22]))
+        }
+        if ((y > r[23]) && (y <= r[25])) {
+            //    console.log("J")
+            return ((x >= r[0]) && (x <= r[24] + (r[25] - y) * (r[22] - r[24]) / (r[25] - r[23])))
+        }
+        //  console.log("K")
+        return false;
     }
 
+    const isGroupInsideRoom = (groupX0, groupY0, group) =>
+        isPointInsideRoom(groupX0, groupY0)
+        && isPointInsideRoom(groupX0 + group.w, groupY0)
+        && isPointInsideRoom(groupX0 + group.w, groupY0 + group.h)
+        && isPointInsideRoom(groupX0, groupY0 + group.h)
+
+    const isCSCornerInsideGroup = (cX, cY, gX0, gY0, group) => (cX >= gX0) && (cX <= (gX0 + group.w)) && (cY >= gY0) && (cY <= (gY0 + group.h))
+
+    const doesCSOverlapGroup = (CS, gX0, gY0, group) => isCSCornerInsideGroup(CS[0], CS[1], gX0, gY0, group)
+        || isCSCornerInsideGroup(CS[2], CS[3], gX0, gY0, group)
+        || isCSCornerInsideGroup(CS[4], CS[5], gX0, gY0, group)
+        || isCSCornerInsideGroup(CS[6], CS[7], gX0, gY0, group)
+        || isCSCornerInsideGroup(gX0, gY0, CS[0], CS[1], {w: CS[2] - CS[0], h: CS[7] - CS[1]})
+        || isCSCornerInsideGroup(gX0 + group.w, gY0, CS[0], CS[1], {w: CS[2] - CS[0], h: CS[7] - CS[1]})
+        || isCSCornerInsideGroup(gX0 + group.w, gY0 + group.h, CS[0], CS[1], {w: CS[2] - CS[0], h: CS[7] - CS[1]})
+        || isCSCornerInsideGroup(gX0, gY0 + group.h, CS[0], CS[1], {w: CS[2] - CS[0], h: CS[7] - CS[1]})
+        || ((CS[0] <= gX0) && (CS[2] >= gX0 + group.w) && (CS[1] >= gY0) && (CS[7] <= gY0 + group.h))
+        || ((CS[0] >= gX0) && (CS[2] <= gX0 + group.w) && (CS[1] <= gY0) && (CS[7] >= gY0 + group.h))
+
+    const doesAnyCSOverlapGroup = (CSarray, gX0, gY0, group) => {
+        let overlap = false;
+        for (let i = 0; i < CSarray.length; i++) {
+            overlap = overlap || doesCSOverlapGroup(CSarray[i], gX0, gY0, group)
+        }
+        return overlap
+    }
+
+    const CS1 = [10, 140, 70, 140, 70, 190, 10, 190]
+    const CS2 = [380, 120, 440, 120, 440, 160, 380, 160]
+    const CS3 = [180, 120, 300, 120, 300, 240, 180, 240]
+
+    let coldSpots = [CS1, CS2];
+
+    let calcAll = (mats) => {
+        let all = []
+        let cuts = [];
+        let mamats = [];
+        let matGroups = [...mats];
+        let spots = [...coldSpots]
+        for (let k = 0; k < matGroups.length; k++) {
+            for (let i = 0; i < r[12]; i += 25) {
+                for (let j = 0; j < r[25]; j += 25) {
+                    if ((isGroupInsideRoom(i, j, matGroups[k])) && (!doesAnyCSOverlapGroup(spots, i, j, matGroups[k]))) {
+                        let groupOK = [i, j, i + matGroups[k].w, j, i + matGroups[k].w, j + matGroups[k].h, i, j + matGroups[k].h];
+                        spots.push([i + 1, j + 1, i + matGroups[k].w - 1, j + 1, i + matGroups[k].w - 1, j + matGroups[k].h - 1, i + 1, j + matGroups[k].h - 1])
+                        cuts.push([i, j - 4, i + matGroups[k].w, j - 4, i + matGroups[k].w, j + matGroups[k].h + 12, i, j + matGroups[k].h + 12])
+                        all.push(groupOK)
+                        mamats.push({
+                            group: matGroups[k],
+                            x: i, y: j,
+                            points: groupOK
+                        })
+                    }
+
+                }
+            }
+        }
+        return [all, cuts, mamats]
+    }
+
+    let superMats = calcAll(matGroups);
+    console.log(superMats[2])
+
+    /* const calc = () => {
+         matGroups.forEach(matGroup => {
+
+         })
+         return 5;
+     }*/
+
+    //let a = calc();
 
     let roomToFormula = [];
 
-    roomNoDoubles.forEach((x, i) => {
+    room.forEach((x, i) => {
         if (i % 2 === 0) {
             roomToFormula.push([]);
             roomToFormula[i / 2].push(x * 0.02)
@@ -248,61 +151,14 @@ const Result = () => {
         }
     })
 
-    let coldSpotToFormula = [[], [], [], []];
-    coldSpot.forEach((x, i) => {
-        if (i % 2 === 0) {
-            coldSpotToFormula[i / 2].push(x * 0.02)} else {
-            coldSpotToFormula[(i - 1) / 2].push(x * 0.02)
-        }
-    })
+    /* let coldSpotToFormula = [[], [], [], []];
+     coldSpot.forEach((x, i) => {
+         if (i % 2 === 0) {
+             coldSpotToFormula[i / 2].push(x * 0.02)} else {
+             coldSpotToFormula[(i - 1) / 2].push(x * 0.02)
+         }
+     })*/
 
-    let zz = [[0, 0], [0, 6], [3.6, 6], [3.6, 5.28],
-        [5.74, 4.92], [10.04, 4.92], [13.08, 4.56], [13.08, 1.44], [9.44, 1.08], [5.24, 1.08],
-        [3.00, 0.72], [3, 0]]
-
-    let coldZ = [[2.68, 0.92],[2.68, 1.42],[3.18, 1.42],[3.18, 0.92]]
-
-    let ZZZ = calc(zz, [coldZ])
-
-    let mats = calc(roomToFormula, [coldSpotToFormula])
-
-    console.log("ROOM COORDINATES")
-    console.log(roomToFormula)
-
-    console.log("____________________________")
-
-    console.log("COLD SPOT COORDINATES")
-    console.log(coldSpotToFormula)
-
-    console.log("____________________________")
-
-    console.log("RESULT MATS")
-    console.log(mats)
-
-    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-
-
-
-    let SuperMats = []
-
-    let SuperZ = []
-
-
-    Object.values(mats).forEach(group => {
-        if (group.length > 0) {
-            group.forEach(row => {
-                if (row.length > 0) {
-                    row.forEach( mat => {
-                        if (mat.length > 0) {
-                        SuperMats.push([mat[0][0] * 50, mat[0][1] * 50,
-                            mat[1][0] * 50, mat[1][1] * 50,
-                            mat[2][0] * 50, mat[2][1] * 50,
-                            mat[3][0] * 50, mat[3][1] * 50]) }
-                    })
-                }
-            })
-        }
-    })
 
     return (
         <div>
@@ -330,44 +186,67 @@ const Result = () => {
                                 points={room}
                                 closed
                                 stroke="#868686"
-                                strokeWidth={5}
+                                strokeWidth={1}
                                 fillLinearGradientStartPoint={{x: -50, y: -50}}
                                 fillLinearGradientEndPoint={{x: 250, y: 250}}
                                 fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
                             />
                         </Layer>
-                        <Layer name="chair01">
-                            <Line
+                        <Layer name="result">
+                            {
+                                superMats[1].map(cut => <Line
+                                    x={320}
+                                    y={0}
+                                    points={cut}
+                                    closed
+                                    stroke="#868686"
+                                    strokeWidth={1}
+                                    fill={"pink"}
+                                />)
+                            }
+                            {
+                                superMats[2].map(mat => {
+                                    const image = new window.Image();
+                                    image.src = mat.group.img;
+                                    return <Line
+                                        x={320}
+                                        y={0}
+                                        points={mat.points}
+                                        closed
+                                        stroke="#868686"
+                                        strokeWidth={1}
+                                        fillPatternImage={image}
+                                        fillPatternX={mat.x}
+                                        fillPatternY={mat.y}
+                                        fillPatternScale={{x: 1, y: 1}}
+                                        fillPatternRepeat="no-repeat"
+                                    />
+                                })
+                            }
+                            {
+                                coldSpots.map(spot => <Line
+                                    x={320}
+                                    y={0}
+                                    points={spot}
+                                    closed
+                                    stroke="#868686"
+                                    strokeWidth={2}
+                                    fill={"white"}
+                                />)
+                            }
+                            { /*  <Line
                                 x={320}
                                 y={0}
-                                points={coldSpot}
+                                points={CS3}
                                 closed
                                 stroke="#868686"
                                 strokeWidth={2}
-                                fill={"green"}
-                            />
-                            {
-                                SuperMats.map(mat => <Line
-                                    x={320}
-                                    y={0}
-                                    points={mat}
-                                    closed
-                                    stroke="#868686"
-                                    strokeWidth={2}
-                                    fill={"brown"}
-                                />)
-                            }
-                            {
-                                SuperZ.map(mat => <Line
-                                    x={320}
-                                    y={0}
-                                    points={mat}
-                                    closed
-                                    stroke="#868686"
-                                    strokeWidth={2}
-                                    fill={"grey"}
-                                />)
-                            }
+                                fillPatternImage={image}
+                                fillPatternX={CS3[0]}
+                                fillPatternY={CS3[1]}
+                                fillPatternScale={{x:1, y:1}}
+                                fillPatternRepeat="no-repeat"
+                            />*/}
                         </Layer>
                     </Stage>
 

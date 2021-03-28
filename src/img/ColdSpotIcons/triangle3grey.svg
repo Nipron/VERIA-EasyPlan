@@ -1,0 +1,35 @@
+<svg width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g opacity="0.9" filter="url(#filter0_dii)">
+        <path d="M33.2384 33L3.2384 3H33.2384V33Z" fill="url(#paint0_linear)"/>
+        <path d="M33.2384 33L3.2384 3H33.2384V33Z" fill="#727272"/>
+        <path d="M32.7384 3.5V31.7929L4.44551 3.5H32.7384Z" stroke="#999292"/>
+    </g>
+    <defs>
+        <filter id="filter0_dii" x="0.238403" y="-3" width="38" height="42" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset dx="1" dy="1"/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="6"/>
+            <feGaussianBlur stdDeviation="3"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="-6"/>
+            <feGaussianBlur stdDeviation="3"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+            <feBlend mode="normal" in2="effect2_innerShadow" result="effect3_innerShadow"/>
+        </filter>
+        <linearGradient id="paint0_linear" x1="18.2384" y1="33" x2="18.2384" y2="3" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FCFCFC" stop-opacity="0"/>
+            <stop offset="0.494792" stop-color="#FCFCFC"/>
+            <stop offset="1" stop-color="#FCFCFC" stop-opacity="0"/>
+        </linearGradient>
+    </defs>
+</svg>

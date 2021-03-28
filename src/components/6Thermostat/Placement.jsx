@@ -32,7 +32,7 @@ const Placement = () => {
     const pos07 = {x: startX + room[28], y: startY + room[29]}
 
     //const center = {x: pos00.x + Math.min(pos01s.x - pos00.x, pos06.x - pos00.x) / 2, y: (pos03.y + pos04s.y) / 2}
-    const center = {x: pos07.x + 30, y: pos03.y + 30}
+    const center = {x: pos07.x + 60, y: pos03.y + 30}
 
     const [thermX, setThermX] = useState(pos00.x);
     const [thermY, setThermY] = useState(pos00.y);
@@ -203,17 +203,17 @@ const Placement = () => {
                                 }
 
                                 if (sector(pos06, pos07s)) {
-                                    setLeft(pos07s.x - 2);
-                                    setRight(pos06.x + 2);
-                                    setTop(pos06.y);
+                                    setLeft(pos07s.x - 1);
+                                    setRight(pos06.x + 1);
+                                    setTop(pos06.y - 1);
                                     setBottom(pos06.y);
                                 }
 
                                 if (sector(pos07s, pos07)) {
                                     setLeft(pos07.x + (y - pos07.y) * (pos07.x - pos07s.x) / (pos07.y - pos07s.y));
                                     setRight(pos07.x + (y - pos07.y) * (pos07.x - pos07s.x) / (pos07.y - pos07s.y));
-                                    setTop(pos07.y - 2);
-                                    setBottom(pos07s.y + 2);
+                                    setTop(pos07.y - 1);
+                                    setBottom(pos07s.y + 1);
                                 }
 
                                 if (sector(pos07, pos00)) {
