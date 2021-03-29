@@ -1,6 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {Layer, Line, Stage} from "react-konva";
+import Konva from 'konva';
+import {Layer, Line, Stage, Image} from "react-konva";
 import {matGroups} from "../../data/matGroups";
 
 
@@ -95,7 +96,7 @@ const Result = () => {
         return overlap
     }
 
-    const CS1 = [10, 140, 70, 140, 70, 190, 10, 190]
+    const CS1 = [10, 240, 70, 240, 70, 290, 10, 290]
     const CS2 = [380, 120, 440, 120, 440, 160, 380, 160]
     const CS3 = [180, 120, 300, 120, 300, 240, 180, 240]
 
@@ -108,8 +109,8 @@ const Result = () => {
         let matGroups = [...mats];
         let spots = [...coldSpots]
         for (let k = 0; k < matGroups.length; k++) {
-            for (let i = 0; i < r[12]; i += 25) {
-                for (let j = 0; j < r[25]; j += 25) {
+            for (let i = 0; i < r[12]; i += 5) {
+                for (let j = 0; j < r[25]; j += 5) {
                     if ((isGroupInsideRoom(i, j, matGroups[k])) && (!doesAnyCSOverlapGroup(spots, i, j, matGroups[k]))) {
                         let groupOK = [i, j, i + matGroups[k].w, j, i + matGroups[k].w, j + matGroups[k].h, i, j + matGroups[k].h];
                         spots.push([i + 1, j + 1, i + matGroups[k].w - 1, j + 1, i + matGroups[k].w - 1, j + matGroups[k].h - 1, i + 1, j + matGroups[k].h - 1])
