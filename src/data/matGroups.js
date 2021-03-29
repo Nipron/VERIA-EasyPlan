@@ -1,40 +1,127 @@
-import mat9x5 from "../img/MatGroups/mat9x5.jpg";
-import mat9x5r from "../img/MatGroups/mat9x5r.jpg";
-import mat8x5 from "../img/MatGroups/mat8x5.jpg";
-import mat8x5r from "../img/MatGroups/mat8x5r.jpg";
-import mat7x5 from "../img/MatGroups/mat7x5.jpg";
-import mat7x5r from "../img/MatGroups/mat7x5r.jpg";
-import mat6x5 from "../img/MatGroups/mat6x5.jpg";
-import mat6x5r from "../img/MatGroups/mat6x5r.jpg";
-import mat5x5 from "../img/MatGroups/mat5x5.jpg";
-import mat5x5r from "../img/MatGroups/mat5x5r.jpg";
-import mat4x5 from "../img/MatGroups/mat4x5.jpg";
-import mat4x5r from "../img/MatGroups/mat4x5r.jpg";
-import mat3x5 from "../img/MatGroups/mat3x5.jpg";
-import mat3x5r from "../img/MatGroups/mat3x5r.jpg";
-import mat2x5 from "../img/MatGroups/mat2x5.jpg";
-import mat2x5r from "../img/MatGroups/mat2x5r.jpg";
-import mat1x5 from "../img/MatGroups/mat1x5.jpg";
-import mat1x5r from "../img/MatGroups/mat1x5r.jpg";
-
+import mat5v from "../img/MatGroups/5v.svg";
+import mat5h from "../img/MatGroups/5h.svg";
+import mat4v from "../img/MatGroups/4v.svg";
+import mat4h from "../img/MatGroups/4h.svg";
+import mat3v from "../img/MatGroups/3v.svg";
+import mat3h from "../img/MatGroups/3h.svg";
+import mat2v from "../img/MatGroups/2v.svg";
+import mat2h from "../img/MatGroups/2h.svg";
+import mat1v from "../img/MatGroups/1v.svg";
+import mat1h from "../img/MatGroups/1h.svg";
 
 export const matGroups = [
-    {name: "9x5", w: 450, h: 225, img: mat9x5},
-    {name: "9x5r", w: 225, h: 450, img: mat9x5r},
-    {name: "8x5", w: 400, h: 225, img: mat8x5},
-    {name: "8x5r", w: 225, h: 400, img: mat8x5r},
-    {name: "7x5", w: 350, h: 225, img: mat7x5},
-    {name: "7x5r", w: 225, h: 350, img: mat7x5r},
-    {name: "6x5", w: 300, h: 225, img: mat6x5},
-    {name: "6x5r", w: 225, h: 300, img: mat6x5r},
-    {name: "5x5", w: 250, h: 225, img: mat5x5},
-    {name: "5x5r", w: 225, h: 250, img: mat5x5r},
-    {name: "4x5", w: 200, h: 225, img: mat4x5},
-    {name: "4x5r", w: 225, h: 200, img: mat4x5r},
-    {name: "3x5", w: 150, h: 225, img: mat3x5},
-    {name: "3x5r", w: 225, h: 150, img: mat3x5r},
-    {name: "2x5", w: 100, h: 225, img: mat2x5},
-    {name: "2x5r", w: 225, h: 100, img: mat2x5r},
-    {name: "1x5", w: 50, h: 225, img: mat1x5},
-    {name: "1x5r", w: 225, h: 50, img: mat1x5r}
+    {name: "12x4v", w: 600, h: 175, img: mat4v, amount: 12, repeat: "repeat-x"},
+    {name: "12x4h", w: 175, h: 600, img: mat4h, amount: 12, repeat: "repeat-y"},
+    {name: "9x5v", w: 450, h: 225, img: mat5v, amount: 9, repeat: "repeat-x"},
+    {name: "9x5h", w: 225, h: 450, img: mat5h, amount: 9, repeat: "repeat-y"},
+    {name: "11x4v", w: 550, h: 175, img: mat4v, amount: 11, repeat: "repeat-x"},
+    {name: "11x4h", w: 175, h: 550, img: mat4h, amount: 11, repeat: "repeat-y"},
+    {name: "8x5v", w: 400, h: 225, img: mat5v, amount: 8, repeat: "repeat-x"},
+    {name: "8x5h", w: 225, h: 400, img: mat5h, amount: 8, repeat: "repeat-y"},
+    {name: "10x4v", w: 500, h: 175, img: mat4v, amount: 10, repeat: "repeat-x"},
+    {name: "10x4h", w: 175, h: 500, img: mat4h, amount: 10, repeat: "repeat-y"},
+    {name: "7x5v", w: 350, h: 225, img: mat5v, amount: 7, repeat: "repeat-x"},
+    {name: "7x5h", w: 225, h: 350, img: mat5h, amount: 7, repeat: "repeat-y"},
+    {name: "9x4v", w: 450, h: 175, img: mat4v, amount: 9, repeat: "repeat-x"},
+    {name: "9x4h", w: 175, h: 450, img: mat4h, amount: 9, repeat: "repeat-y"},
+    {name: "12x3v", w: 600, h: 125, img: mat3v, amount: 12, repeat: "repeat-x"},
+    {name: "12x3h", w: 125, h: 600, img: mat3h, amount: 12, repeat: "repeat-y"},
+    {name: "8x4v", w: 400, h: 175, img: mat4v, amount: 8, repeat: "repeat-x"},
+    {name: "8x4h", w: 175, h: 400, img: mat4h, amount: 8, repeat: "repeat-y"},
+    {name: "11x3v", w: 550, h: 175, img: mat3v, amount: 11, repeat: "repeat-x"},
+    {name: "11x3h", w: 175, h: 550, img: mat3h, amount: 11, repeat: "repeat-y"},
+    {name: "6x5v", w: 300, h: 225, img: mat5v, amount: 6, repeat: "repeat-x"},
+    {name: "6x5h", w: 225, h: 300, img: mat5h, amount: 6, repeat: "repeat-y"},
+    {name: "10x3v", w: 500, h: 175, img: mat3v, amount: 10, repeat: "repeat-x"},
+    {name: "10x3h", w: 175, h: 500, img: mat3h, amount: 10, repeat: "repeat-y"},
+    {name: "7x4v", w: 350, h: 175, img: mat4v, amount: 7, repeat: "repeat-x"},
+    {name: "7x4h", w: 175, h: 350, img: mat4h, amount: 7, repeat: "repeat-y"},
+    {name: "5x5v", w: 250, h: 225, img: mat5v, amount: 5, repeat: "repeat-x"},
+    {name: "5x5h", w: 225, h: 250, img: mat5h, amount: 5, repeat: "repeat-y"},
+    {name: "9x3v", w: 450, h: 175, img: mat3v, amount: 9, repeat: "repeat-x"},
+    {name: "9x3h", w: 175, h: 450, img: mat3h, amount: 9, repeat: "repeat-y"},
+    {name: "6x4v", w: 300, h: 175, img: mat4v, amount: 6, repeat: "repeat-x"},
+    {name: "6x4h", w: 175, h: 300, img: mat4h, amount: 6, repeat: "repeat-y"},
+    {name: "8x3v", w: 400, h: 175, img: mat3v, amount: 8, repeat: "repeat-x"},
+    {name: "8x3h", w: 175, h: 400, img: mat3h, amount: 8, repeat: "repeat-y"},
+    {name: "4x5v", w: 200, h: 225, img: mat5v, amount: 4, repeat: "repeat-x"},
+    {name: "4x5h", w: 225, h: 200, img: mat5h, amount: 4, repeat: "repeat-y"},
+    {name: "12x2v", w: 600, h: 75, img: mat2v, amount: 12, repeat: "repeat-x"},
+    {name: "12x2h", w: 75, h: 600, img: mat2h, amount: 12, repeat: "repeat-y"},
+    {name: "5x4v", w: 250, h: 175, img: mat4v, amount: 5, repeat: "repeat-x"},
+    {name: "5x4h", w: 175, h: 250, img: mat4h, amount: 5, repeat: "repeat-y"},
+    {name: "7x3v", w: 350, h: 175, img: mat3v, amount: 7, repeat: "repeat-x"},
+    {name: "7x3h", w: 175, h: 350, img: mat3h, amount: 7, repeat: "repeat-y"},
+    {name: "11x2v", w: 550, h: 75, img: mat2v, amount: 11, repeat: "repeat-x"},
+    {name: "11x2h", w: 75, h: 550, img: mat2h, amount: 11, repeat: "repeat-y"},
+    {name: "6x3v", w: 300, h: 175, img: mat3v, amount: 6, repeat: "repeat-x"},
+    {name: "6x3h", w: 175, h: 300, img: mat3h, amount: 6, repeat: "repeat-y"},
+    {name: "10x2v", w: 500, h: 75, img: mat2v, amount: 10, repeat: "repeat-x"},
+    {name: "10x2h", w: 75, h: 500, img: mat2h, amount: 10, repeat: "repeat-y"},
+    {name: "4x4v", w: 200, h: 175, img: mat4v, amount: 4, repeat: "repeat-x"},
+    {name: "4x4h", w: 175, h: 200, img: mat4h, amount: 4, repeat: "repeat-y"},
+    {name: "3x5v", w: 150, h: 225, img: mat5v, amount: 3, repeat: "repeat-x"},
+    {name: "3x5h", w: 225, h: 150, img: mat5h, amount: 3, repeat: "repeat-y"},
+    {name: "9x2v", w: 450, h: 75, img: mat2v, amount: 9, repeat: "repeat-x"},
+    {name: "9x2h", w: 75, h: 450, img: mat2h, amount: 9, repeat: "repeat-y"},
+    {name: "5x3v", w: 250, h: 175, img: mat3v, amount: 5, repeat: "repeat-x"},
+    {name: "5x3h", w: 175, h: 250, img: mat3h, amount: 5, repeat: "repeat-y"},
+    {name: "8x2v", w: 400, h: 75, img: mat2v, amount: 8, repeat: "repeat-x"},
+    {name: "8x2h", w: 75, h: 400, img: mat2h, amount: 8, repeat: "repeat-y"},
+    {name: "3x4v", w: 150, h: 175, img: mat4v, amount: 3, repeat: "repeat-x"},
+    {name: "3x4h", w: 175, h: 150, img: mat4h, amount: 3, repeat: "repeat-y"},
+    {name: "7x2v", w: 350, h: 75, img: mat2v, amount: 7, repeat: "repeat-x"},
+    {name: "7x2h", w: 75, h: 350, img: mat2h, amount: 7, repeat: "repeat-y"},
+    {name: "4x3v", w: 200, h: 175, img: mat3v, amount: 4, repeat: "repeat-x"},
+    {name: "4x3h", w: 175, h: 200, img: mat3h, amount: 4, repeat: "repeat-y"},
+    {name: "2x5v", w: 100, h: 225, img: mat5v, amount: 2, repeat: "repeat-x"},
+    {name: "2x5h", w: 225, h: 100, img: mat5h, amount: 2, repeat: "repeat-y"},
+    {name: "6x2v", w: 300, h: 75, img: mat2v, amount: 6, repeat: "repeat-x"},
+    {name: "6x2h", w: 75, h: 300, img: mat2h, amount: 6, repeat: "repeat-y"},
+    {name: "3x3v", w: 150, h: 175, img: mat3v, amount: 3, repeat: "repeat-x"},
+    {name: "3x3h", w: 175, h: 150, img: mat3h, amount: 3, repeat: "repeat-y"},
+    {name: "5x2v", w: 250, h: 75, img: mat2v, amount: 5, repeat: "repeat-x"},
+    {name: "5x2h", w: 75, h: 250, img: mat2h, amount: 5, repeat: "repeat-y"},
+    {name: "2x4v", w: 100, h: 175, img: mat4v, amount: 2, repeat: "repeat-x"},
+    {name: "2x4h", w: 175, h: 100, img: mat4h, amount: 2, repeat: "repeat-y"},
+    {name: "4x2v", w: 200, h: 75, img: mat2v, amount: 4, repeat: "repeat-x"},
+    {name: "4x2h", w: 75, h: 200, img: mat2h, amount: 4, repeat: "repeat-y"},
+    {name: "12x1v", w: 600, h: 25, img: mat1v, amount: 12, repeat: "repeat-x"},
+    {name: "12x1h", w: 25, h: 600, img: mat1h, amount: 12, repeat: "repeat-y"},
+    {name: "11x1v", w: 550, h: 25, img: mat1v, amount: 11, repeat: "repeat-x"},
+    {name: "11x1h", w: 25, h: 550, img: mat1h, amount: 11, repeat: "repeat-y"},
+    {name: "2x3v", w: 100, h: 175, img: mat3v, amount: 2, repeat: "repeat-x"},
+    {name: "2x3h", w: 175, h: 100, img: mat3h, amount: 2, repeat: "repeat-y"},
+    {name: "10x1v", w: 500, h: 25, img: mat1v, amount: 10, repeat: "repeat-x"},
+    {name: "10x1h", w: 25, h: 500, img: mat1h, amount: 10, repeat: "repeat-y"},
+    {name: "1x5v", w: 50, h: 225, img: mat5v, amount: 1, repeat: "repeat-x"},
+    {name: "1x5h", w: 225, h: 50, img: mat5h, amount: 1, repeat: "repeat-y"},
+    {name: "3x2v", w: 150, h: 75, img: mat2v, amount: 3, repeat: "repeat-x"},
+    {name: "3x2h", w: 75, h: 150, img: mat2h, amount: 3, repeat: "repeat-y"},
+    {name: "9x1v", w: 450, h: 25, img: mat1v, amount: 9, repeat: "repeat-x"},
+    {name: "9x1h", w: 25, h: 450, img: mat1h, amount: 9, repeat: "repeat-y"},
+    {name: "8x1v", w: 400, h: 25, img: mat1v, amount: 8, repeat: "repeat-x"},
+    {name: "8x1h", w: 25, h: 400, img: mat1h, amount: 8, repeat: "repeat-y"},
+    {name: "1x4v", w: 50, h: 175, img: mat4v, amount: 1, repeat: "repeat-x"},
+    {name: "1x4h", w: 175, h: 50, img: mat4h, amount: 1, repeat: "repeat-y"},
+    {name: "7x1v", w: 350, h: 25, img: mat1v, amount: 7, repeat: "repeat-x"},
+    {name: "7x1h", w: 25, h: 350, img: mat1h, amount: 7, repeat: "repeat-y"},
+    {name: "2x2v", w: 100, h: 75, img: mat2v, amount: 2, repeat: "repeat-x"},
+    {name: "2x2h", w: 75, h: 100, img: mat2h, amount: 2, repeat: "repeat-y"},
+    {name: "6x1v", w: 300, h: 25, img: mat1v, amount: 6, repeat: "repeat-x"},
+    {name: "6x1h", w: 25, h: 300, img: mat1h, amount: 6, repeat: "repeat-y"},
+    {name: "1x3v", w: 50, h: 175, img: mat3v, amount: 1, repeat: "repeat-x"},
+    {name: "1x3h", w: 175, h: 50, img: mat3h, amount: 1, repeat: "repeat-y"},
+    {name: "5x1v", w: 250, h: 25, img: mat1v, amount: 5, repeat: "repeat-x"},
+    {name: "5x1h", w: 25, h: 250, img: mat1h, amount: 5, repeat: "repeat-y"},
+    {name: "4x1v", w: 200, h: 25, img: mat1v, amount: 4, repeat: "repeat-x"},
+    {name: "4x1h", w: 25, h: 200, img: mat1h, amount: 4, repeat: "repeat-y"},
+    {name: "1x2v", w: 50, h: 75, img: mat2v, amount: 1, repeat: "repeat-x"},
+    {name: "1x2h", w: 75, h: 50, img: mat2h, amount: 1, repeat: "repeat-y"},
+    {name: "3x1v", w: 150, h: 25, img: mat1v, amount: 3, repeat: "repeat-x"},
+    {name: "3x1h", w: 25, h: 150, img: mat1h, amount: 3, repeat: "repeat-y"},
+    {name: "2x1v", w: 100, h: 25, img: mat1v, amount: 2, repeat: "repeat-x"},
+    {name: "2x1h", w: 25, h: 100, img: mat1h, amount: 2, repeat: "repeat-y"},
+    {name: "1x1v", w: 50, h: 25, img: mat1v, amount: 1, repeat: "repeat-x"},
+    {name: "1x1h", w: 25, h: 50, img: mat1h, amount: 1, repeat: "repeat-y"}
 ]

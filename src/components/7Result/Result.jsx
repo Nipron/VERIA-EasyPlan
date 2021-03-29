@@ -102,6 +102,8 @@ const Result = () => {
 
     let coldSpots = [CS1, CS2];
 
+    //let middlemanMats =
+
     let calcAll = (mats) => {
         let all = []
         let cuts = [];
@@ -114,7 +116,14 @@ const Result = () => {
                     if ((isGroupInsideRoom(i, j, matGroups[k])) && (!doesAnyCSOverlapGroup(spots, i, j, matGroups[k]))) {
                         let groupOK = [i, j, i + matGroups[k].w, j, i + matGroups[k].w, j + matGroups[k].h, i, j + matGroups[k].h];
                         spots.push([i + 1, j + 1, i + matGroups[k].w - 1, j + 1, i + matGroups[k].w - 1, j + matGroups[k].h - 1, i + 1, j + matGroups[k].h - 1])
-                        cuts.push([i, j - 4, i + matGroups[k].w, j - 4, i + matGroups[k].w, j + matGroups[k].h + 12, i, j + matGroups[k].h + 12])
+console.log(matGroups[k].repeat)
+                        if (matGroups[k].repeat === "repeat-x") {
+                            cuts.push([i, j - 12, i + matGroups[k].w, j - 12, i + matGroups[k].w, j + matGroups[k].h + 12, i, j + matGroups[k].h + 12])
+                        }
+                        if (matGroups[k].repeat === "repeat-y") {
+                            cuts.push([i - 12, j, i + matGroups[k].w + 12, j, i + matGroups[k].w + 12, j + matGroups[k].h, i - 12, j + matGroups[k].h])
+                        }
+
                         all.push(groupOK)
                         mamats.push({
                             group: matGroups[k],
@@ -220,7 +229,7 @@ const Result = () => {
                                         fillPatternX={mat.x}
                                         fillPatternY={mat.y}
                                         fillPatternScale={{x: 1, y: 1}}
-                                        fillPatternRepeat="no-repeat"
+                                        fillPatternRepeat={mat.repeat}
                                     />
                                 })
                             }
