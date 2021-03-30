@@ -22,6 +22,8 @@ import triangle3white from '../../img/ColdSpotIcons/triangle3white.svg';
 import triangle3grey from '../../img/ColdSpotIcons/triangle3grey.svg';
 import triangle4white from '../../img/ColdSpotIcons/triangle4white.svg';
 import triangle4grey from '../../img/ColdSpotIcons/triangle4grey.svg';
+import {updateColdSpots} from "../../redux/coldSpotsReducer";
+import {updatePoints} from "../../redux/coldSpotsPoints";
 
 
 const ColdSpot = spot => <Line
@@ -44,6 +46,7 @@ const ColdSpots = () => {
     const buttons = useSelector(state => state.buttons);
     const room = useSelector(state => state.room);
     let spots = useSelector(state => state.coldSpots);
+    console.log(spots);
 
     const [color, setColor] = useState('grey');
     const [modalActive, setModalActive] = useState(!buttons[5]);
@@ -101,12 +104,22 @@ const ColdSpots = () => {
         points: []
     });
 
+    const [points00, setPoints00] = useState([])
+    const [points01, setPoints01] = useState([])
+    const [points02, setPoints02] = useState([])
+    const [points03, setPoints03] = useState([])
+    const [points04, setPoints04] = useState([])
+
     const handleClick = (page) => {
+        let pointsForResult = []
+        if (spot00.color === "yellow") pointsForResult.push(points00)
+        if (spot01.color === "yellow") pointsForResult.push(points01)
+        if (spot02.color === "yellow") pointsForResult.push(points02)
+        if (spot03.color === "yellow") pointsForResult.push(points03)
+        if (spot04.color === "yellow") pointsForResult.push(points04)
+        dispatch(updatePoints(pointsForResult))
         dispatch(updateButton(page))
-        dispatch(updateColdSpot([coldSpotFirst00.x - 320, coldSpotFirst00.y,
-            coldSpotFirst03.x - 320, coldSpotFirst03.y,
-            coldSpotFirst02.x - 320, coldSpotFirst02.y,
-            coldSpotFirst01.x - 320, coldSpotFirst01.y]))
+        dispatch(updateColdSpots([spot00, spot01, spot02, spot03, spot04]))
     }
 
     const handleAdd = () => {
@@ -135,7 +148,11 @@ const ColdSpots = () => {
                 visible: true,
                 color: "red",
                 onDragMove: handleDragMove00,
-                points: pts
+                points: pts,
+                A: {x: pts[0], y: pts[1]},
+                B: {x: pts[2], y: pts[3]},
+                C: {x: pts[4], y: pts[5]},
+                D: {x: pts[6], y: pts[7]}
             })
             spots[0] = spot00;
         }
@@ -148,7 +165,11 @@ const ColdSpots = () => {
                 visible: true,
                 color: "red",
                 onDragMove: handleDragMove01,
-                points: pts
+                points: pts,
+                A: {x: pts[0], y: pts[1]},
+                B: {x: pts[2], y: pts[3]},
+                C: {x: pts[4], y: pts[5]},
+                D: {x: pts[6], y: pts[7]}
             })
             spots[1] = spot01;
         }
@@ -161,7 +182,11 @@ const ColdSpots = () => {
                 visible: true,
                 color: "red",
                 onDragMove: handleDragMove02,
-                points: pts
+                points: pts,
+                A: {x: pts[0], y: pts[1]},
+                B: {x: pts[2], y: pts[3]},
+                C: {x: pts[4], y: pts[5]},
+                D: {x: pts[6], y: pts[7]}
             })
             spots[2] = spot02;
         }
@@ -174,7 +199,11 @@ const ColdSpots = () => {
                 visible: true,
                 color: "red",
                 onDragMove: handleDragMove03,
-                points: pts
+                points: pts,
+                A: {x: pts[0], y: pts[1]},
+                B: {x: pts[2], y: pts[3]},
+                C: {x: pts[4], y: pts[5]},
+                D: {x: pts[6], y: pts[7]}
             })
             spots[3] = spot03;
         }
@@ -187,7 +216,11 @@ const ColdSpots = () => {
                 visible: true,
                 color: "red",
                 onDragMove: handleDragMove04,
-                points: pts
+                points: pts,
+                A: {x: pts[0], y: pts[1]},
+                B: {x: pts[2], y: pts[3]},
+                C: {x: pts[4], y: pts[5]},
+                D: {x: pts[6], y: pts[7]}
             })
             spots[4] = spot04;
         }
@@ -202,11 +235,11 @@ const ColdSpots = () => {
         const layer = stage.findOne(".main-layer");
 
         let A = e.target.position()
-        let B = {x: A.x + width, y: A.y};
-        let C = {x: A.x + width, y: A.y + height};
-        let D = {x: A.x, y: A.y + height};
+        let B = {x: A.x + spot00.B.x - spot00.A.x, y: A.y + spot00.B.y - spot00.A.y};
+        let C = {x: A.x + spot00.C.x - spot00.A.x, y: A.y + spot00.C.y - spot00.A.y};
+        let D = {x: A.x + spot00.D.x - spot00.A.x, y: A.y + spot00.D.y - spot00.A.y};
 
-        setSpot00({...spot00, A: A, B: B, C: C, D: D});
+        setPoints00([A.x - 320, A.y, B.x - 320, B.y, C.x - 320, C.y, D.x - 320, D.y])
 
         if (((spot00.figure === 5) ? true : layer.getIntersection(A))
             && ((spot00.figure === 2) ? true : layer.getIntersection(B))
@@ -224,18 +257,18 @@ const ColdSpots = () => {
         const layer = stage.findOne(".main-layer");
 
         let A = e.target.position()
-        let B = {x: A.x + width, y: A.y};
-        let C = {x: A.x + width, y: A.y + height};
-        let D = {x: A.x, y: A.y + height};
+        let B = {x: A.x + spot01.B.x - spot01.A.x, y: A.y + spot01.B.y - spot01.A.y};
+        let C = {x: A.x + spot01.C.x - spot01.A.x, y: A.y + spot01.C.y - spot01.A.y};
+        let D = {x: A.x + spot01.D.x - spot01.A.x, y: A.y + spot01.D.y - spot01.A.y};
 
-        setSpot01({...spot01, A: A, B: B, C: C, D: D});
+        setPoints01([A.x - 320, A.y, B.x - 320, B.y, C.x - 320, C.y, D.x - 320, D.y])
 
         if (((spot01.figure === 5) ? true : layer.getIntersection(A))
             && ((spot01.figure === 2) ? true : layer.getIntersection(B))
             && ((spot01.figure === 3) ? true : layer.getIntersection(C))
             && ((spot01.figure === 4) ? true : layer.getIntersection(D))
             && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
-            setSpot01({...spot01, color: "yellow"})
+            setSpot01({...spot01, color: "yellow", A: A, B: B, C: C, D: D})
         else {
             setSpot01({...spot01, color: "red"})
         }
@@ -246,18 +279,18 @@ const ColdSpots = () => {
         const layer = stage.findOne(".main-layer");
 
         let A = e.target.position()
-        let B = {x: A.x + width, y: A.y};
-        let C = {x: A.x + width, y: A.y + height};
-        let D = {x: A.x, y: A.y + height};
+        let B = {x: A.x + spot02.B.x - spot02.A.x, y: A.y + spot02.B.y - spot02.A.y};
+        let C = {x: A.x + spot02.C.x - spot02.A.x, y: A.y + spot02.C.y - spot02.A.y};
+        let D = {x: A.x + spot02.D.x - spot02.A.x, y: A.y + spot02.D.y - spot02.A.y};
 
-        setSpot02({...spot02, A: A, B: B, C: C, D: D});
+        setPoints02([A.x - 320, A.y, B.x - 320, B.y, C.x - 320, C.y, D.x - 320, D.y])
 
         if (((spot02.figure === 5) ? true : layer.getIntersection(A))
             && ((spot02.figure === 2) ? true : layer.getIntersection(B))
             && ((spot02.figure === 3) ? true : layer.getIntersection(C))
             && ((spot02.figure === 4) ? true : layer.getIntersection(D))
             && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
-            setSpot02({...spot02, color: "yellow"})
+            setSpot02({...spot02, color: "yellow", A: A, B: B, C: C, D: D})
         else {
             setSpot02({...spot02, color: "red"})
         }
@@ -268,18 +301,18 @@ const ColdSpots = () => {
         const layer = stage.findOne(".main-layer");
 
         let A = e.target.position()
-        let B = {x: A.x + width, y: A.y};
-        let C = {x: A.x + width, y: A.y + height};
-        let D = {x: A.x, y: A.y + height};
+        let B = {x: A.x + spot03.B.x - spot03.A.x, y: A.y + spot03.B.y - spot03.A.y};
+        let C = {x: A.x + spot03.C.x - spot03.A.x, y: A.y + spot03.C.y - spot03.A.y};
+        let D = {x: A.x + spot03.D.x - spot03.A.x, y: A.y + spot03.D.y - spot03.A.y};
 
-        setSpot03({...spot03, A: A, B: B, C: C, D: D});
+        setPoints03([A.x - 320, A.y, B.x - 320, B.y, C.x - 320, C.y, D.x - 320, D.y])
 
         if (((spot03.figure === 5) ? true : layer.getIntersection(A))
             && ((spot03.figure === 2) ? true : layer.getIntersection(B))
             && ((spot03.figure === 3) ? true : layer.getIntersection(C))
             && ((spot03.figure === 4) ? true : layer.getIntersection(D))
             && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
-            setSpot03({...spot03, color: "yellow"})
+            setSpot03({...spot03, color: "yellow", A: A, B: B, C: C, D: D})
         else {
             setSpot03({...spot03, color: "red"})
         }
@@ -290,20 +323,18 @@ const ColdSpots = () => {
         const layer = stage.findOne(".main-layer");
 
         let A = e.target.position()
-        let B = {x: A.x + width, y: A.y};
-        let C = {x: A.x + width, y: A.y + height};
-        let D = {x: A.x, y: A.y + height};
+        let B = {x: A.x + spot04.B.x - spot04.A.x, y: A.y + spot04.B.y - spot04.A.y};
+        let C = {x: A.x + spot04.C.x - spot04.A.x, y: A.y + spot04.C.y - spot04.A.y};
+        let D = {x: A.x + spot04.D.x - spot04.A.x, y: A.y + spot04.D.y - spot04.A.y};
 
-        setSpot04({...spot04, A: A, B: B, C: C, D: D});
-
-        console.log(spot04);
+        setPoints04([A.x - 320, A.y, B.x - 320, B.y, C.x - 320, C.y, D.x - 320, D.y])
 
         if (((spot04.figure === 5) ? true : layer.getIntersection(A))
             && ((spot04.figure === 2) ? true : layer.getIntersection(B))
             && ((spot04.figure === 3) ? true : layer.getIntersection(C))
             && ((spot04.figure === 4) ? true : layer.getIntersection(D))
             && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
-            setSpot04({...spot04, color: "yellow"})
+            setSpot04({...spot04, color: "yellow", A: A, B: B, C: C, D: D})
         else {
             setSpot04({...spot04, color: "red"})
         }
@@ -376,7 +407,7 @@ const ColdSpots = () => {
                         </Layer>
                         <Layer name="coldSpot1">
                             <Line
-                                x={600}
+                                x={200}
                                 y={0}
                                 points={spot00.points}
                                 closed
@@ -472,7 +503,7 @@ const ColdSpots = () => {
                         <span>Drag here to delete</span>
                     </div>
                     <Link to="/floortype" onClick={() => handleClick(5)} className={s.btnNextStep}>
-                        Continue
+                        Continues
                     </Link>
                 </div>
             </div>

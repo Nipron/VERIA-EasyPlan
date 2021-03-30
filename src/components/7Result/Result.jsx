@@ -8,6 +8,12 @@ import {matGroups} from "../../data/matGroups";
 const Result = () => {
 
     let room = useSelector(state => state.room);
+    let spotsArray = useSelector(state => state.coldSpots);
+    let points = useSelector(state => state.points);
+
+    console.log(points)
+
+
     let d = 4; //1 px = 2 cm;  d - minimum distance between wall and mat
     //r = room with bounds (d)
     let r = [room[0] + d, room[1] + d,
@@ -100,7 +106,8 @@ const Result = () => {
     const CS2 = [380, 120, 440, 120, 440, 160, 380, 160]
     const CS3 = [180, 120, 300, 120, 300, 240, 180, 240]
 
-    let coldSpots = [CS1, CS2];
+    //let coldSpots = [CS1, CS2];
+    let coldSpots = points;
 
     //let middlemanMats =
 
@@ -116,7 +123,7 @@ const Result = () => {
                     if ((isGroupInsideRoom(i, j, matGroups[k])) && (!doesAnyCSOverlapGroup(spots, i, j, matGroups[k]))) {
                         let groupOK = [i, j, i + matGroups[k].w, j, i + matGroups[k].w, j + matGroups[k].h, i, j + matGroups[k].h];
                         spots.push([i + 1, j + 1, i + matGroups[k].w - 1, j + 1, i + matGroups[k].w - 1, j + matGroups[k].h - 1, i + 1, j + matGroups[k].h - 1])
-console.log(matGroups[k].repeat)
+                        console.log(matGroups[k].repeat)
                         if (matGroups[k].repeat === "repeat-x") {
                             cuts.push([i, j - 12, i + matGroups[k].w, j - 12, i + matGroups[k].w, j + matGroups[k].h + 12, i, j + matGroups[k].h + 12])
                         }
