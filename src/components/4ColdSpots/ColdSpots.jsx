@@ -46,7 +46,6 @@ const ColdSpots = () => {
     const buttons = useSelector(state => state.buttons);
     const room = useSelector(state => state.room);
     let spots = useSelector(state => state.coldSpots);
-    console.log(spots);
 
     const [color, setColor] = useState('grey');
     const [modalActive, setModalActive] = useState(!buttons[5]);
@@ -137,7 +136,8 @@ const ColdSpots = () => {
             pts = [0, 0, width, 0, width, height, width / 2, height / 2,]
         }
         if (figure === 5) {
-            pts = [width / 2, height / 2, width, 0, width, height, 0, height]
+            //pts = [width / 2, height / 2, width, 0, width, height, 0, height]
+              pts = [0, 0, width / 2, - height / 2, width / 2, height / 2, - width / 2, height / 2]
         }
 
         if (currentColdSpot === 0) {
@@ -344,17 +344,14 @@ const ColdSpots = () => {
     /*   const handleDragMove = (e) => {
            const stage = e.target.getStage();
            const layer = stage.findOne(".main-layer");
-
            let p01 = e.target.position()
            let p02 = {x: p01.x + width, y: p01.y};
            let p03 = {x: p01.x + width, y: p01.y + height};
            let p04 = {x: p01.x + 0, y: p01.y + height};
-
            setColdSpotFirst00(p01);
            setColdSpotFirst01(p02);
            setColdSpotFirst02(p03);
            setColdSpotFirst03(p04);
-
            if (!layer.getIntersection(p01)
                && !layer.getIntersection(p02)
                && !layer.getIntersection(p03)
@@ -407,8 +404,8 @@ const ColdSpots = () => {
                         </Layer>
                         <Layer name="coldSpot1">
                             <Line
-                                x={200}
-                                y={0}
+                                x={600}
+                                y={150}
                                 points={spot00.points}
                                 closed
                                 draggable
@@ -422,7 +419,7 @@ const ColdSpots = () => {
                         <Layer>
                             <Line
                                 x={600}
-                                y={0}
+                                y={150}
                                 points={spot01.points}
                                 closed
                                 draggable
@@ -436,7 +433,7 @@ const ColdSpots = () => {
                         <Layer>
                             <Line
                                 x={600}
-                                y={0}
+                                y={150}
                                 points={spot02.points}
                                 closed
                                 draggable
@@ -450,7 +447,7 @@ const ColdSpots = () => {
                         <Layer>
                             <Line
                                 x={600}
-                                y={0}
+                                y={150}
                                 points={spot03.points}
                                 closed
                                 draggable
@@ -464,7 +461,7 @@ const ColdSpots = () => {
                         <Layer>
                             <Line
                                 x={600}
-                                y={0}
+                                y={150}
                                 points={spot04.points}
                                 closed
                                 draggable
