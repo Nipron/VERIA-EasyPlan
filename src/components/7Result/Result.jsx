@@ -75,8 +75,8 @@ const Result = () => {
         let mats = [];
         let spots = [...spotsArray]
         for (let k = 0; k < groups.length; k++) {
-            for (let i = 0; i < R[7][0]; i += 5) {
-                for (let j = 0; j < R[13][1]; j += 5) {
+            for (let i = 4; i < R[7][0]; i += 5) {
+                for (let j = 4; j < R[13][1]; j += 5) {
                     if ((isGroupInsideRoom(i, j, groups[k])) && (!doesAnyCSOverlapGroup(spots, i, j, groups[k]))) {
                         let groupOK = [i, j, i + groups[k].w, j, i + groups[k].w, j + groups[k].h, i, j + groups[k].h];
                         spots.push([i + 1, j + 1, i + groups[k].w - 1, j + 1, i + groups[k].w - 1, j + groups[k].h - 1, i + 1, j + groups[k].h - 1])

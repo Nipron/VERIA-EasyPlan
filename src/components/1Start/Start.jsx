@@ -2,6 +2,7 @@ import React from 'react';
 import {useDispatch} from "react-redux";
 import {HashLink as Link} from 'react-router-hash-link';
 
+
 import {updateButton} from "../../redux/buttonsReducer";
 
 import s from './Start.module.css';

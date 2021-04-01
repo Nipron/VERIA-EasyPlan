@@ -62,12 +62,6 @@ const ColdSpots = () => {
     const [figure04picture, setFigure04picture] = useState(triangle3white)
     const [figure05picture, setFigure05picture] = useState(triangle4white)
 
-    const [cold01visible, setCold01visible] = useState(false);
-    const [coldSpotFirst00, setColdSpotFirst00] = useState({x: 0, y: 0})
-    const [coldSpotFirst01, setColdSpotFirst01] = useState({x: 0, y: 0})
-    const [coldSpotFirst02, setColdSpotFirst02] = useState({x: 0, y: 0})
-    const [coldSpotFirst03, setColdSpotFirst03] = useState({x: 0, y: 0})
-
     const [spot00, setSpot00] = useState({
         width: spots[0].width, height: spots[0].height, figure: spots[0].figure,
         A: spots[0].A, B: spots[0].B, C: spots[0].C, D: spots[0].D,
