@@ -157,6 +157,10 @@ const PlanMakerL = () => {
             pos03.x, pos03.y,
             pos04shadow.x, pos04shadow.y,
             pos04.x, pos04.y,
+            pos04shadow.x, pos04shadow.y,
+            pos04.x, pos04.y,
+            pos04shadow.x, pos04shadow.y,
+            pos04.x, pos04.y,
             pos07shadow.x, pos07shadow.y,
             pos07.x, pos07.y,
         ]))
@@ -463,7 +467,7 @@ const PlanMakerL = () => {
                                    bounds={
                                        {
                                            left: (pos03angled && pos03shadow.x + minDist) || (pos02angled && pos02.x + 2 * minDist) || pos02.x + 3 * minDist,
-                                           top: (pos03angled && pos03shadow.y + minDist) || (pos02angled && pos02shadow.y + minDist) || (pos01angled && pos01.y + 2 * minDist) || minDist,
+                                           top: (pos03angled && pos03shadow.y + minDist) || (pos02angled && pos02shadow.y + minDist) || (pos01angled && pos01.y + 2 * minDist) || 3 * minDist,
                                            right: maxWidth,
                                            bottom: (pos04angled && pos04shadow.y - minDist) || (pos04.y - 2 * minDist)
                                        }

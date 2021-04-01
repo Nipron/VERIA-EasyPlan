@@ -530,7 +530,7 @@ const PlanMakerT = () => {
                                                || Math.max((pos02angled && pos02.x + 2 * minDist)
                                                    || pos02.x + 3 * minDist, (pos05angled && pos05shadow.x + 2 * minDist)
                                                    || pos05.x + 3 * minDist),
-                                           top: (pos03angled && pos03shadow.y + minDist) || (pos02angled && pos02shadow.y + minDist) || (pos01angled && pos01.y + 2 * minDist) || minDist,
+                                           top: (pos03angled && pos03shadow.y + minDist) || (pos02angled && pos02shadow.y + minDist) || (pos01angled && pos01.y + 2 * minDist) || 3 * minDist,
                                            right: maxWidth,
                                            bottom: (pos04angled && pos04shadow.y - minDist) || (pos04.y - 2 * minDist)
                                        }
