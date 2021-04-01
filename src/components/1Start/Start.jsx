@@ -30,7 +30,12 @@ const Start = () => {
             </div>
             <div className="content-section">
                 <div className="content-section-banner">
-
+                    <div className={s.slider}>
+                        <div className={`${s.slide} ${s.slide1}`}/>
+                        <div className={`${s.slide} ${s.slide2}`}/>
+                        <div className={`${s.slide} ${s.slide3}`}/>
+                        <div className={`${s.slide} ${s.slide1}`}/>
+                    </div>
                 </div>
                 <Link to="/roomshape" onClick={() => handleClick(2)} className={s.btnNextStep}>
                     Room Shape

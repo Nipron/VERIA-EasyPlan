@@ -20,3 +20,59 @@
     color: #595454;
     text-decoration: none;
 }
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400%;
+    height: 100%;
+    animation: animate 7.5s linear infinite;
+}
+
+.slide {
+    width: 25%;
+    height: 100%;
+    float: left;
+    background-size: cover;
+    background-position: center;
+}
+
+.slide1 {
+    background-image: url("../../img/slider/slider_1.jpg");
+}
+
+.slide2 {
+    background-image: url("../../img/slider/slider_2.jpg");
+}
+
+.slide3 {
+    background-image: url("../../img/slider/slider_3.jpg");
+}
+
+@keyframes animate {
+    0% {
+        left: 0;
+    }
+    25% {
+        left: 0;
+    }
+    33% {
+        left: -100%;
+    }
+    58% {
+        left: -100%;
+    }
+    66% {
+        left: -200%;
+    }
+    91% {
+        left: -200%;
+    }
+    99% {
+        left: -300%;
+    }
+    100% {
+        left: -300%;
+    }
+}

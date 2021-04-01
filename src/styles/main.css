@@ -499,10 +499,10 @@ h1 , h2, h3, h4, h5, h6, p , a {
   width: 1000px;
   height: 366px;
   background: url("../img/slider/slider_1.jpg");
-  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 9px;
   overflow: hidden;
   margin: auto;
+  position: relative;
 }
 
 .slider-dots {
