@@ -8,20 +8,18 @@ viewBox="0 0 225 50"
   <style type="text/css">
    <![CDATA[
     .fil2 {fill:#2B2A29}
-    .fil1 {fill:#868686}
+    .fil1 {fill:#6E6E6E}
     .fil0 {fill:#FF3F3F}
    ]]>
   </style>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_3096903582640">
-   <g>
-    <polygon class="fil0" points="224.5,0 224.5,50 -0.5,50 -0.5,0 "/>
-    <path id="1" class="fil1" d="M224.5 0l0 50 -225 0 0 -50 225 0zm-1 49l0 -48 -223 0 0 48 223 0z"/>
-   </g>
-   <rect class="fil2" transform="matrix(1.50679E-14 0.568933 -0.247744 6.5614E-15 224.501 43.9989)" width="10.55" height="24.22"/>
-   <rect class="fil2" transform="matrix(1.50679E-14 0.568933 -0.247744 6.5614E-15 224.501 -0.00185318)" width="10.55" height="24.22"/>
+  <g>
+   <polygon class="fil0" points="-0.5,50 -0.5,0 224.5,0 224.5,50 "/>
+   <path id="1" class="fil1" d="M-0.5 50l0 -50 225 0 0 50 -225 0zm1 -49l0 48 223 0 0 -48 -223 0z"/>
   </g>
+  <rect class="fil2" transform="matrix(-8.73955E-14 -0.299988 0.312468 -9.10312E-14 2.5018 50.0011)" width="10" height="16"/>
+  <rect class="fil2" transform="matrix(-8.73955E-14 -0.299988 0.312468 -9.10312E-14 2.5018 3.00154)" width="10" height="16"/>
  </g>
 </svg>

@@ -16,10 +16,10 @@ viewBox="0 0 50 175"
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
   <g>
-   <polygon class="fil0" points="0,0.5 50,0.5 50,175.51 0,175.51 "/>
-   <path id="1" class="fil1" d="M0 0.5l50 0 0 175.01 -50 0 0 -175.01zm49 1l-48 0 0 173.01 48 0 0 -173.01z"/>
+   <polygon class="fil0" points="50,175.51 0,175.51 0,0.5 50,0.5 "/>
+   <path id="1" class="fil1" d="M50 175.51l-50 0 0 -175.01 50 0 0 175.01zm-49 -1l48 0 0 -173.01 -48 0 0 173.01z"/>
   </g>
-  <rect class="fil2" y="3.5" width="3" height="5"/>
-  <rect class="fil2" x="47" y="3.5" width="3" height="5"/>
+  <rect class="fil2" x="47" y="167.51" width="3" height="5"/>
+  <rect class="fil2" y="167.51" width="3" height="5"/>
  </g>
 </svg>

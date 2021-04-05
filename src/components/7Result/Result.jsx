@@ -93,18 +93,18 @@ const Result = () => {
                         if (groups[k].repeat === "repeat-x") {
                             cuts.push([i, j - 12, i + groups[k].w, j - 12, i + groups[k].w, j + groups[k].h + 12, i, j + groups[k].h + 12]);
                             wires.push({in: [i, j], out: [i + groups[k].w, j]})
-                            inM = [i + groups[k].w, j];
-                            outF = [i, j];
-                            inMz = [i, j + groups[k].h];
-                            outFz = [i + groups[k].w, j + groups[k].h];
+                            inM = [i + groups[k].w, j + 6];
+                            outF = [i, j + 6];
+                            inMz = [i, j + groups[k].h - 6];
+                            outFz = [i + groups[k].w, j + groups[k].h - 6];
                         }
                         if (groups[k].repeat === "repeat-y") {
                             cuts.push([i - 12, j, i + groups[k].w + 12, j, i + groups[k].w + 12, j + groups[k].h, i - 12, j + groups[k].h])
                             wires.push({in: [i + groups[k].w, j], out: [i + groups[k].w, j + groups[k].h]})
-                            inM = [i + groups[k].w, j + groups[k].h];
-                            outF = [i + groups[k].w, j];
-                            inMz = [i, j];
-                            outFz = [i, j + groups[k].h];
+                            inM = [i + groups[k].w - 6, j + groups[k].h];
+                            outF = [i + groups[k].w - 6, j];
+                            inMz = [i + 6, j];
+                            outFz = [i + 6, j + groups[k].h];
                         }
                         mats.push({
                             group: groups[k], x: i, y: j,
@@ -112,7 +112,8 @@ const Result = () => {
                             inM,
                             outF,
                             inMz,
-                            outFz
+                            outFz,
+                            straight: true
                         })
                     }
 
@@ -140,6 +141,7 @@ const Result = () => {
                     arr[i + 1].outF = arr[i + 1].outFz;
                     arr[i + 1].inMz = tempM;
                     arr[i + 1].outFz = tempF;
+                    arr[i + 1].straight = !arr[i + 1].straight
                 }
 
                 if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1 + j].inM[0], 2)
@@ -152,6 +154,7 @@ const Result = () => {
                     arr[i + 1 + j].outF = arr[i + 1 + j].outFz;
                     arr[i + 1 + j].inMz = tempM;
                     arr[i + 1 + j].outFz = tempF;
+                    arr[i + 1 + j].straight = !arr[i + 1 + j].straight
                 }
 
                 if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1].inM[0], 2)
@@ -217,21 +220,24 @@ const Result = () => {
                                     closed
                                     stroke="#868686"
                                     strokeWidth={1}
-                                    fill={"pink"}
+                                    fill="#FF6D6D"
                                 />)
                             }
                             {
                                 superMats[1].map(mat => {
                                     const image = new window.Image();
+                                    const imageAlt = new window.Image();
+
                                     image.src = mat.group.img;
+                                    imageAlt.src = mat.group.imgAlt;
                                     return <Line
                                         x={320}
                                         y={0}
                                         points={mat.points}
                                         closed
-                                        stroke="#868686"
-                                        strokeWidth={1}
-                                        fillPatternImage={image}
+                                        stroke="white"
+                                        strokeWidth={0}
+                                        fillPatternImage={mat.straight ? image : imageAlt}
                                         fillPatternX={mat.x}
                                         fillPatternY={mat.y}
                                         fillPatternScale={{x: 1, y: 1}}
