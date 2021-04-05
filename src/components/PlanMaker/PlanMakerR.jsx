@@ -25,8 +25,9 @@ const PlanMakerR = () => {
     const shapes = useSelector(state => state.shapes);
     const angles = useSelector(state => state.angles);
     const state = useSelector(state => state);
+    const buttons = useSelector(state => state.buttons);
 
-    const [modalActive, setModalActive] = useState(false);
+    const [modalActive, setModalActive] = useState(!buttons[4]);
 
     const [angIcon03, setAngIcon03] = useState(imgDiagonal);
     const [angIcon04, setAngIcon04] = useState(imgDiagonal);
@@ -39,12 +40,12 @@ const PlanMakerR = () => {
     const [square, setSquare] = useState(0);
 
     const pos00 = {x: room[0], y: room[1]};
-    const [pos03shadow, setPos03shadow] = useState({x: room[2], y: room[3]});
-    const [pos03, setPos03] = useState({x: room[4], y: room[5]});
-    const [pos04shadow, setPos04shadow] = useState({x: room[6], y: room[7]});
-    const [pos04, setPos04] = useState({x: room[8], y: room[9]});
-    const [pos07shadow, setPos07shadow] = useState({x: room[10], y: room[11]});
-    const [pos07, setPos07] = useState({x: room[12], y: room[13]});
+    const [pos03shadow, setPos03shadow] = useState({x: room[10], y: room[11]});
+    const [pos03, setPos03] = useState({x: room[12], y: room[13]});
+    const [pos04shadow, setPos04shadow] = useState({x: room[14], y: room[15]});
+    const [pos04, setPos04] = useState({x: room[16], y: room[17]});
+    const [pos07shadow, setPos07shadow] = useState({x: room[26], y: room[27]});
+    const [pos07, setPos07] = useState({x: room[28], y: room[29]});
 
     const pos00angled = angles[0];
     const [pos03angled, setPos03angled] = useState(angles[3]);

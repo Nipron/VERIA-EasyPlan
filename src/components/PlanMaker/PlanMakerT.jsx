@@ -24,8 +24,9 @@ const PlanMakerT = () => {
     const room = useSelector(state => state.room);
     const shapes = useSelector(state => state.shapes);
     const angles = useSelector(state => state.angles);
+    const buttons = useSelector(state => state.buttons);
 
-    const [modalActive, setModalActive] = useState(false);
+    const [modalActive, setModalActive] = useState(!buttons[4]);
 
     const [angIcon01, setAngIcon01] = useState(imgDiagonal);
     const [angIcon02, setAngIcon02] = useState(imgDiagonal);

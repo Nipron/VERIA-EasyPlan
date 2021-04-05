@@ -25,11 +25,12 @@ const PlanMakerL = () => {
     const shapes = useSelector(state => state.shapes);
     const angles = useSelector(state => state.angles);
     const state = useSelector(state => state);
+    const buttons = useSelector(state => state.buttons);
 
     console.log(angles)
     console.log(state)
 
-    const [modalActive, setModalActive] = useState(false);
+    const [modalActive, setModalActive] = useState(!buttons[4]);
 
     const [angIcon01, setAngIcon01] = useState(imgDiagonal);
     const [angIcon02, setAngIcon02] = useState(imgDiagonal);
@@ -52,8 +53,8 @@ const PlanMakerL = () => {
     const [pos03, setPos03] = useState({x: room[12], y: room[13]});
     const [pos04shadow, setPos04shadow] = useState({x: room[14], y: room[15]});
     const [pos04, setPos04] = useState({x: room[16], y: room[17]});
-    const [pos07shadow, setPos07shadow] = useState({x: room[18], y: room[19]});
-    const [pos07, setPos07] = useState({x: room[20], y: room[21]});
+    const [pos07shadow, setPos07shadow] = useState({x: room[26], y: room[27]});
+    const [pos07, setPos07] = useState({x: room[28], y: room[29]});
 
     const pos00angled = angles[0];
     const [pos01angled, setPos01angled] = useState(angles[1]);

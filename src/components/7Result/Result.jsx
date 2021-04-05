@@ -72,33 +72,110 @@ const Result = () => {
 
     const findGroups = (groups) => {
         let cuts = [];
-        let mats = [];
-        let spots = [...spotsArray]
+        let mats = [{
+            group: {}, x: 0, y: 0,
+            inM: [0, 0],
+            outF: [0, 0],
+            points: []
+        }];
+        let spots = [...spotsArray];
+        let wires = [{in: [0, 0], out: [0, 0]}];
         for (let k = 0; k < groups.length; k++) {
             for (let i = 4; i < R[7][0]; i += 5) {
                 for (let j = 4; j < R[13][1]; j += 5) {
                     if ((isGroupInsideRoom(i, j, groups[k])) && (!doesAnyCSOverlapGroup(spots, i, j, groups[k]))) {
                         let groupOK = [i, j, i + groups[k].w, j, i + groups[k].w, j + groups[k].h, i, j + groups[k].h];
-                        spots.push([i + 1, j + 1, i + groups[k].w - 1, j + 1, i + groups[k].w - 1, j + groups[k].h - 1, i + 1, j + groups[k].h - 1])
+                        spots.push([i + 1, j + 1, i + groups[k].w - 1, j + 1, i + groups[k].w - 1, j + groups[k].h - 1, i + 1, j + groups[k].h - 1]);
+                        let inM = [];
+                        let outF = [];
+                        let inMz = []; //alternative for 180 rotation
+                        let outFz = []; //alternative for 180 rotation
                         if (groups[k].repeat === "repeat-x") {
-                            cuts.push([i, j - 12, i + groups[k].w, j - 12, i + groups[k].w, j + groups[k].h + 12, i, j + groups[k].h + 12])
+                            cuts.push([i, j - 12, i + groups[k].w, j - 12, i + groups[k].w, j + groups[k].h + 12, i, j + groups[k].h + 12]);
+                            wires.push({in: [i, j], out: [i + groups[k].w, j]})
+                            inM = [i + groups[k].w, j];
+                            outF = [i, j];
+                            inMz = [i, j + groups[k].h];
+                            outFz = [i + groups[k].w, j + groups[k].h];
                         }
                         if (groups[k].repeat === "repeat-y") {
                             cuts.push([i - 12, j, i + groups[k].w + 12, j, i + groups[k].w + 12, j + groups[k].h, i - 12, j + groups[k].h])
+                            wires.push({in: [i + groups[k].w, j], out: [i + groups[k].w, j + groups[k].h]})
+                            inM = [i + groups[k].w, j + groups[k].h];
+                            outF = [i + groups[k].w, j];
+                            inMz = [i, j];
+                            outFz = [i, j + groups[k].h];
                         }
                         mats.push({
                             group: groups[k], x: i, y: j,
-                            points: groupOK
+                            points: groupOK,
+                            inM,
+                            outF,
+                            inMz,
+                            outFz
                         })
                     }
 
                 }
             }
         }
-        return [cuts, mats]
+        return [cuts, mats, wires]
     }
 
     const superMats = findGroups(matGroups);
+
+    const theMats = superMats[1]
+
+    const sortedWires = (arr) => {
+        for (let i = 0; i < arr.length - 2; i++) {
+            for (let j = 1; j < arr.length - 1 - i; j++) {
+
+                if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1].inM[0], 2)
+                    + Math.pow(arr[i].outF[1] - arr[i + 1].inM[1], 2)) >
+                    (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1].inMz[0], 2)
+                        + Math.pow(arr[i].outF[1] - arr[i + 1].inMz[1], 2)))) {
+                    let tempM = arr[i + 1].inM;
+                    let tempF = arr[i + 1].outF;
+                    arr[i + 1].inM = arr[i + 1].inMz;
+                    arr[i + 1].outF = arr[i + 1].outFz;
+                    arr[i + 1].inMz = tempM;
+                    arr[i + 1].outFz = tempF;
+                }
+
+                if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1 + j].inM[0], 2)
+                    + Math.pow(arr[i].outF[1] - arr[i + 1 + j].inM[1], 2)) >
+                    (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1 + j].inMz[0], 2)
+                        + Math.pow(arr[i].outF[1] - arr[i + 1 + j].inMz[1], 2)))) {
+                    let tempM = arr[i + 1 + j].inM;
+                    let tempF = arr[i + 1 + j].outF;
+                    arr[i + 1 + j].inM = arr[i + 1 + j].inMz;
+                    arr[i + 1 + j].outF = arr[i + 1 + j].outFz;
+                    arr[i + 1 + j].inMz = tempM;
+                    arr[i + 1 + j].outFz = tempF;
+                }
+
+                if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1].inM[0], 2)
+                    + Math.pow(arr[i].outF[1] - arr[i + 1].inM[1], 2)) >
+                    Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1 + j].inM[0], 2)
+                        + Math.pow(arr[i].outF[1] - arr[i + 1 + j].inM[1], 2))) {
+                    let temp = arr[i + 1];
+                    arr[i + 1] = arr[i + 1 + j];
+                    arr[i + 1 + j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+
+    const wiresToLines = (arr) => {
+        let wires = []
+        for (let i = 0; i < arr.length - 1; i++) {
+            wires.push([arr[i].outF[0], arr[i].outF[1], arr[i + 1].inM[0], arr[i + 1].inM[1]])
+        }
+        return wires;
+    }
+
+    const wires = wiresToLines(sortedWires(theMats))
 
     return (
         <div>
@@ -172,6 +249,18 @@ const Result = () => {
                                     strokeWidth={2}
                                     fill={"white"}
                                 />)
+                            }
+                            {
+                                wires.map(mat => {
+                                    return <Line
+                                        x={320}
+                                        y={0}
+                                        points={mat}
+                                        closed
+                                        stroke="yellow"
+                                        strokeWidth={2}
+                                    />
+                                })
                             }
                         </Layer>
                     </Stage>

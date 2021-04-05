@@ -334,35 +334,6 @@ const ColdSpots = () => {
         }
     }
 
-
-    /*   const handleDragMove = (e) => {
-           const stage = e.target.getStage();
-           const layer = stage.findOne(".main-layer");
-           let p01 = e.target.position()
-           let p02 = {x: p01.x + width, y: p01.y};
-           let p03 = {x: p01.x + width, y: p01.y + height};
-           let p04 = {x: p01.x + 0, y: p01.y + height};
-           setColdSpotFirst00(p01);
-           setColdSpotFirst01(p02);
-           setColdSpotFirst02(p03);
-           setColdSpotFirst03(p04);
-           if (!layer.getIntersection(p01)
-               && !layer.getIntersection(p02)
-               && !layer.getIntersection(p03)
-               && !layer.getIntersection(p04)
-           ) setColor("grey")
-           if (layer.getIntersection(p01)
-               || layer.getIntersection(p02)
-               || layer.getIntersection(p03)
-               || layer.getIntersection(p04)
-           ) setColor("red")
-           if (layer.getIntersection(p01)
-               && layer.getIntersection(p02)
-               && layer.getIntersection(p03)
-               && layer.getIntersection(p04)
-           ) setColor("green")
-       }*/
-
     if (!buttons[4]) return <Redirect to="/"/>
 
     return (
