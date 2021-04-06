@@ -128,7 +128,7 @@ const Result = () => {
     const theMats = superMats[1]
 
     const sortedWires = (arr) => {
-        for (let i = 0; i < arr.length - 2; i++) {
+        for (let i = 0; i < arr.length - 1; i++) {
             for (let j = 1; j < arr.length - 1 - i; j++) {
 
                 if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1].inM[0], 2)
