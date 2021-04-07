@@ -10,7 +10,7 @@ const Result = () => {
     const room = useSelector(state => state.room);
     const spotsArray = useSelector(state => state.points);
 
-    const d = 4; //1 px = 2 cm;  d - minimum distance between wall and mat
+    const d = 9; //1 px = 2 cm;  d - minimum distance between wall and mat
 
     const R = [[room[0] + d, room[1] + d],
         [room[2] - d, room[3] + d], [room[4] - d, room[5] + d],
@@ -81,8 +81,8 @@ const Result = () => {
         let spots = [...spotsArray];
         let wires = [{in: [0, 0], out: [0, 0]}];
         for (let k = 0; k < groups.length; k++) {
-            for (let i = 4; i < R[7][0]; i += 5) {
-                for (let j = 4; j < R[13][1]; j += 5) {
+            for (let i = 9; i < R[7][0]; i += 25) {
+                for (let j = 10; j < R[13][1]; j += 25) {
                     if ((isGroupInsideRoom(i, j, groups[k])) && (!doesAnyCSOverlapGroup(spots, i, j, groups[k]))) {
                         let groupOK = [i, j, i + groups[k].w, j, i + groups[k].w, j + groups[k].h, i, j + groups[k].h];
                         spots.push([i + 1, j + 1, i + groups[k].w - 1, j + 1, i + groups[k].w - 1, j + groups[k].h - 1, i + 1, j + groups[k].h - 1]);
@@ -219,7 +219,7 @@ const Result = () => {
                                     points={cut}
                                     closed
                                     stroke="#868686"
-                                    strokeWidth={1}
+                                    strokeWidth={0}
                                     fill="#FF6D6D"
                                 />)
                             }
@@ -268,6 +268,16 @@ const Result = () => {
                                     />
                                 })
                             }
+                        </Layer>
+                        <Layer name="main-layer">
+                            <Line
+                                x={320}
+                                y={2}
+                                points={room}
+                                closed
+                                stroke="#868686"
+                                strokeWidth={6}
+                            />
                         </Layer>
                     </Stage>
 
