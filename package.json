@@ -22,6 +22,7 @@
     "react-xarrows": "^1.5.2",
     "redux": "^4.0.5",
     "styled-components": "^5.2.1",
+    "use-image": "^1.0.7",
     "web-vitals": "^1.1.0"
   },
   "scripts": {

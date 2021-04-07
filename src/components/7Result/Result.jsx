@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useSelector} from "react-redux";
 import Konva from 'konva';
 import {Layer, Line, Stage, Image} from "react-konva";
 import {matGroups} from "../../data/matGroups";
 import pointInPolygon from 'point-in-polygon';
+import useImage from 'use-image';
 
 const Result = () => {
 
@@ -180,7 +181,12 @@ const Result = () => {
 
     const wires = wiresToLines(sortedWires(theMats))
 
-    return (
+
+
+    const [imageZ, setImageZ] = useState(null);
+    const [imageAltZ, setImageAltZ] = useState(null);
+
+        return (
         <div>
             <div className="info-section">
                 <div>
@@ -225,18 +231,22 @@ const Result = () => {
                             }
                             {
                                 superMats[1].map(mat => {
-                                    const image = new window.Image();
-                                    const imageAlt = new window.Image();
+                                    let image = new window.Image();
+                                    let imageAlt = new window.Image();
 
                                     image.src = mat.group.img;
+                                    image.onload = () => setImageZ(image)
+
                                     imageAlt.src = mat.group.imgAlt;
+
                                     return <Line
                                         x={320}
                                         y={0}
                                         points={mat.points}
                                         closed
-                                        stroke="white"
-                                        strokeWidth={0}
+                                       // stroke="#6F6F6F"
+                                       // strokeWidth={1}
+                                       // fill="#FF3F3F"
                                         fillPatternImage={mat.straight ? image : imageAlt}
                                         fillPatternX={mat.x}
                                         fillPatternY={mat.y}
