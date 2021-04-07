@@ -5,11 +5,22 @@ import {Layer, Line, Stage, Image} from "react-konva";
 import {matGroups} from "../../data/matGroups";
 import pointInPolygon from 'point-in-polygon';
 import useImage from 'use-image';
+import s from "../7Result/Result.module.css";
+import thermoImg from '../../img/ThermostatButton/thermostat.svg'
+
+const ThermostatImage = () => {
+    const [image] = useImage(thermoImg);
+    return <Image image={image}/>
+};
 
 const Result = () => {
 
     const room = useSelector(state => state.room);
     const spotsArray = useSelector(state => state.points);
+    const thermostat = useSelector(state => state.thermostat);
+    const thermoOut = [thermostat.x, thermostat.y]
+
+    const [image] = useImage(thermoImg);
 
     const d = 9; //1 px = 2 cm;  d - minimum distance between wall and mat
 
@@ -75,12 +86,12 @@ const Result = () => {
         let cuts = [];
         let mats = [{
             group: {}, x: 0, y: 0,
-            inM: [0, 0],
-            outF: [0, 0],
+            inM: thermoOut,
+            outF: thermoOut,
             points: []
         }];
         let spots = [...spotsArray];
-        let wires = [{in: [0, 0], out: [0, 0]}];
+        let wires = [{in: [0, 0], out: [thermostat.x - 436, thermostat.y - 9]}];
         for (let k = 0; k < groups.length; k++) {
             for (let i = 9; i < R[7][0]; i += 25) {
                 for (let j = 10; j < R[13][1]; j += 25) {
@@ -203,6 +214,7 @@ const Result = () => {
 
             <div className="content-section-grid">
                 <div className="constructor-box">
+
                     <Stage width={1220} height={320}>
                         <Layer name="main-layer">
                             <Line
@@ -235,7 +247,7 @@ const Result = () => {
                                     let imageAlt = new window.Image();
 
                                     image.src = mat.group.img;
-                                    image.onload = () => setImageZ(image)
+                                    //image.onload = () => setImageZ(image)
 
                                     imageAlt.src = mat.group.imgAlt;
 
@@ -266,18 +278,6 @@ const Result = () => {
                                     fill={"white"}
                                 />)
                             }
-                            {
-                                wires.map(mat => {
-                                    return <Line
-                                        x={320}
-                                        y={0}
-                                        points={mat}
-                                        closed
-                                        stroke="yellow"
-                                        strokeWidth={2}
-                                    />
-                                })
-                            }
                         </Layer>
                         <Layer name="main-layer">
                             <Line
@@ -289,8 +289,25 @@ const Result = () => {
                                 strokeWidth={6}
                             />
                         </Layer>
+                        <Layer>
+                            {
+                                wires.map(wire => {
+                                    return <Line
+                                        x={320}
+                                        y={0}
+                                        points={wire}
+                                        closed
+                                        stroke="yellow"
+                                        strokeWidth={2}
+                                    />
+                                })
+                            }
+                            <Image image={image}
+                                   x={thermostat.x + 320 - 12}
+                                   y={thermostat.y - 7}
+                            scale={{x: 0.6, y: 0.6}}/>
+                        </Layer>
                     </Stage>
-
                     {/*<span className="calculation-process">Calculation Project...</span>
                     <span className="printing-project">Printing Project...</span>
                     <span className="calculation-complete">Calculation complete</span>*/}

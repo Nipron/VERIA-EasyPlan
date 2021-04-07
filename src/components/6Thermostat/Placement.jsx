@@ -7,10 +7,12 @@ import {HashLink as Link} from "react-router-hash-link";
 import {Layer, Line, Stage} from "react-konva";
 import Draggable from "react-draggable";
 import thermostat from '../../img/ThermostatButton/thermostat.svg'
+import {updateThermostat} from "../../redux/thermostatReducer";
 
 const Placement = () => {
 
     let room = useSelector(state => state.room);
+    let thermostat = useSelector(state => state.thermostat);
 
     const startX = 437;
     const startY = 9;
@@ -34,8 +36,8 @@ const Placement = () => {
     //const center = {x: pos00.x + Math.min(pos01s.x - pos00.x, pos06.x - pos00.x) / 2, y: (pos03.y + pos04s.y) / 2}
     const center = {x: pos07.x + 60, y: pos03.y + 30}
 
-    const [thermX, setThermX] = useState(pos00.x);
-    const [thermY, setThermY] = useState(pos00.y);
+    const [thermX, setThermX] = useState(thermostat.x + startX);
+    const [thermY, setThermY] = useState(thermostat.y + startY);
 
     const [left, setLeft] = useState(startX - 1)
     const [right, setRight] = useState(startX + 1)
@@ -50,6 +52,7 @@ const Placement = () => {
 
     const handleClick = (page) => {
         dispatch(updateButton(page))
+        dispatch(updateThermostat({x: thermX - startX, y: thermY - startY}))
     }
 
     const [p, setP] = useState({x: startX, y: 200})

@@ -5,6 +5,7 @@ import {room} from "./roomReducer";
 import {coldSpots} from "./coldSpotsReducer";
 import {angles} from "./anglesReducer";
 import {points} from "./coldSpotsPoints";
+import {thermostat} from "./thermostatReducer";
 
 const reducers = combineReducers({
     buttons,
@@ -12,7 +13,8 @@ const reducers = combineReducers({
     room,
     angles,
     shapes,
-    points
+    points,
+    thermostat
 })
 
 export default reducers;

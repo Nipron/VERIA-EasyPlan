@@ -1,0 +1,13 @@
+.thermostat {
+    width: 35px;
+    height: 35px;
+    background: url("../../img/ThermostatButton/thermostat.svg");
+    position: fixed;
+}
+
+.red {
+    width: 350px;
+    height: 350px;
+    background: #61dafb;
+    position: fixed;
+}
