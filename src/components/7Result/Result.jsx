@@ -298,7 +298,7 @@ const Result = () => {
                                         points={wire}
                                         closed
                                         stroke="yellow"
-                                        strokeWidth={2}
+                                        strokeWidth={3}
                                     />
                                 })
                             }
