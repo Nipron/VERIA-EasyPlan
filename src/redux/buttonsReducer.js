@@ -14,7 +14,6 @@ export const updateButton = page => {
 export const buttons = (state = buttonsInitialState, action) => {
     switch (action.type) {
         case UPDATE_BUTTON:
-
             let tempState = [];
             for (let i = 1; i < buttonsInitialState.length; i++) {
                     tempState[i] = i <= action.payload

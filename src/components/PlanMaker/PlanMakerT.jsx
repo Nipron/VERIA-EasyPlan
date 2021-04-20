@@ -16,7 +16,7 @@ import {updateAngles} from "../../redux/anglesReducer";
 const PlanMakerT = () => {
 
     const ratio = 2; //ratio = cm / pixels
-    const minDist = 18; //minimum distance between points/lines
+    const minDist = 20; //minimum distance between points/lines
     const maxWidth = 720; //constructor max width
     const maxHeight = 315; //constructor max height
 
@@ -925,8 +925,6 @@ const PlanMakerT = () => {
                                                 if (delta < minDelta + 1) delta = minDelta + 1
                                                 if (delta > maxDelta + 1) delta = maxDelta + 1
                                                 setDim02to03Svalue(oldValue + delta);
-
-                                                console.log(delta)
 
                                                 setPos03shadow({x: pos03shadow.x + delta, y: pos03shadow.y});
                                                 setPos03({x: pos03.x + delta, y: pos03.y});

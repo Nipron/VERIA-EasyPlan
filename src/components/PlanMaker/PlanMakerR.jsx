@@ -16,7 +16,7 @@ import {updateAngles} from "../../redux/anglesReducer";
 const PlanMakerR = () => {
 
     const ratio = 2; //ratio = cm / pixels
-    const minDist = 18; //minimum distance between points/lines
+    const minDist = 20; //minimum distance between points/lines
     const maxWidth = 720; //constructor max width
     const maxHeight = 315; //constructor max height
 
@@ -51,9 +51,6 @@ const PlanMakerR = () => {
     const [pos03angled, setPos03angled] = useState(angles[3]);
     const [pos04angled, setPos04angled] = useState(angles[4]);
     const [pos07angled, setPos07angled] = useState(angles[7]);
-
-    console.log(angles);
-
 
     const [dim00to03SeditMode, setDim00to03SeditMode] = useState(false);
     const [dim03to04SeditMode, setDim03to04SeditMode] = useState(false);

@@ -8,7 +8,7 @@ import useImage from 'use-image';
 import s from "../7Result/Result.module.css";
 import thermoImg from '../../img/ThermostatButton/thermostat.svg'
 import {checkIntersection, colinearPointWithinSegment} from 'line-intersect';
-import PathFinder from "../../calculator/pathfinder";
+import PathFinder, {pathLength} from "../../calculator/pathfinder";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -88,13 +88,12 @@ const Result = () => {
     const findGroups = (groups) => {
         let cuts = [];
         let mats = [{
-            group: {}, x: 0, y: 0,
+            group: {}, x: thermostat.x, y: thermostat.y,
             inM: thermoOut,
             outF: thermoOut,
             points: []
         }];
         let spots = [...spotsArray];
-        let wires = [{in: [0, 0], out: [thermostat.x - 436, thermostat.y - 9]}];
         for (let k = 0; k < groups.length; k++) {
             for (let i = 0; i < R[7][0]; i += 4) {
                 for (let j = 0; j < R[13][1]; j += 4) {
@@ -119,18 +118,50 @@ const Result = () => {
                         let inMz = []; //alternative for 180 rotation
                         let outFz = []; //alternative for 180 rotation
                         if (groups[k].repeat === "repeat-x") {
-                            cuts.push([i, j - 12, i + groups[k].w, j - 12, i + groups[k].w, j + groups[k].h + 12, i, j + groups[k].h + 12]);
+
+                            //top cut
+                            for (let q = 12; q > 0; q--) {
+                                if (pointInPolygon([i, j - q], R) && pointInPolygon([i + groups[k].w, j - q], R)) {
+                                    cuts.push([i, j - q, i + groups[k].w, j - q, i + groups[k].w, j, i, j]);
+                                    break;
+                                }
+                            }
+                            //bottom cut
+                            for (let q = 12; q > 0; q--) {
+                                if (pointInPolygon([i, j + groups[k].h + q], R) && pointInPolygon([i + groups[k].w, j + groups[k].h + q], R)) {
+                                    cuts.push([i, j + groups[k].h, i + groups[k].w, j + groups[k].h, i + groups[k].w, j + groups[k].h + q, i, j + groups[k].h + q]);
+                                    break;
+                                }
+                            }
+
                             spots.push([i + 1 - d2, j + 1, i + groups[k].w - 1 + d2, j + 1, i + groups[k].w - 1 + d2, j + groups[k].h - 1, i + 1 - d2, j + groups[k].h - 1]);
-                            wires.push({in: [i, j], out: [i + groups[k].w, j]})
                             inM = [i + groups[k].w + 3, j + 6];
                             outF = [i - 3, j + 6];
                             inMz = [i - 3, j + groups[k].h - 6];
                             outFz = [i + groups[k].w + 3, j + groups[k].h - 6];
                         }
                         if (groups[k].repeat === "repeat-y") {
-                            cuts.push([i - 12, j, i + groups[k].w + 12, j, i + groups[k].w + 12, j + groups[k].h, i - 9, j + groups[k].h])
+
+                            //left cut
+                            for (let q = 12; q > 0; q--) {
+                                if (pointInPolygon([i - q, j], R) && pointInPolygon([i - q, j + groups[k].h], R)) {
+                                    cuts.push([i - q, j, i, j, i, j + groups[k].h, i - q, j + groups[k].h])
+                                    break;
+                                }
+                            }
+                            //right cut
+                            for (let q = 12; q > 0; q--) {
+                                if (pointInPolygon([i + groups[k].w + q, j], R) && pointInPolygon([i + groups[k].w + q, j + groups[k].h], R)) {
+                                    cuts.push([i + groups[k].w, j, i + groups[k].w + q, j, i + groups[k].w + q, j + groups[k].h, i + groups[k].w, j + groups[k].h])
+                                    break;
+                                }
+                            }
+
+
+                            // cuts.push([i - 12, j, i + groups[k].w + 12, j, i + groups[k].w + 12, j + groups[k].h, i - 9, j + groups[k].h])
+
+
                             spots.push([i + 1, j + 1 - d2, i + groups[k].w - 1, j + 1 - d2, i + groups[k].w - 1, j + groups[k].h - 1 + d2, i + 1, j + groups[k].h - 1 + d2]);
-                            wires.push({in: [i + groups[k].w, j], out: [i + groups[k].w, j + groups[k].h]})
                             inM = [i + groups[k].w - 6, j + groups[k].h + 3];
                             outF = [i + groups[k].w - 6, j - 3];
                             inMz = [i + 6, j - 3];
@@ -150,73 +181,20 @@ const Result = () => {
                 }
             }
         }
-        return [cuts, mats, wires]
+
+        return [cuts, mats]
     }
 
     const superMats = findGroups(matGroups);
 
     const theMats = superMats[1]
 
-    const sortedWires = (arr) => {
-        for (let i = 0; i < arr.length; i++) {
-            for (let j = 0; j < arr.length - 1 - i; j++) {
-
-                if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1].inM[0], 2)
-                    + Math.pow(arr[i].outF[1] - arr[i + 1].inM[1], 2)) >
-                    (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1].inMz[0], 2)
-                        + Math.pow(arr[i].outF[1] - arr[i + 1].inMz[1], 2)))) {
-                    let tempM = arr[i + 1].inM;
-                    let tempF = arr[i + 1].outF;
-                    arr[i + 1].inM = arr[i + 1].inMz;
-                    arr[i + 1].outF = arr[i + 1].outFz;
-                    arr[i + 1].inMz = tempM;
-                    arr[i + 1].outFz = tempF;
-                    arr[i + 1].straight = !arr[i + 1].straight
-                }
-
-                if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1 + j].inM[0], 2)
-                    + Math.pow(arr[i].outF[1] - arr[i + 1 + j].inM[1], 2)) >
-                    (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1 + j].inMz[0], 2)
-                        + Math.pow(arr[i].outF[1] - arr[i + 1 + j].inMz[1], 2)))) {
-                    let tempM = arr[i + 1 + j].inM;
-                    let tempF = arr[i + 1 + j].outF;
-                    arr[i + 1 + j].inM = arr[i + 1 + j].inMz;
-                    arr[i + 1 + j].outF = arr[i + 1 + j].outFz;
-                    arr[i + 1 + j].inMz = tempM;
-                    arr[i + 1 + j].outFz = tempF;
-                    arr[i + 1 + j].straight = !arr[i + 1 + j].straight
-                }
-
-                if (Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1].inM[0], 2)
-                    + Math.pow(arr[i].outF[1] - arr[i + 1].inM[1], 2)) >
-                    Math.sqrt(Math.pow(arr[i].outF[0] - arr[i + 1 + j].inM[0], 2)
-                        + Math.pow(arr[i].outF[1] - arr[i + 1 + j].inM[1], 2))) {
-                    let temp = arr[i + 1];
-                    arr[i + 1] = arr[i + 1 + j];
-                    arr[i + 1 + j] = temp;
-                }
-            }
-        }
-        return arr;
-    }
-
-    const wiresToLines = (arr) => {
-        let wiresB = []
-        for (let i = 0; i < arr.length - 1; i++) {
-            wiresB.push([arr[i].outF[0], arr[i].outF[1], arr[i + 1].inM[0], arr[i + 1].inM[1]])
-        }
-        return wiresB;
-    }
-
-    const wires = wiresToLines(sortedWires(theMats))
-
     let chineseWalls = [];  //array of all walls
-
     //first we push all room walls
     for (let i = 0; i < room.length / 2 - 1; i++) {
-        chineseWalls.push({xS: room[2 * i], yS: room[2 * i + 1], xF: room[2 * i + 2], yF: room[2 * i + 3]})
+        if ((i === 2) || (i === 3) || (i === 4) || (i === 8) || (i === 9) || (i === 10))
+            chineseWalls.push({xS: room[2 * i], yS: room[2 * i + 1], xF: room[2 * i + 2], yF: room[2 * i + 3]})
     }
-
     //second we push all mats
     for (let i = 1; i < theMats.length; i++) {
         chineseWalls.push({xS: theMats[i].x, yS: theMats[i].y, xF: theMats[i].x + theMats[i].group.w, yF: theMats[i].y})
@@ -242,6 +220,71 @@ const Result = () => {
         chineseWalls.push({xS: spotsArray[i][6], yS: spotsArray[i][7], xF: spotsArray[i][0], yF: spotsArray[i][7]})
     }
 
+    const sortedWires = (arr, walls) => {
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr.length - 1 - i; j++) {
+
+                let path = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
+                    x: arr[i + 1].inM[0],
+                    y: arr[i + 1].inM[1]
+                }, walls))
+                let pathZ = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
+                    x: arr[i + 1].inMz[0],
+                    y: arr[i + 1].inMz[1]
+                }, walls))
+                let pathNext = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
+                    x: arr[i + 1 + j].inM[0],
+                    y: arr[i + 1 + j].inM[1]
+                }, walls))
+                let pathNextZ = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
+                    x: arr[i + 1 + j].inMz[0],
+                    y: arr[i + 1 + j].inMz[1]
+                }, walls))
+
+                if (path > pathZ) {
+                    let tempM = arr[i + 1].inM;
+                    let tempF = arr[i + 1].outF;
+                    arr[i + 1].inM = arr[i + 1].inMz;
+                    arr[i + 1].outF = arr[i + 1].outFz;
+                    arr[i + 1].inMz = tempM;
+                    arr[i + 1].outFz = tempF;
+                    arr[i + 1].straight = !arr[i + 1].straight
+                }
+
+                if (pathNext > pathNextZ) {
+                    let tempM = arr[i + 1 + j].inM;
+                    let tempF = arr[i + 1 + j].outF;
+                    arr[i + 1 + j].inM = arr[i + 1 + j].inMz;
+                    arr[i + 1 + j].outF = arr[i + 1 + j].outFz;
+                    arr[i + 1 + j].inMz = tempM;
+                    arr[i + 1 + j].outFz = tempF;
+                    arr[i + 1 + j].straight = !arr[i + 1 + j].straight
+                }
+
+                if (path > pathNext) {
+                    let temp = arr[i + 1];
+                    arr[i + 1] = arr[i + 1 + j];
+                    arr[i + 1 + j] = temp;
+                }
+
+
+            }
+        }
+        return arr;
+    }
+
+    const wiresToLines = (arr) => {
+        let wiresB = []
+        for (let i = 0; i < arr.length - 1; i++) {
+            wiresB.push([arr[i].outF[0], arr[i].outF[1], arr[i + 1].inM[0], arr[i + 1].inM[1]])
+        }
+        return wiresB;
+    }
+
+    // console.log(sortedWires(theMats, chineseWalls))
+
+    const wires = wiresToLines(sortedWires(theMats, chineseWalls))
+
     const justWires = sortedWires(theMats)
 
     // console.log(justWires)
@@ -249,16 +292,16 @@ const Result = () => {
     let pStart = {x: 130, y: 10}
     let pFinish = {x: 140, y: 10}
 
-  //  let cord = PathFinder(pStart, pFinish, chineseWalls)
+    //  let cord = PathFinder(pStart, pFinish, chineseWalls)
 
-  //  console.log(chineseWalls)
-  //  console.log(wires)
- //   console.log(cord)
+    //  console.log(chineseWalls)
+    //  console.log(wires)
+    //   console.log(cord)
 
     let superCords = []
 
     for (let i = 0; i < wires.length; i++) {
-        let cord = PathFinder({x: wires[i][0], y:  wires[i][1]}, {x: wires[i][2], y:  wires[i][3]}, chineseWalls)
+        let cord = PathFinder({x: wires[i][0], y: wires[i][1]}, {x: wires[i][2], y: wires[i][3]}, chineseWalls)
         superCords.push([])
         for (let j = 0; j < cord.length; j++) {
             superCords[i].push(cord[j].x)
@@ -266,12 +309,10 @@ const Result = () => {
         }
     }
 
-    console.log(superCords)
+    //  console.log(wires)
 
-  //  console.log(wires)
-
-   // console.log(PathFinder({x: wires[2][0], y:  wires[2][1]}, {x: wires[2][2], y:  wires[2][3]}, chineseWalls))
-  //  console.log(PathFinder({x: 152, y:  2}, {x:2, y:  220}, chineseWalls))
+    // console.log(PathFinder({x: wires[2][0], y:  wires[2][1]}, {x: wires[2][2], y:  wires[2][3]}, chineseWalls))
+    //  console.log(PathFinder({x: 152, y:  2}, {x:2, y:  220}, chineseWalls))
 
 
     return (
@@ -374,7 +415,7 @@ const Result = () => {
                                         y={0}
                                         points={wire}
                                         stroke="black"
-                                        strokeWidth={3}
+                                        strokeWidth={2}
                                     />
                                 })
                             }
