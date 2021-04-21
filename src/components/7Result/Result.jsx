@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {useSelector} from "react-redux";
+import React, {useEffect, useRef, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {Document, Page, PDFDownloadLink, StyleSheet, View, Image as PDFImage, Text} from '@react-pdf/renderer';
 import Konva from 'konva';
 import {Layer, Line, Stage, Image} from "react-konva";
 import {matGroups} from "../../data/matGroups";
@@ -9,6 +10,16 @@ import s from "../7Result/Result.module.css";
 import thermoImg from '../../img/ThermostatButton/thermostat.svg'
 import {checkIntersection, colinearPointWithinSegment} from 'line-intersect';
 import PathFinder, {pathLength} from "../../calculator/pathfinder";
+import coldSpot from "../../img/frame_with_coldspot.png";
+import coldSpotWrong from "../../img/frame_with_coldspot_wrong_position.png";
+import {HashLink as Link} from "react-router-hash-link";
+import Modal from "../0Modal/Modal";
+import ModalPartsList from "../0Modal/ModalPartsList";
+import PDF from "../PDF/PDF";
+import {updateImg} from "../../redux/stageImgReducer";
+import veria from "../../img/forPDF/PDFheader.png";
+import NewPDF from "../PDF/newPDF";
+import {Redirect} from "react-router";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -17,6 +28,9 @@ const ThermostatImage = () => {
 
 const Result = () => {
 
+    const dispatch = useDispatch();
+
+    const buttons = useSelector(state => state.buttons);
     const room = useSelector(state => state.room);
     const spotsArray = useSelector(state => state.points);
     const thermostat = useSelector(state => state.thermostat);
@@ -314,6 +328,95 @@ const Result = () => {
     // console.log(PathFinder({x: wires[2][0], y:  wires[2][1]}, {x: wires[2][2], y:  wires[2][3]}, chineseWalls))
     //  console.log(PathFinder({x: 152, y:  2}, {x:2, y:  220}, chineseWalls))
 
+    const listOfParts = {
+        "mat5_55": 3,
+        "mat4-55": 0,
+        "mat3-55": 3,
+        "mat2-55": 0,
+        "mat5-100": 0,
+        "mat4-100": 4,
+        "mat3-100": 1,
+        "mat2-100": 0,
+        "cord2": 4,
+        "cord1": 1,
+        "cord025": 4,
+        "kit100": 1,
+        "kit55": 0
+    }
+
+    const [modalNotesActive, setModalNotesActive] = useState(false);
+    const [modalPartsActive, setModalPartsActive] = useState(false); //shows modal only first time on page
+
+    const stageRef = useRef();
+    const [im, setIm] = useState(null)
+    const [pdfLink, setPdfLink] = useState("PDF")
+
+    const handleEnter = event => {
+
+        const dataURL = stageRef.current.toDataURL({
+            pixelRatio: 2
+        });
+        setIm(dataURL)
+
+        const styles = StyleSheet.create({
+                page: {
+                    flexDirection: 'column',
+                    backgroundColor: 'white'
+                },
+                section: {
+                    margin: 20,
+                    padding: 20
+                },
+                sectionGrey: {
+                    margin: 20,
+                    padding: 20,
+                    backgroundColor: "#DCDCDC",
+                    borderRadius: 7
+                }
+            })
+        ;
+
+        const PDF2 = () => {
+            return (
+                <Document>
+                    <Page size="A4" style={styles.page}>
+                        <View style={styles.section}>
+                            <PDFImage src={veria}/>
+                        </View>
+                        <View style={styles.sectionGrey}>
+                            <Text>
+                                Floor heating: 11,0 m2 | Clickmat | 75% heating coverage
+                            </Text>
+                            <Text>
+                                Top Floor Covering: Laminate
+                            </Text>
+                            <Text>
+                                Bottom Floor Construction: Unburnable (Concrete)
+                            </Text>
+                        </View>
+                        <View style={styles.section}>
+                            <PDFImage src={im}/>
+                        </View>
+                    </Page>
+                </Document>
+            );
+        };
+
+        setPdfLink(<PDFDownloadLink document={<PDF2/>} fileName="EasyPlan.pdf">
+            {({blob, url, loading, error}) => (loading ? 'Loading...' : 'Save as PDF')}
+        </PDFDownloadLink>)
+    }
+
+    /*  useEffect(() => {
+         const dataURL = stageRef.current.toDataURL({
+              pixelRatio: 0.5
+          });
+          setIm(dataURL)
+      }, []);*/
+
+    if (!buttons[7]) return <Redirect to="/"/>
+
+    // const [letDraw, setLetDraw] = useState(false)
 
     return (
         <div>
@@ -333,7 +436,7 @@ const Result = () => {
             <div className="content-section-grid">
                 <div className="constructor-box">
 
-                    <Stage width={1220} height={320}>
+                    <Stage width={1220} height={320} ref={stageRef}>
                         <Layer name="main-layer">
                             <Line
                                 x={320}
@@ -429,14 +532,24 @@ const Result = () => {
                     <span className="printing-project">Printing Project...</span>
                     <span className="calculation-complete">Calculation complete</span>*/}
                     <div className="block-button">
-                        <div className="btn-notes-loading">Add Notes</div>
-                        <div className="btn-list-loading">List of Parts / Where to Buy</div>
-                        <div className="btn-print-project-loading"><a href="#">Print Project</a></div>
+                        <div className="btn-notes">Add Notes</div>
+                        <div className="btn-list"
+                             onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
+                        </div>
+                        <div className="btn-print-project" onMouseEnter={handleEnter}>
+                            {pdfLink}
+                        </div>
+                        {/* <div className="btn-print-project" onMouseEnter={handleEnter}>
+                            <NewPDF/>
+                        </div>*/}
                     </div>
                 </div>
             </div>
+            <ModalPartsList active={modalPartsActive} setActive={setModalPartsActive} list={listOfParts}/>
         </div>
     );
 };
 
 export default Result;
+
+

@@ -13,6 +13,13 @@
   }
 }
 
+.forPDF {
+  width: 1000px;
+  height: 5000px;
+  background: green;
+  margin: 0 auto;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
