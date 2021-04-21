@@ -131,6 +131,7 @@ const Result = () => {
                         let outF = [];
                         let inMz = []; //alternative for 180 rotation
                         let outFz = []; //alternative for 180 rotation
+
                         if (groups[k].repeat === "repeat-x") {
 
                             //top cut
@@ -154,6 +155,8 @@ const Result = () => {
                             inMz = [i - 3, j + groups[k].h - 6];
                             outFz = [i + groups[k].w + 3, j + groups[k].h - 6];
                         }
+
+
                         if (groups[k].repeat === "repeat-y") {
 
                             //left cut
@@ -171,9 +174,7 @@ const Result = () => {
                                 }
                             }
 
-
                             // cuts.push([i - 12, j, i + groups[k].w + 12, j, i + groups[k].w + 12, j + groups[k].h, i - 9, j + groups[k].h])
-
 
                             spots.push([i + 1, j + 1 - d2, i + groups[k].w - 1, j + 1 - d2, i + groups[k].w - 1, j + groups[k].h - 1 + d2, i + 1, j + groups[k].h - 1 + d2]);
                             inM = [i + groups[k].w - 6, j + groups[k].h + 3];
@@ -195,7 +196,6 @@ const Result = () => {
                 }
             }
         }
-
         return [cuts, mats]
     }
 
@@ -295,7 +295,7 @@ const Result = () => {
         return wiresB;
     }
 
-    // console.log(sortedWires(theMats, chineseWalls))
+   // console.log(sortedWires(theMats, chineseWalls))
 
     const wires = wiresToLines(sortedWires(theMats, chineseWalls))
 
@@ -315,8 +315,12 @@ const Result = () => {
     let superCords = []
 
     for (let i = 0; i < wires.length; i++) {
-        let cord = PathFinder({x: wires[i][0], y: wires[i][1]}, {x: wires[i][2], y: wires[i][3]}, chineseWalls)
         superCords.push([])
+
+
+        let cord = PathFinder({x: wires[i][0], y: wires[i][1]}, {x: wires[i][2], y: wires[i][3]}, chineseWalls, 99)
+
+            //console.log(cord)
         for (let j = 0; j < cord.length; j++) {
             superCords[i].push(cord[j].x)
             superCords[i].push(cord[j].y)
@@ -536,10 +540,10 @@ const Result = () => {
                         <div className="btn-list"
                              onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
                         </div>
-                        <div className="btn-print-project" onMouseEnter={handleEnter}>
+                        {/* <div className="btn-print-project" onMouseEnter={handleEnter}>
                             {pdfLink}
                         </div>
-                        {/* <div className="btn-print-project" onMouseEnter={handleEnter}>
+                         <div className="btn-print-project" onMouseEnter={handleEnter}>
                             <NewPDF/>
                         </div>*/}
                     </div>
