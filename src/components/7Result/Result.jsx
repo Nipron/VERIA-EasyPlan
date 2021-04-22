@@ -242,8 +242,6 @@ const Result = () => {
             }, walls))
             let pathZ = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
                 x: arr[i + 1].inMz[0],
-
-
                 y: arr[i + 1].inMz[1]
             }, walls))
             if (path > pathZ) {
