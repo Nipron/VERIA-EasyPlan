@@ -235,17 +235,28 @@ const Result = () => {
     }
 
     const sortedWires = (arr, walls) => {
-        for (let i = 0; i < arr.length; i++) {
-            for (let j = 0; j < arr.length - 1 - i; j++) {
+        for (let i = 0; i < arr.length - 1; i++) {
+            let path = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
+                x: arr[i + 1].inM[0],
+                y: arr[i + 1].inM[1]
+            }, walls))
+            let pathZ = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
+                x: arr[i + 1].inMz[0],
 
-                let path = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
-                    x: arr[i + 1].inM[0],
-                    y: arr[i + 1].inM[1]
-                }, walls))
-                let pathZ = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
-                    x: arr[i + 1].inMz[0],
-                    y: arr[i + 1].inMz[1]
-                }, walls))
+
+                y: arr[i + 1].inMz[1]
+            }, walls))
+            if (path > pathZ) {
+                let tempM = arr[i + 1].inM;
+                let tempF = arr[i + 1].outF;
+                arr[i + 1].inM = arr[i + 1].inMz;
+                arr[i + 1].outF = arr[i + 1].outFz;
+                arr[i + 1].inMz = tempM;
+                arr[i + 1].outFz = tempF;
+                arr[i + 1].straight = !arr[i + 1].straight
+                console.log("flip")
+            }
+            for (let j = 1; j < arr.length - i - 1; j++) {
                 let pathNext = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
                     x: arr[i + 1 + j].inM[0],
                     y: arr[i + 1 + j].inM[1]
@@ -254,17 +265,6 @@ const Result = () => {
                     x: arr[i + 1 + j].inMz[0],
                     y: arr[i + 1 + j].inMz[1]
                 }, walls))
-
-                if (path > pathZ) {
-                    let tempM = arr[i + 1].inM;
-                    let tempF = arr[i + 1].outF;
-                    arr[i + 1].inM = arr[i + 1].inMz;
-                    arr[i + 1].outF = arr[i + 1].outFz;
-                    arr[i + 1].inMz = tempM;
-                    arr[i + 1].outFz = tempF;
-                    arr[i + 1].straight = !arr[i + 1].straight
-                }
-
                 if (pathNext > pathNextZ) {
                     let tempM = arr[i + 1 + j].inM;
                     let tempF = arr[i + 1 + j].outF;
@@ -273,15 +273,14 @@ const Result = () => {
                     arr[i + 1 + j].inMz = tempM;
                     arr[i + 1 + j].outFz = tempF;
                     arr[i + 1 + j].straight = !arr[i + 1 + j].straight
+                    console.log("flip next")
                 }
-
                 if (path > pathNext) {
                     let temp = arr[i + 1];
                     arr[i + 1] = arr[i + 1 + j];
                     arr[i + 1 + j] = temp;
+                    console.log("switch")
                 }
-
-
             }
         }
         return arr;
@@ -295,11 +294,11 @@ const Result = () => {
         return wiresB;
     }
 
-   // console.log(sortedWires(theMats, chineseWalls))
+    // console.log(sortedWires(theMats, chineseWalls))
 
     const wires = wiresToLines(sortedWires(theMats, chineseWalls))
 
-    const justWires = sortedWires(theMats)
+    //  const justWires = sortedWires(theMats)
 
     // console.log(justWires)
 
@@ -320,7 +319,7 @@ const Result = () => {
 
         let cord = PathFinder({x: wires[i][0], y: wires[i][1]}, {x: wires[i][2], y: wires[i][3]}, chineseWalls, 99)
 
-            //console.log(cord)
+        //console.log(cord)
         for (let j = 0; j < cord.length; j++) {
             superCords[i].push(cord[j].x)
             superCords[i].push(cord[j].y)

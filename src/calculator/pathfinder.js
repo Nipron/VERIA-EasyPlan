@@ -40,7 +40,6 @@ const PathFinder = (pS, pF, walls, NN) => {
         success = (wallsOnMyWay.length === 0)
 
         if (!success) {
-
             let closestWall = wallsOnMyWay[intersectionsArray.indexOf(findClosest(currPit, intersectionsArray))]
 
             if (!(((currPit.x === closestWall.xS) && (currPit.y === closestWall.yS)) ||
@@ -50,6 +49,11 @@ const PathFinder = (pS, pF, walls, NN) => {
                     ? {x: closestWall.xF, y: closestWall.yF}
                     : {x: closestWall.xS, y: closestWall.yS}
             }
+            if (NN === 99) {
+               // console.log(closestWall)
+            }
+
+
             pitStops.push(currPit);
             wallsPassed.push(closestWall)
 
