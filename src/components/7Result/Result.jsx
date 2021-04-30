@@ -20,6 +20,18 @@ import {updateImg} from "../../redux/stageImgReducer";
 import veria from "../../img/forPDF/PDFheader.png";
 import NewPDF from "../PDF/newPDF";
 import {Redirect} from "react-router";
+import {
+    Che_X_Norm,
+    Che_X_Alt,
+    Che_Y_Norm,
+    Che_Y_Alt,
+    Che_X_Norm_ColdSpot,
+    Che_X_Alt_ColdSpot,
+    Che_Y_Norm_ColdSpot,
+    Che_Y_Alt_ColdSpot,
+    Mirror45,
+    TurnChe180
+} from "./Che";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -38,8 +50,8 @@ const Result = () => {
 
     const [image] = useImage(thermoImg);
 
-    const d = 0; //1 px = 2 cm;  d - minimum distance between wall and mat
-    const d2 = 4; //1 px = 2 cm;  d - minimum distance between wall and mat
+    const d = 2; //1 px = 2 cm;  d - minimum distance from wall
+    const d2 = 2; //1 px = 2 cm;  d2 - minimum distance from mat
 
     const R = [[room[0] + d, room[1] + d],
         [room[2] - d, room[3] + d], [room[4] - d, room[5] + d],
@@ -56,6 +68,17 @@ const Result = () => {
         && pointInPolygon([groupX0 + group.w, groupY0], R)
         && pointInPolygon([groupX0 + group.w, groupY0 + group.h], R)
         && pointInPolygon([groupX0, groupY0 + group.h], R)
+
+    const isCheInsideRoom = (che) => {
+        for (let i = 0; i < che.length; i++) {
+            for (let j = 0; j < che[i].length / 2; j++) {
+                if (!pointInPolygon(che[i][2 * j], che[i][2 * j + 1], R)) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
 
     // Cold Spot inside Group and vice versa
     const YinYang = (CS, gX0, gY0, group) =>
@@ -109,21 +132,24 @@ const Result = () => {
         }];
         let spots = [...spotsArray];
         for (let k = 0; k < groups.length; k++) {
-            for (let i = 0; i < R[7][0]; i += 4) {
-                for (let j = 0; j < R[13][1]; j += 4) {
+            for (let i = 2; i < R[7][0]; i += 4) {
+                for (let j = 4; j < R[13][1]; j += 4) {
                     let gB = {} //group with bounds increased due to connectors
+                    //  let che = []
                     if (groups[k].repeat === "repeat-x") {
-                        gB = {...groups[k], w: groups[k].w + 2 * d2}
+                        gB = {...groups[k], h: groups[k].h + 2 * d2}
+                        //  che = Che_X_Norm(i, j, groups[k])
                     }
                     if (groups[k].repeat === "repeat-y") {
-                        gB = {...groups[k], h: groups[k].h + 2 * d2}
+                        gB = {...groups[k], w: groups[k].w + 2 * d2}
+                        //   che = Che_Y_Norm(i, j, groups[k])
                     }
                     if (
-                        (((gB.repeat === "repeat-x") && (isGroupInsideRoom(i - d2, j, gB)))
-                            || ((gB.repeat === "repeat-y") && (isGroupInsideRoom(i, j - d2, gB)))
+                        (((gB.repeat === "repeat-x") && (isGroupInsideRoom(i, j - d2, gB)))
+                            || ((gB.repeat === "repeat-y") && (isGroupInsideRoom(i - d2, j, gB)))
                         ) && (
-                            ((gB.repeat === "repeat-x") && (!doesAnyCSOverlapGroup(spots, i - d2, j, gB))) ||
-                            ((gB.repeat === "repeat-y") && (!doesAnyCSOverlapGroup(spots, i, j - d2, gB)))
+                            ((gB.repeat === "repeat-x") && (!doesAnyCSOverlapGroup(spots, i, j - d2, gB))) ||
+                            ((gB.repeat === "repeat-y") && (!doesAnyCSOverlapGroup(spots, i - d2, j, gB)))
                         )
                     ) {
                         let groupOK = [i, j, i + groups[k].w, j, i + groups[k].w, j + groups[k].h, i, j + groups[k].h];
@@ -149,11 +175,12 @@ const Result = () => {
                                 }
                             }
 
-                            spots.push([i + 1 - d2, j + 1, i + groups[k].w - 1 + d2, j + 1, i + groups[k].w - 1 + d2, j + groups[k].h - 1, i + 1 - d2, j + groups[k].h - 1]);
+                            spots.push([i + 2, j + 2 - d2, i + groups[k].w - 2, j + 2 - d2, i + groups[k].w - 2, j + groups[k].h - 2 + d2, i + 2, j + groups[k].h - 2 + d2]);
                             inM = [i + groups[k].w + 3, j + 6];
                             outF = [i - 3, j + 6];
                             inMz = [i - 3, j + groups[k].h - 6];
                             outFz = [i + groups[k].w + 3, j + groups[k].h - 6];
+                            //  console.log(che)
                         }
 
 
@@ -176,11 +203,12 @@ const Result = () => {
 
                             // cuts.push([i - 12, j, i + groups[k].w + 12, j, i + groups[k].w + 12, j + groups[k].h, i - 9, j + groups[k].h])
 
-                            spots.push([i + 1, j + 1 - d2, i + groups[k].w - 1, j + 1 - d2, i + groups[k].w - 1, j + groups[k].h - 1 + d2, i + 1, j + groups[k].h - 1 + d2]);
+                            spots.push([i + 2 - d2, j + 2, i + groups[k].w - 2 + d2, j + 2, i + groups[k].w - 2 + d2, j + groups[k].h - 2, i + 2 - d2, j + groups[k].h - 2]);
                             inM = [i + groups[k].w - 6, j + groups[k].h + 3];
                             outF = [i + groups[k].w - 6, j - 3];
                             inMz = [i + 6, j - 3];
                             outFz = [i + 6, j + groups[k].h + 3];
+                            //  console.log(che)
                         }
                         mats.push({
                             group: groups[k], x: i, y: j,
@@ -196,10 +224,43 @@ const Result = () => {
                 }
             }
         }
-        return [cuts, mats]
+
+        let square = {w: 50, h: 50}
+        let tails = []
+        let planks = []
+
+        for (let i = 0; i < mats.length; i++) {
+            let g = {...mats[i]}
+            if (mats[i].group.repeat === "repeat-x") {
+                if (mats[i].straight === true) {
+                    for (let j = 0; j < mats[i].group.amount; j++) {
+                        if ((isGroupInsideRoom(g.x + j * 50, g.y + g.group.h, square))
+                            && (!doesAnyCSOverlapGroup(spots, g.x + j * 50, g.y + g.group.h + 2, square))) {
+                            tails.push([g.x + j * 50, g.y + g.group.h + 1,
+                                g.x + (j + 1) * 50, g.y + g.group.h + 1,
+                                g.x + (j + 1) * 50, g.y + g.group.h + 52,
+                                g.x + j * 50, g.y + g.group.h + 52,
+                            ])
+                            planks.push([g.x + j * 50 + 1, g.y + g.group.h - 1,
+                                g.x + (j + 1) * 50 - 1, g.y + g.group.h - 1,
+                                g.x + (j + 1) * 50 - 1, g.y + g.group.h + 5,
+                                g.x + j * 50 + 1, g.y + g.group.h + 5,
+                            ])
+                        }
+                    }
+                }
+            }
+
+        }
+
+        // console.log(tails)
+
+        return [cuts, mats, tails, planks]
     }
 
     const superMats = findGroups(matGroups);
+
+    //  console.log(superMats)
 
     const theMats = superMats[1]
 
@@ -234,8 +295,22 @@ const Result = () => {
         chineseWalls.push({xS: spotsArray[i][6], yS: spotsArray[i][7], xF: spotsArray[i][0], yF: spotsArray[i][7]})
     }
 
-    const sortedWires = (arr, walls) => {
+    const sortedWires = (arrr, walls) => {
+        let arr = arrr
+
+        /*  console.log(arr)
+          console.log(arr[0])
+          console.log(arr[1])
+          console.log(arr[2])
+          console.log(arr[3])
+          console.log(arr[4])
+          console.log(arr[5])
+          console.log(arr[6])*/
         for (let i = 0; i < arr.length - 1; i++) {
+            /*  console.log(arr)
+              console.log(arr[i])
+              console.log(arr[1])
+              console.log(i)*/
             let path = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
                 x: arr[i + 1].inM[0],
                 y: arr[i + 1].inM[1]
@@ -244,6 +319,11 @@ const Result = () => {
                 x: arr[i + 1].inMz[0],
                 y: arr[i + 1].inMz[1]
             }, walls))
+
+            /*  console.log("FIRST PATH to")
+              console.log(arr[i + 1])
+              console.log(path)*/
+
             if (path > pathZ) {
                 let tempM = arr[i + 1].inM;
                 let tempF = arr[i + 1].outF;
@@ -252,7 +332,14 @@ const Result = () => {
                 arr[i + 1].inMz = tempM;
                 arr[i + 1].outFz = tempF;
                 arr[i + 1].straight = !arr[i + 1].straight
-                console.log("flip")
+                let tempPath = path;
+                path = pathZ;
+                pathZ = tempPath;
+                /*  console.log("flip")
+                  console.log(arr[i + 1])
+                  console.log("NEW PATH")
+                  console.log(path)*/
+
             }
             for (let j = 1; j < arr.length - i - 1; j++) {
                 let pathNext = pathLength(PathFinder({x: arr[i].outF[0], y: arr[i].outF[1]}, {
@@ -271,13 +358,24 @@ const Result = () => {
                     arr[i + 1 + j].inMz = tempM;
                     arr[i + 1 + j].outFz = tempF;
                     arr[i + 1 + j].straight = !arr[i + 1 + j].straight
-                    console.log("flip next")
+                    let tempPathNext = pathNext;
+                    pathNext = pathNextZ;
+                    pathNextZ = tempPathNext;
+                    /*  console.log("flip next")
+                      console.log(arr[i + 1 + j])*/
                 }
                 if (path > pathNext) {
                     let temp = arr[i + 1];
                     arr[i + 1] = arr[i + 1 + j];
                     arr[i + 1 + j] = temp;
-                    console.log("switch")
+                    /*  console.log("switch")
+                      console.log(arr[i + 1])
+                      console.log(arr[i + 1 + j])
+                      console.log("path")
+                      console.log(path)
+                      console.log("pathZ")
+                      console.log(pathZ)*/
+
                 }
             }
         }
@@ -419,6 +517,17 @@ const Result = () => {
 
     // const [letDraw, setLetDraw] = useState(false)
 
+
+    let che1 = Che_X_Norm(10, 10, {w: 150, h: 100})
+    let che2 = Che_Y_Norm(10, 10, {w: 100, h: 150})
+    let che3 = Che_X_Alt(10, 10, {w: 150, h: 100})
+    let che4 = Che_Y_Alt(10, 10, {w: 100, h: 150})
+    let che5 = Che_X_Norm_ColdSpot(10, 10, {w: 150, h: 100})
+    let che6 = Che_Y_Norm_ColdSpot(10, 10, {w: 100, h: 150})
+    let che7 = Che_X_Alt_ColdSpot(10, 10, {w: 150, h: 100})
+    let che8 = Che_Y_Alt_ColdSpot(10, 10, {w: 100, h: 150})
+
+
     return (
         <div>
             <div className="info-section">
@@ -455,7 +564,7 @@ const Result = () => {
                             {
                                 superMats[0].map(cut => <Line
                                     x={320}
-                                    y={0}
+                                    y={2}
                                     points={cut}
                                     closed
                                     stroke="#868686"
@@ -475,7 +584,7 @@ const Result = () => {
 
                                     return <Line
                                         x={320}
-                                        y={0}
+                                        y={2}
                                         points={mat.points}
                                         closed
                                         // stroke="#6F6F6F"
@@ -492,12 +601,34 @@ const Result = () => {
                             {
                                 spotsArray.map(spot => <Line
                                     x={320}
-                                    y={0}
+                                    y={2}
                                     points={spot}
                                     closed
                                     stroke="#868686"
                                     strokeWidth={2}
                                     fill={"white"}
+                                />)
+                            }
+                            {
+                                superMats[2].map(tail => <Line
+                                    x={320}
+                                    y={2}
+                                    points={tail}
+                                    closed
+                                    stroke="#6E6E6E"
+                                    strokeWidth={2}
+                                    fill="#FF3F3F"
+                                />)
+                            }
+                            {
+                                superMats[3].map(tail => <Line
+                                    x={320}
+                                    y={2}
+                                    points={tail}
+                                    closed
+                                    stroke="#6E6E6E"
+                                    strokeWidth={0}
+                                    fill="#FF3F3F"
                                 />)
                             }
                         </Layer>
