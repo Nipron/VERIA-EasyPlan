@@ -32,6 +32,7 @@ import {
     Mirror45,
     TurnChe180
 } from "./Che";
+import {MatFinder} from "./MatFinder";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -135,14 +136,14 @@ const Result = () => {
             for (let i = 2; i < R[7][0]; i += 4) {
                 for (let j = 4; j < R[13][1]; j += 4) {
                     let gB = {} //group with bounds increased due to connectors
-                    //  let che = []
+                    //   let che = []
                     if (groups[k].repeat === "repeat-x") {
                         gB = {...groups[k], h: groups[k].h + 2 * d2}
-                        //  che = Che_X_Norm(i, j, groups[k])
+                        //   che = Che_X_Norm(i, j, groups[k])
                     }
                     if (groups[k].repeat === "repeat-y") {
                         gB = {...groups[k], w: groups[k].w + 2 * d2}
-                        //   che = Che_Y_Norm(i, j, groups[k])
+                        //  che = Che_Y_Norm(i, j, groups[k])
                     }
                     if (
                         (((gB.repeat === "repeat-x") && (isGroupInsideRoom(i, j - d2, gB)))
@@ -208,7 +209,7 @@ const Result = () => {
                             outF = [i + groups[k].w - 6, j - 3];
                             inMz = [i + 6, j - 3];
                             outFz = [i + 6, j + groups[k].h + 3];
-                            //  console.log(che)
+                            // console.log(che)
                         }
                         mats.push({
                             group: groups[k], x: i, y: j,
@@ -257,6 +258,51 @@ const Result = () => {
 
         return [cuts, mats, tails, planks]
     }
+
+    const zzz = () => {
+        let spots = [...spotsArray];
+        const head = {w: 50, h: 75}
+        const square = {w: 50, h: 50}
+        let superMass = []
+
+        for (let x = 2; x < R[7][0]; x += 4) {
+            for (let y = 4; y < R[13][1]; y += 4) {
+                let startRow = []
+                let columns = 0
+                while ((isGroupInsideRoom(x + columns * 50, y, head))
+                && (!doesAnyCSOverlapGroup(spots, x + columns * 50, y, head))) {
+                    startRow.push(0)
+                    columns++
+                }
+                for (let col = 0; col < startRow.length; col++) {
+                    let row = 0;
+                    while ((isGroupInsideRoom(x + col * 50, y + 75 + row * 50, square))
+                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y + 75 + row * 50, head))
+                    && (row < 3)) {
+                        startRow[col]++
+                        row++
+                    }
+                }
+                superMass.push([x, y, ...startRow])
+            }
+        }
+
+        let max = 0;
+        let index = 0
+        for (let i = 0; i < superMass.length; i++) {
+            let sum = 0;
+            for (let j = 2; j < superMass[i].length; j++) {
+                sum += superMass[i][j]
+            }
+            if (sum > max) {
+                max = sum + 0;
+                index = i
+            }
+        }
+        return superMass[index]
+    }
+
+    let massGroup = MatFinder(spotsArray, R)
 
     const superMats = findGroups(matGroups);
 
@@ -390,22 +436,7 @@ const Result = () => {
         return wiresB;
     }
 
-    // console.log(sortedWires(theMats, chineseWalls))
-
     const wires = wiresToLines(sortedWires(theMats, chineseWalls))
-
-    //  const justWires = sortedWires(theMats)
-
-    // console.log(justWires)
-
-    let pStart = {x: 130, y: 10}
-    let pFinish = {x: 140, y: 10}
-
-    //  let cord = PathFinder(pStart, pFinish, chineseWalls)
-
-    //  console.log(chineseWalls)
-    //  console.log(wires)
-    //   console.log(cord)
 
     let superCords = []
 
@@ -415,17 +446,11 @@ const Result = () => {
 
         let cord = PathFinder({x: wires[i][0], y: wires[i][1]}, {x: wires[i][2], y: wires[i][3]}, chineseWalls, 99)
 
-        //console.log(cord)
         for (let j = 0; j < cord.length; j++) {
             superCords[i].push(cord[j].x)
             superCords[i].push(cord[j].y)
         }
     }
-
-    //  console.log(wires)
-
-    // console.log(PathFinder({x: wires[2][0], y:  wires[2][1]}, {x: wires[2][2], y:  wires[2][3]}, chineseWalls))
-    //  console.log(PathFinder({x: 152, y:  2}, {x:2, y:  220}, chineseWalls))
 
     const listOfParts = {
         "mat5_55": 3,
@@ -506,27 +531,7 @@ const Result = () => {
         </PDFDownloadLink>)
     }
 
-    /*  useEffect(() => {
-         const dataURL = stageRef.current.toDataURL({
-              pixelRatio: 0.5
-          });
-          setIm(dataURL)
-      }, []);*/
-
     if (!buttons[7]) return <Redirect to="/"/>
-
-    // const [letDraw, setLetDraw] = useState(false)
-
-
-    let che1 = Che_X_Norm(10, 10, {w: 150, h: 100})
-    let che2 = Che_Y_Norm(10, 10, {w: 100, h: 150})
-    let che3 = Che_X_Alt(10, 10, {w: 150, h: 100})
-    let che4 = Che_Y_Alt(10, 10, {w: 100, h: 150})
-    let che5 = Che_X_Norm_ColdSpot(10, 10, {w: 150, h: 100})
-    let che6 = Che_Y_Norm_ColdSpot(10, 10, {w: 100, h: 150})
-    let che7 = Che_X_Alt_ColdSpot(10, 10, {w: 150, h: 100})
-    let che8 = Che_Y_Alt_ColdSpot(10, 10, {w: 100, h: 150})
-
 
     return (
         <div>
@@ -562,43 +567,6 @@ const Result = () => {
                         </Layer>
                         <Layer name="result">
                             {
-                                superMats[0].map(cut => <Line
-                                    x={320}
-                                    y={2}
-                                    points={cut}
-                                    closed
-                                    stroke="#868686"
-                                    strokeWidth={0}
-                                    fill="#FF6D6D"
-                                />)
-                            }
-                            {
-                                superMats[1].map(mat => {
-                                    let image = new window.Image();
-                                    let imageAlt = new window.Image();
-
-                                    image.src = mat.group.img;
-                                    //image.onload = () => setImageZ(image)
-
-                                    imageAlt.src = mat.group.imgAlt;
-
-                                    return <Line
-                                        x={320}
-                                        y={2}
-                                        points={mat.points}
-                                        closed
-                                        // stroke="#6F6F6F"
-                                        // strokeWidth={1}
-                                        // fill="#FF3F3F"
-                                        fillPatternImage={mat.straight ? image : imageAlt}
-                                        fillPatternX={mat.x}
-                                        fillPatternY={mat.y}
-                                        fillPatternScale={{x: 1, y: 1}}
-                                        fillPatternRepeat={mat.repeat}
-                                    />
-                                })
-                            }
-                            {
                                 spotsArray.map(spot => <Line
                                     x={320}
                                     y={2}
@@ -610,7 +578,7 @@ const Result = () => {
                                 />)
                             }
                             {
-                                superMats[2].map(tail => <Line
+                                massGroup.map(tail => <Line
                                     x={320}
                                     y={2}
                                     points={tail}
@@ -620,30 +588,9 @@ const Result = () => {
                                     fill="#FF3F3F"
                                 />)
                             }
-                            {
-                                superMats[3].map(tail => <Line
-                                    x={320}
-                                    y={2}
-                                    points={tail}
-                                    closed
-                                    stroke="#6E6E6E"
-                                    strokeWidth={0}
-                                    fill="#FF3F3F"
-                                />)
-                            }
-                        </Layer>
-                        <Layer name="main-layer">
-                            <Line
-                                x={320}
-                                y={2}
-                                points={room}
-                                closed
-                                stroke="#868686"
-                                strokeWidth={2}
-                            />
                         </Layer>
                         <Layer>
-                            {
+                            {/*
                                 superCords.map(wire => {
                                     return <Line
                                         x={320}
@@ -653,7 +600,7 @@ const Result = () => {
                                         strokeWidth={2}
                                     />
                                 })
-                            }
+                            */}
                             <Image image={image}
                                    x={thermostat.x + 320 - 12}
                                    y={thermostat.y - 7}
