@@ -59,47 +59,47 @@ export const MatFinder = (spotsArray, R) => {
     const connectorHorizontal = {w: 6, h: 4}
     let needToSearch = true;
     let result = []
+    console.log(R)
 
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
         let superMass = []
-        for (let x = 0; x < R[7][0]; x += 4) {
-            for (let y = 0; y < R[13][1]; y += 4) {
+        for (let x = 0; x < R[7][0]; x += 2) {
+            for (let y = 0; y < R[13][1]; y += 2) {
 
                 //creating horizontal starting row growing down
                 let columnsDown = 0
                 let startRowGrowDown = [0] //0 is code for "down"
-                while ((isGroupInsideRoom(x + columnsDown * 50, y, headVertical, R))
-                    && (isGroupInsideRoom(x + columnsDown * 50 - 4, y + 4, connectorVertical, R))
-                    && (isGroupInsideRoom(x + columnsDown * 50 + 50, y + 4, connectorVertical, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50, y, headVertical))
-                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - 4, y + 4, connectorVertical))
-                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 + 50, y + 4, connectorVertical))
+                while ((isGroupInsideRoom(x + columnsDown * 50, y + 1, headVertical, R))
+                    && (isGroupInsideRoom(x - 3, y + 4 + 1, connectorVertical, R))
+                    && (isGroupInsideRoom(x + columnsDown * 50 + 49, y + 4 + 1, connectorVertical, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50, y + 1, headVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - 3, y + 4 + 1, connectorVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 + 49, y + 4 + 1, connectorVertical))
                     ) {
                     columnsDown++
                     startRowGrowDown.push(0)
                 }
                 for (let col = 0; col < startRowGrowDown.length - 1; col++) {
                     let rowDown = 0;
-                    while ((isGroupInsideRoom(x + col * 50, y + headVertical.h + rowDown * 50, square, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y + headVertical.h + rowDown * 50, square))
+                    while ((isGroupInsideRoom(x + col * 50, y - 1 + headVertical.h + rowDown * 50, square, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y - 1 + headVertical.h + rowDown * 50, square))
                     && (rowDown < 3)) {
                         startRowGrowDown[col + 1]++
                         rowDown++
                     }
                 }
 
-
                 //creating horizontal starting row growing up
                 let columnsUp = 0
                 let startRowGrowUp = [1]  //1 is code for "up"
 
                 while ((isGroupInsideRoom(x + columnsUp * 50, y, headVertical, R))
-                    && (isGroupInsideRoom(x + columnsUp * 50 - 4, y + headVertical.h - 4, connectorVertical, R))
-                    && (isGroupInsideRoom(x + columnsUp * 50 + 50, y + headVertical.h - 4, connectorVertical, R))
+                    && (isGroupInsideRoom(x - 3, y + headVertical.h - 10, connectorVertical, R))
+                    && (isGroupInsideRoom(x + columnsUp * 50 + 49, y + headVertical.h - 10, connectorVertical, R))
                     && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50, y, headVertical))
-                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 - 4, y + headVertical.h - 4, connectorVertical))
-                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 + 50, y + headVertical.h - 4, connectorVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 - 3, y + headVertical.h - 10, connectorVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 + 49, y + headVertical.h - 10, connectorVertical))
                     ) {
                     columnsUp++
                     startRowGrowUp.push(0)
@@ -107,8 +107,8 @@ export const MatFinder = (spotsArray, R) => {
 
                 for (let col = 0; col < startRowGrowUp.length - 1; col++) {
                     let rowUp = 0;
-                    while ((isGroupInsideRoom(x + col * 50, y - (rowUp + 1) * 50, square, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y - (rowUp + 1) * 50, square))
+                    while ((isGroupInsideRoom(x + col * 50, y + 1 - (rowUp + 1) * 50, square, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y + 1 - (rowUp + 1) * 50, square))
                     && (rowUp < 3)) {
                         startRowGrowUp[col + 1]++
                         rowUp++
