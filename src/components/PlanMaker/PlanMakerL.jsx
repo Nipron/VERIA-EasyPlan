@@ -16,7 +16,7 @@ import {updateAngles} from "../../redux/anglesReducer";
 const PlanMakerL = () => {
 
     const ratio = 2; //ratio = cm / pixels
-    const minDist = 20; //minimum distance between points/lines
+    const minDist = 10; //minimum distance between points/lines
     const maxWidth = 720; //constructor max width
     const maxHeight = 315; //constructor max height
 

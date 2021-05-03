@@ -52,14 +52,14 @@ export const MatFinder = (spotsArray, R) => {
 
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     let spots = [...spotsArray];
-    const headVertical = {w: 50, h: 73}
-    const headHorizontal = {w: 73, h: 50}
+    const headVertical = {w: 50, h: 74}
+    const headHorizontal = {w: 74, h: 50}
     const square = {w: 50, h: 50}
-    const connectorVertical = {w: 4, h: 6}
-    const connectorHorizontal = {w: 6, h: 4}
+    const connectorVertical = {w: d, h: 6}
+    const connectorHorizontal = {w: 6, h: d}
     let needToSearch = true;
-    let result = []
-    console.log(R)
+    let resultMats = []
+    let connectors = []
 
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
@@ -140,7 +140,6 @@ export const MatFinder = (spotsArray, R) => {
                     }
                 }
 
-
                 //creating vertical starting column growing right
                 let rowsRight = 0
                 let startColumnGrowRight = [3]
@@ -201,7 +200,6 @@ export const MatFinder = (spotsArray, R) => {
             }
 
             let icicle = superMass[index]  //icicle - the biggest group of connected different length mats
-            console.log(icicle)
             const x = icicle[0];
             const y = icicle[1];
             const growDirection = icicle[2];  //0 - down, 1 - up, 2 - left, 3 - right
@@ -209,48 +207,80 @@ export const MatFinder = (spotsArray, R) => {
             for (let z = 3; z < icicle.length; z++) {
                 switch (growDirection) {
                     case 0:
-                        result.push([50 * (z - 3) + x, y,
+                        resultMats.push([50 * (z - 3) + x, y,
                             50 * (z - 2) + x, y,
                             50 * (z - 2) + x, 75 + icicle[z] * 50 + y,
                             50 * (z - 3) + x, 75 + icicle[z] * 50 + y])
-                        spots.push([50 * (z - 3) + x, y,
-                            50 * (z - 2) + x, y,
-                            50 * (z - 2) + x, y + 75 + icicle[z] * 50,
-                            50 * (z - 3) + x, y + 75 + icicle[z] * 50])
+                        spots.push([50 * (z - 3) + x + 1, y + 1,
+                            50 * (z - 2) + x - 1, y + 1,
+                            50 * (z - 2) + x - 1, y + 75 + icicle[z] * 50 - 1,
+                            50 * (z - 3) + x + 1, y + 75 + icicle[z] * 50 - 1])
+                        connectors.push([x - 4, y + 4,
+                            x + 4, y + 4,
+                            x + 4, y + 10,
+                            x - 4, y + 10])
+                        connectors.push([x - 4 + 50 * (z - 2), y + 4,
+                            x + 4 + 50 * (z - 2), y + 4,
+                            x + 4 + 50 * (z - 2), y + 10,
+                            x - 4 + 50 * (z - 2), y + 10])
                         break;
                     case 1:
-                        spots.push([50 * (z - 3) + x, y + 75,
+                        resultMats.push([50 * (z - 3) + x, y + 75,
                             50 * (z - 2) + x, y + 75,
                             50 * (z - 2) + x, y - icicle[z] * 50,
                             50 * (z - 3) + x, y - icicle[z] * 50])
-                        result.push([50 * (z - 3) + x, y + 75,
-                            50 * (z - 2) + x, y + 75,
-                            50 * (z - 2) + x, y - icicle[z] * 50,
-                            50 * (z - 3) + x, y - icicle[z] * 50])
+                        spots.push([50 * (z - 3) + x + 1, y + 75 - 1,
+                            50 * (z - 2) + x - 1, y + 75 - 1,
+                            50 * (z - 2) + x - 1, y - icicle[z] * 50 + 1,
+                            50 * (z - 3) + x + 1, y - icicle[z] * 50 + 1])
+                        connectors.push([x - 4, y + 75 - 10,
+                            x + 4, y + 75 - 10,
+                            x + 4, y + 75 - 4,
+                            x - 4, y + 75 - 4])
+                        connectors.push([x - 4 + 50 * (z - 2), y + 75 - 10,
+                            x + 4 + 50 * (z - 2), y + 75 - 10,
+                            x + 4 + 50 * (z - 2), y + 75 - 4,
+                            x - 4 + 50 * (z - 2), y + 75 - 4])
                         break;
                     case 2:
-                        spots.push([x - icicle[z] * 50, y + 50 * (z - 3),
+                        resultMats.push([x - icicle[z] * 50, y + 50 * (z - 3),
                             x + 75, y + 50 * (z - 3),
                             x + 75, y + 50 * (z - 2),
                             x - icicle[z] * 50, y + 50 * (z - 2)])
-                        result.push([x - icicle[z] * 50, y + 50 * (z - 3),
-                            x + 75, y + 50 * (z - 3),
-                            x + 75, y + 50 * (z - 2),
-                            x - icicle[z] * 50, y + 50 * (z - 2)])
+                        spots.push([x - icicle[z] * 50 + 1, y + 50 * (z - 3) + 1,
+                            x + 75 - 1, y + 50 * (z - 3) + 1,
+                            x + 75 - 1, y + 50 * (z - 2) - 1,
+                            x - icicle[z] * 50 + 1, y + 50 * (z - 2) - 1])
+                        connectors.push([x + 75 - 10, y - 4,
+                            x + 75 - 4, y - 4,
+                            x + 75 - 4, y + 4,
+                            x + 75 - 10, y + 4])
+                        connectors.push([x + 75 - 10, y - 4 + 50 * (z - 2),
+                            x + 75 - 4, y - 4 + 50 * (z - 2),
+                            x + 75 - 4, y + 4 + 50 * (z - 2),
+                            x + 75 - 10, y + 4 + 50 * (z - 2)])
                         break;
                     case 3:
-                        result.push([x + 75 + icicle[z] * 50, y + 50 * (z - 3),
+                        resultMats.push([x + 75 + icicle[z] * 50, y + 50 * (z - 3),
                             x, y + 50 * (z - 3),
                             x, y + 50 * (z - 2),
                             x + 75 + icicle[z] * 50, y + 50 * (z - 2)])
-                        spots.push([x + 75 + icicle[z] * 50, y + 50 * (z - 3),
-                            x, y + 50 * (z - 3),
-                            x, y + 50 * (z - 2),
-                            x + 75 + icicle[z] * 50, y + 50 * (z - 2)])
+                        spots.push([x + 75 + icicle[z] * 50 - 1, y + 50 * (z - 3) + 1,
+                            x + 1, y + 50 * (z - 3) + 1,
+                            x + 1, y + 50 * (z - 2) - 1,
+                            x - 1 + 75 + icicle[z] * 50, y + 50 * (z - 2) + 1])
+                        connectors.push([x + 4, y - 4,
+                            x + 10, y - 4,
+                            x + 10, y + 4,
+                            x + 4, y + 4])
+                        connectors.push([x + 4, y - 4 + 50 * (z - 2),
+                            x + 10, y - 4 + 50 * (z - 2),
+                            x + 10, y + 4 + 50 * (z - 2),
+                            x + 4, y + 4 + 50 * (z - 2)])
                         break;
                 }
             }
         }
     }
-    return result
+    return [resultMats, connectors]
 }

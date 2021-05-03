@@ -578,7 +578,7 @@ const Result = () => {
                                 />)
                             }
                             {
-                                massGroup.map(tail => <Line
+                                massGroup[0].map(tail => <Line
                                     x={320}
                                     y={2}
                                     points={tail}
@@ -586,6 +586,15 @@ const Result = () => {
                                     stroke="#6E6E6E"
                                     strokeWidth={2}
                                     fill="#FF3F3F"
+                                />)
+                            }
+                            {
+                                massGroup[1].map(tail => <Line
+                                    x={320}
+                                    y={2}
+                                    points={tail}
+                                    closed
+                                    fill="#2B2B2B"
                                 />)
                             }
                         </Layer>
