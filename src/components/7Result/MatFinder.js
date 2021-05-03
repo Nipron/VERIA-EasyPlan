@@ -50,43 +50,63 @@ const doesAnyCSOverlapGroup = (CSarray, gX0, gY0, group) => {
 
 export const MatFinder = (spotsArray, R) => {
 
+    const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     let spots = [...spotsArray];
-    const head = {w: 50, h: 75}
-    const headHorizontal = {w: 75, h: 50}
+    const headVertical = {w: 50, h: 74}
+    const headHorizontal = {w: 74, h: 50}
     const square = {w: 50, h: 50}
+    const connectorVertical = {w: 4, h: 6}
+    const connectorHorizontal = {w: 6, h: 4}
     let needToSearch = true;
     let result = []
 
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
         let superMass = []
-        for (let x = 2; x < R[7][0]; x += 4) {
-            for (let y = 4; y < R[13][1]; y += 4) {
+        for (let x = 0; x < R[7][0]; x += 4) {
+            for (let y = 0; y < R[13][1]; y += 4) {
 
-                //creating horizontal starting row
-                let columns = 0
-                let startRowGrowDown = [0]
-                let startRowGrowUp = [1]
-
-                while ((isGroupInsideRoom(x + columns * 50, y, head, R))
-                && (!doesAnyCSOverlapGroup(spots, x + columns * 50, y, head))) {
-                    columns++
+                //creating horizontal starting row growing down
+                let columnsDown = 0
+                let startRowGrowDown = [0] //0 is code for "down"
+                while ((isGroupInsideRoom(x + columnsDown * 50, y, headVertical, R))
+                    && (isGroupInsideRoom(x + columnsDown * 50 - 4, y + 4, connectorVertical, R))
+                    && (isGroupInsideRoom(x + columnsDown * 50 + 50, y + 4, connectorVertical, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50, y, headVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - 4, y + 4, connectorVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 + 50, y + 4, connectorVertical))
+                    ) {
+                    columnsDown++
                     startRowGrowDown.push(0)
-                    startRowGrowUp.push(0)
                 }
-
-                //growing down and up
                 for (let col = 0; col < startRowGrowDown.length - 1; col++) {
                     let rowDown = 0;
-                    let rowUp = 0;
-                    //down
-                    while ((isGroupInsideRoom(x + col * 50, y + 75 + rowDown * 50, square, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y + 75 + rowDown * 50, square))
+                    while ((isGroupInsideRoom(x + col * 50, y + headVertical.h + rowDown * 50, square, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y + headVertical.h + rowDown * 50, square))
                     && (rowDown < 3)) {
                         startRowGrowDown[col + 1]++
                         rowDown++
                     }
-                    //up
+                }
+
+
+                //creating horizontal starting row growing up
+                let columnsUp = 0
+                let startRowGrowUp = [1]  //1 is code for "up"
+
+                while ((isGroupInsideRoom(x + columnsUp * 50, y, headVertical, R))
+                    && (isGroupInsideRoom(x + columnsUp * 50 - 4, y + headVertical.h - 4, connectorVertical, R))
+                    && (isGroupInsideRoom(x + columnsUp * 50 + 50, y + headVertical.h - 4, connectorVertical, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50, y, headVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 - 4, y + headVertical.h - 4, connectorVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 + 50, y + headVertical.h - 4, connectorVertical))
+                    ) {
+                    columnsUp++
+                    startRowGrowUp.push(0)
+                }
+
+                for (let col = 0; col < startRowGrowUp.length - 1; col++) {
+                    let rowUp = 0;
                     while ((isGroupInsideRoom(x + col * 50, y - (rowUp + 1) * 50, square, R))
                     && (!doesAnyCSOverlapGroup(spots, x + col * 50, y - (rowUp + 1) * 50, square))
                     && (rowUp < 3)) {
@@ -119,8 +139,8 @@ export const MatFinder = (spotsArray, R) => {
                         columnLeft++
                     }
                     //right
-                    while ((isGroupInsideRoom(x + 75 + columnRight * 50, y + row * 50, square, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + 75 + columnRight * 50, y + row * 50, square))
+                    while ((isGroupInsideRoom(x + headHorizontal.w + columnRight * 50, y + row * 50, square, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + headHorizontal.w + columnRight * 50, y + row * 50, square))
                     && (columnRight < 3)) {
                         startColumnGrowRight[row + 1]++
                         columnRight++
@@ -130,6 +150,9 @@ export const MatFinder = (spotsArray, R) => {
 
                 if (startRowGrowDown.length > 1) {
                     superMass.push([x, y, ...startRowGrowDown])
+                }
+
+                if (startRowGrowUp.length > 1) {
                     superMass.push([x, y, ...startRowGrowUp])
                 }
 
@@ -165,44 +188,44 @@ export const MatFinder = (spotsArray, R) => {
             for (let z = 3; z < icicle.length; z++) {
                 switch (growDirection) {
                     case 0:
-                        result.push([2 + 50 * (z - 3) + x, 4 + y,
-                            2 + 50 * (z - 2) + x, 4 + y,
-                            2 + 50 * (z - 2) + x, 79 + icicle[z] * 50 + y,
-                            2 + 50 * (z - 3) + x, 79 + icicle[z] * 50 + y])
-                        spots.push([2 + 50 * (z - 3) + x, 4 + y,
-                            2 + 50 * (z - 2) + x, 4 + y,
-                            2 + 50 * (z - 2) + x, 79 + icicle[z] * 50 + y,
-                            2 + 50 * (z - 3) + x, 79 + icicle[z] * 50 + y])
+                        result.push([50 * (z - 3) + x, y,
+                            50 * (z - 2) + x, y,
+                            50 * (z - 2) + x, 75 + icicle[z] * 50 + y,
+                            50 * (z - 3) + x, 75 + icicle[z] * 50 + y])
+                        spots.push([50 * (z - 3) + x, y,
+                            50 * (z - 2) + x, y,
+                            50 * (z - 2) + x, y + 75 + icicle[z] * 50,
+                            50 * (z - 3) + x, y + 75 + icicle[z] * 50])
                         break;
                     case 1:
-                        spots.push([2 + 50 * (z - 3) + x, 4 + y + 75,
-                            2 + 50 * (z - 2) + x, 4 + y + 75,
-                            2 + 50 * (z - 2) + x, 4 - icicle[z] * 50 + y,
-                            2 + 50 * (z - 3) + x, 4 - icicle[z] * 50 + y])
-                        result.push([2 + 50 * (z - 3) + x, 4 + y + 75,
-                            2 + 50 * (z - 2) + x, 4 + y + 75,
-                            2 + 50 * (z - 2) + x, 4 - icicle[z] * 50 + y,
-                            2 + 50 * (z - 3) + x, 4 - icicle[z] * 50 + y])
+                        spots.push([50 * (z - 3) + x, y + 75,
+                            50 * (z - 2) + x, y + 75,
+                            50 * (z - 2) + x, y - icicle[z] * 50,
+                            50 * (z - 3) + x, y - icicle[z] * 50])
+                        result.push([50 * (z - 3) + x, y + 75,
+                            50 * (z - 2) + x, y + 75,
+                            50 * (z - 2) + x, y - icicle[z] * 50,
+                            50 * (z - 3) + x, y - icicle[z] * 50])
                         break;
                     case 2:
-                        spots.push([2 + x - icicle[z] * 50, 4 + y + 50 * (z - 3),
-                            2 + x + 75, 4 + y + 50 * (z - 3),
-                            2 + x + 75, 4 + y + 50 * (z - 2),
-                            2 + x - icicle[z] * 50, 4 + y + 50 * (z - 2)])
-                        result.push([2 + x - icicle[z] * 50, 4 + y + 50 * (z - 3),
-                            2 + x + 75, 4 + y + 50 * (z - 3),
-                            2 + x + 75, 4 + y + 50 * (z - 2),
-                            2 + x - icicle[z] * 50, 4 + y + 50 * (z - 2)])
+                        spots.push([x - icicle[z] * 50, y + 50 * (z - 3),
+                            x + 75, y + 50 * (z - 3),
+                            x + 75, y + 50 * (z - 2),
+                            x - icicle[z] * 50, y + 50 * (z - 2)])
+                        result.push([x - icicle[z] * 50, y + 50 * (z - 3),
+                            x + 75, y + 50 * (z - 3),
+                            x + 75, y + 50 * (z - 2),
+                            x - icicle[z] * 50, y + 50 * (z - 2)])
                         break;
                     case 3:
-                        result.push([2 + x + 75 + icicle[z] * 50, 4 + y + 50 * (z - 3),
-                            2 + x, 4 + y + 50 * (z - 3),
-                            2 + x, 4 + y + 50 * (z - 2),
-                            2 + x + 75 + icicle[z] * 50, 4 + y + 50 * (z - 2)])
-                        spots.push([2 + x + 75 + icicle[z] * 50, 4 + y + 50 * (z - 3),
-                            2 + x, 4 + y + 50 * (z - 3),
-                            2 + x, 4 + y + 50 * (z - 2),
-                            2 + x + 75 + icicle[z] * 50, 4 + y + 50 * (z - 2)])
+                        result.push([x + 75 + icicle[z] * 50, y + 50 * (z - 3),
+                            x, y + 50 * (z - 3),
+                            x, y + 50 * (z - 2),
+                            x + 75 + icicle[z] * 50, y + 50 * (z - 2)])
+                        spots.push([x + 75 + icicle[z] * 50, y + 50 * (z - 3),
+                            x, y + 50 * (z - 3),
+                            x, y + 50 * (z - 2),
+                            x + 75 + icicle[z] * 50, y + 50 * (z - 2)])
                         break;
                 }
             }
@@ -210,50 +233,3 @@ export const MatFinder = (spotsArray, R) => {
     }
     return result
 }
-
-
-/*let massGroup = []
-massGroup = MatFinder(spotsArray, R);
-
-console.log(massGroup)
-
-let x = 0;
-let y = 0;
-let growDirection = 0;
-
-let massDraw = []
-if (massGroup) {
-    x = massGroup[0];
-    y = massGroup[1];
-    growDirection = massGroup[2];  //0 - down, 1 - up, 2 - left, 3 - right
-
-
-    for (let z = 3; z < massGroup.length; z++) {
-        switch (growDirection) {
-            case 0:
-                massDraw.push([2 + 50 * (z - 3) + x, 4 + y,
-                    2 + 50 * (z - 2) + x, 4 + y,
-                    2 + 50 * (z - 2) + x, 79 + massGroup[z] * 50 + y,
-                    2 + 50 * (z - 3) + x, 79 + massGroup[z] * 50 + y])
-                break;
-            case 1:
-                massDraw.push([2 + 50 * (z - 3) + x, 4 + y + 75,
-                    2 + 50 * (z - 2) + x, 4 + y + 75,
-                    2 + 50 * (z - 2) + x, 4 - massGroup[z] * 50 + y,
-                    2 + 50 * (z - 3) + x, 4 - massGroup[z] * 50 + y])
-                break;
-            case 2:
-                massDraw.push([2 + x - massGroup[z] * 50, 4 + y + 50 * (z - 3),
-                    2 + x + 75, 4 + y + 50 * (z - 3),
-                    2 + x + 75, 4 + y + 50 * (z - 2),
-                    2 + x - massGroup[z] * 50, 4 + y + 50 * (z - 2)])
-                break;
-            case 3:
-                massDraw.push([2 + x + 75 + massGroup[z] * 50, 4 + y + 50 * (z - 3),
-                    2 + x, 4 + y + 50 * (z - 3),
-                    2 + x, 4 + y + 50 * (z - 2),
-                    2 + x + 75 + massGroup[z] * 50, 4 + y + 50 * (z - 2)])
-                break;
-        }
-    }
-}*/

@@ -51,7 +51,7 @@ const Result = () => {
 
     const [image] = useImage(thermoImg);
 
-    const d = 2; //1 px = 2 cm;  d - minimum distance from wall
+    const d = 0; //1 px = 2 cm;  d - minimum distance from wall
     const d2 = 2; //1 px = 2 cm;  d2 - minimum distance from mat
 
     const R = [[room[0] + d, room[1] + d],
