@@ -1,4 +1,5 @@
 import pointInPolygon from "point-in-polygon";
+import {Bomb, BombForRoom, Bulldozer, RemoveDoubledPoints, RoomTransformer} from "../../calculator/helpers";
 
 const isGroupInsideRoom = (groupX0, groupY0, group, R) =>
     pointInPolygon([groupX0, groupY0], R)
@@ -48,7 +49,7 @@ const doesAnyCSOverlapGroup = (CSarray, gX0, gY0, group) => {
     return overlap
 }
 
-export const MatFinder = (spotsArray, R) => {
+export const MatFinder = (spotsArray, room) => {
 
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     let spots = [...spotsArray];
@@ -57,16 +58,17 @@ export const MatFinder = (spotsArray, R) => {
     const square = {w: 50, h: 50}
     const connectorVertical = {w: d, h: 6}
     const connectorHorizontal = {w: 6, h: d}
+    const R = RoomTransformer(room, 0)
     let needToSearch = true;
     let resultMats = []
     let connectors = []
 
+
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
         let superMass = []
-        for (let x = 0; x < R[7][0]; x += 2) {
-            for (let y = 0; y < R[13][1]; y += 2) {
-
+        for (let y = 0; y < R[13][1]; y += 2) {
+            for (let x = 0; x < R[7][0]; x += 2) {
                 //creating horizontal starting row growing down
                 let columnsDown = 0
                 let startRowGrowDown = [0] //0 is code for "down"
@@ -282,5 +284,25 @@ export const MatFinder = (spotsArray, R) => {
             }
         }
     }
+
+    //FIRST: Creating array of pitStops - nodal points at the room for wires (corners of the room, cold spots and mats)
+    let pitStops = []
+    //adding room corners
+    pitStops.push(...BombForRoom(RoomTransformer(room, 0)))
+    //adding cold spots' corners
+    let initialSpots = [...spotsArray]
+    for (let i = 0; i < initialSpots.length; i++) {
+        pitStops.push(...Bomb(initialSpots[i]))
+    }
+    //adding all mats' corners
+    for (let i = 0; i < resultMats.length; i++) {
+        pitStops.push(...Bomb(resultMats[i]))
+    }
+    //removing all doubles
+    pitStops = [...RemoveDoubledPoints(pitStops)]
+
+
+    console.log(pitStops)
+
     return [resultMats, connectors]
 }
