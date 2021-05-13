@@ -1,5 +1,14 @@
 import pointInPolygon from "point-in-polygon";
-import {Bomb, BombForRoom, Bulldozer, RemoveDoubledPoints, RoomTransformer} from "../../calculator/helpers";
+import _ from 'lodash';
+import {
+    Bomb, BombForMat,
+    BombForRoom,
+    Bulldozer, BulldozerSquad,
+    ColdSpotsTransformer,
+    RemoveDoubledPoints, RoomReshaper,
+    RoomTransformer
+} from "../../calculator/helpers";
+import {combinationLength, normalSnake, weakSnake, wireLength, wiresCombinations} from "../../calculator/superSnake";
 
 const isGroupInsideRoom = (groupX0, groupY0, group, R) =>
     pointInPolygon([groupX0, groupY0], R)
@@ -49,10 +58,11 @@ const doesAnyCSOverlapGroup = (CSarray, gX0, gY0, group) => {
     return overlap
 }
 
-export const MatFinder = (spotsArray, room) => {
+export const MatFinder = (spotsArray, room, thermoOut) => {
 
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
-    let spots = [...spotsArray];
+    const t = -1 //
+    const spots = ColdSpotsTransformer(spotsArray, 0);
     const headVertical = {w: 50, h: 74}
     const headHorizontal = {w: 74, h: 50}
     const square = {w: 50, h: 50}
@@ -62,7 +72,8 @@ export const MatFinder = (spotsArray, room) => {
     let needToSearch = true;
     let resultMats = []
     let connectors = []
-
+    let entryPoints = []
+    let cE = 0 //current entry index
 
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
@@ -75,7 +86,7 @@ export const MatFinder = (spotsArray, room) => {
                 while ((isGroupInsideRoom(x + columnsDown * 50, y + 1, headVertical, R))
                     && (isGroupInsideRoom(x - 3, y + 4 + 1, connectorVertical, R))
                     && (isGroupInsideRoom(x + (columnsDown + 1) * 50 - 1, y + 4 + 1, connectorVertical, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50, y + 1, headVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50, y, headVertical))
                     && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - 3, y + 4 + 1, connectorVertical))
                     && (!doesAnyCSOverlapGroup(spots, x + (columnsDown + 1) * 50 - 1, y + 4 + 1, connectorVertical))
                     ) {
@@ -205,6 +216,38 @@ export const MatFinder = (spotsArray, room) => {
             const x = icicle[0];
             const y = icicle[1];
             const growDirection = icicle[2];  //0 - down, 1 - up, 2 - left, 3 - right
+            entryPoints.push([[], []])
+
+            switch (growDirection) {
+                case 0:
+                    connectors.push([x - 4, y + 4,
+                        x + 4, y + 4,
+                        x + 4, y + 10,
+                        x - 4, y + 10])
+                    entryPoints[cE][1] = [x - 4, y + 7]
+                    break;
+                case 1:
+                    connectors.push([x - 4, y + 75 - 10,
+                        x + 4, y + 75 - 10,
+                        x + 4, y + 75 - 4,
+                        x - 4, y + 75 - 4])
+                    entryPoints[cE][0] = [x - 4, y + 75 - 7]
+                    break;
+                case 2:
+                    connectors.push([x + 75 - 10, y - 4,
+                        x + 75 - 4, y - 4,
+                        x + 75 - 4, y + 4,
+                        x + 75 - 10, y + 4])
+                    entryPoints[cE][1] = [x + 75 - 7, y - 4]
+                    break;
+                case 3:
+                    connectors.push([x + 4, y - 4,
+                        x + 10, y - 4,
+                        x + 10, y + 4,
+                        x + 4, y + 4])
+                    entryPoints[cE][0] = [x + 7, y - 4]
+                    break;
+            }
 
             for (let z = 3; z < icicle.length; z++) {
                 switch (growDirection) {
@@ -213,96 +256,118 @@ export const MatFinder = (spotsArray, room) => {
                             50 * (z - 2) + x, y,
                             50 * (z - 2) + x, 75 + icicle[z] * 50 + y,
                             50 * (z - 3) + x, 75 + icicle[z] * 50 + y])
-                        spots.push([50 * (z - 3) + x + 1, y + 1,
-                            50 * (z - 2) + x - 1, y + 1,
-                            50 * (z - 2) + x - 1, y + 75 + icicle[z] * 50 - 1,
-                            50 * (z - 3) + x + 1, y + 75 + icicle[z] * 50 - 1])
-                        connectors.push([x - 4, y + 4,
-                            x + 4, y + 4,
-                            x + 4, y + 10,
-                            x - 4, y + 10])
+                        spots.push([50 * (z - 3) + x + t, y + t,
+                            50 * (z - 2) + x - t, y + t,
+                            50 * (z - 2) + x - t, y + 75 + icicle[z] * 50 - t,
+                            50 * (z - 3) + x + t, y + 75 + icicle[z] * 50 - t])
                         connectors.push([x - 4 + 50 * (z - 2), y + 4,
                             x + 4 + 50 * (z - 2), y + 4,
                             x + 4 + 50 * (z - 2), y + 10,
                             x - 4 + 50 * (z - 2), y + 10])
+                        entryPoints[cE][0] = [x + 4 + 50 * (z - 2), y + 7]
                         break;
                     case 1:
-                        resultMats.push([50 * (z - 3) + x, y + 75,
-                            50 * (z - 2) + x, y + 75,
+                        resultMats.push([50 * (z - 3) + x, y - icicle[z] * 50,
                             50 * (z - 2) + x, y - icicle[z] * 50,
-                            50 * (z - 3) + x, y - icicle[z] * 50])
-                        spots.push([50 * (z - 3) + x + 1, y + 75 - 1,
-                            50 * (z - 2) + x - 1, y + 75 - 1,
-                            50 * (z - 2) + x - 1, y - icicle[z] * 50 + 1,
-                            50 * (z - 3) + x + 1, y - icicle[z] * 50 + 1])
-                        connectors.push([x - 4, y + 75 - 10,
-                            x + 4, y + 75 - 10,
-                            x + 4, y + 75 - 4,
-                            x - 4, y + 75 - 4])
+                            50 * (z - 2) + x, y + 75,
+                            50 * (z - 3) + x, y + 75])
+                        spots.push([50 * (z - 3) + x + t, y + 75 - t,
+                            50 * (z - 2) + x - t, y + 75 - t,
+                            50 * (z - 2) + x - t, y - icicle[z] * 50 + t,
+                            50 * (z - 3) + x + t, y - icicle[z] * 50 + t])
                         connectors.push([x - 4 + 50 * (z - 2), y + 75 - 10,
                             x + 4 + 50 * (z - 2), y + 75 - 10,
                             x + 4 + 50 * (z - 2), y + 75 - 4,
                             x - 4 + 50 * (z - 2), y + 75 - 4])
+                        entryPoints[cE][1] = [x + 4 + 50 * (z - 2), y + 75 - 7]
                         break;
                     case 2:
                         resultMats.push([x - icicle[z] * 50, y + 50 * (z - 3),
                             x + 75, y + 50 * (z - 3),
                             x + 75, y + 50 * (z - 2),
                             x - icicle[z] * 50, y + 50 * (z - 2)])
-                        spots.push([x - icicle[z] * 50 + 1, y + 50 * (z - 3) + 1,
-                            x + 75 - 1, y + 50 * (z - 3) + 1,
-                            x + 75 - 1, y + 50 * (z - 2) - 1,
-                            x - icicle[z] * 50 + 1, y + 50 * (z - 2) - 1])
-                        connectors.push([x + 75 - 10, y - 4,
-                            x + 75 - 4, y - 4,
-                            x + 75 - 4, y + 4,
-                            x + 75 - 10, y + 4])
+                        spots.push([x - icicle[z] * 50 + t, y + 50 * (z - 3) + t,
+                            x + 75 - t, y + 50 * (z - 3) + t,
+                            x + 75 - t, y + 50 * (z - 2) - t,
+                            x - icicle[z] * 50 + t, y + 50 * (z - 2) - t])
                         connectors.push([x + 75 - 10, y - 4 + 50 * (z - 2),
                             x + 75 - 4, y - 4 + 50 * (z - 2),
                             x + 75 - 4, y + 4 + 50 * (z - 2),
                             x + 75 - 10, y + 4 + 50 * (z - 2)])
+                        entryPoints[cE][0] = [x + 75 - 7, y + 4 + 50 * (z - 2)]
                         break;
                     case 3:
-                        resultMats.push([x + 75 + icicle[z] * 50, y + 50 * (z - 3),
-                            x, y + 50 * (z - 3),
-                            x, y + 50 * (z - 2),
-                            x + 75 + icicle[z] * 50, y + 50 * (z - 2)])
-                        spots.push([x + 75 + icicle[z] * 50 - 1, y + 50 * (z - 3) + 1,
-                            x + 1, y + 50 * (z - 3) + 1,
-                            x + 1, y + 50 * (z - 2) - 1,
-                            x - 1 + 75 + icicle[z] * 50, y + 50 * (z - 2) + 1])
-                        connectors.push([x + 4, y - 4,
-                            x + 10, y - 4,
-                            x + 10, y + 4,
-                            x + 4, y + 4])
+                        resultMats.push([x, y + 50 * (z - 3),
+                            x + 75 + icicle[z] * 50, y + 50 * (z - 3),
+                            x + 75 + icicle[z] * 50, y + 50 * (z - 2),
+                            x, y + 50 * (z - 2)])
+                        spots.push([x + t, y + 50 * (z - 3) + t,
+                            x + 75 + icicle[z] * 50 - t, y + 50 * (z - 3) + t,
+                            x + 75 + icicle[z] * 50 - t, y + 50 * (z - 2) - t,
+                            x + t, y + 50 * (z - 2) - t])
                         connectors.push([x + 4, y - 4 + 50 * (z - 2),
                             x + 10, y - 4 + 50 * (z - 2),
                             x + 10, y + 4 + 50 * (z - 2),
                             x + 4, y + 4 + 50 * (z - 2)])
+                        entryPoints[cE][1] = [x + 7, y + 4 + 50 * (z - 2)]
                         break;
                 }
             }
+            cE++;
         }
     }
-
     //FIRST: Creating array of pitStops - nodal points at the room for wires (corners of the room, cold spots and mats)
     let pitStops = []
     //adding room corners
-    pitStops.push(...BombForRoom(RoomTransformer(room, 0)))
+    pitStops.push(...BombForRoom(RoomTransformer(room, -1)))
     //adding cold spots' corners
-    let initialSpots = [...spotsArray]
-    for (let i = 0; i < initialSpots.length; i++) {
-        pitStops.push(...Bomb(initialSpots[i]))
+    let spotsForPitStops = ColdSpotsTransformer(spotsArray, 0)
+    for (let i = 0; i < spotsForPitStops.length; i++) {
+        pitStops.push(...Bomb(spotsForPitStops[i]))
     }
     //adding all mats' corners
     for (let i = 0; i < resultMats.length; i++) {
-        pitStops.push(...Bomb(resultMats[i]))
+        let corners = [...BombForMat(resultMats[i])]
+        pitStops.push(...corners)
     }
-    //removing all doubles
-    pitStops = [...RemoveDoubledPoints(pitStops)]
 
+    const pitStopsNoDoubles = RemoveDoubledPoints(pitStops)
 
-    console.log(pitStops)
+    let spotsForWalls = ColdSpotsTransformer(spotsArray, 1)
+    spotsForWalls.push(...resultMats)
 
-    return [resultMats, connectors]
+    let wC = wiresCombinations(entryPoints, thermoOut)
+    let walls = BulldozerSquad(spotsForWalls)
+    let wallsFromRoom = Bulldozer(RoomReshaper(room, -3))
+
+    walls.push(...wallsFromRoom)
+
+    const pathLength = (path, pitStops, walls) => {
+        let resultLength = 0;
+        for (let i = 0; i < path.length - 1; i++) {
+            resultLength += wireLength(normalSnake(path[i][1], path[i + 1][0], pitStops, walls))
+        }
+        return resultLength;
+    }
+
+    const bestPath = (arr, pS, walls) => {
+        let best = arr[0];
+        for (let i = 1; i < arr.length; i++) {
+            if (pathLength(arr[i], pS, walls) < pathLength(best, pS, walls)) best = arr[i]
+        }
+        return best;
+    }
+
+    let pathZZ = bestPath(wC, pitStopsNoDoubles, walls);
+
+    const snakeNestMaker = (arr, pStops, walls) => {
+        let result = [];
+        for (let i = 0; i < arr.length - 1; i++) {
+            result.push(normalSnake(arr[i][1], arr[i + 1][0], pStops, walls));
+        }
+        return result
+    }
+    let snakesNest = snakeNestMaker(pathZZ, pitStopsNoDoubles, walls)
+
+    return [resultMats, connectors, pitStops, spotsForWalls, entryPoints, snakesNest]
 }

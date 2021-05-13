@@ -17,21 +17,23 @@ const Placement = () => {
     const startX = 437;
     const startY = 9;
 
-    const pos00 = {x: startX + room[0] + 1, y: startY + room[1] + 1}
-    const pos01s = {x: startX + room[2] - 1, y: startY + room[3] + 1}
-    const pos01 = {x: startX + room[4] - 1, y: startY + room[5] + 1}
-    const pos02s = {x: startX + room[6] - 1, y: startY + room[7] + 1}
-    const pos02 = {x: startX + room[8] - 1, y: startY + room[9] + 1}
-    const pos03s = {x: startX + room[10] - 1, y: startY + room[11] + 1}
-    const pos03 = {x: startX + room[12] - 1, y: startY + room[13] + 1}
-    const pos04s = {x: startX + room[14] - 1, y: startY + room[15] - 1}
-    const pos04 = {x: startX + room[16] - 1, y: startY + room[17] - 1}
-    const pos05s = {x: startX + room[18] - 1, y: startY + room[19] - 1}
-    const pos05 = {x: startX + room[20] - 1, y: startY + room[21] - 1}
-    const pos06s = {x: startX + room[22] - 1, y: startY + room[23] - 1}
-    const pos06 = {x: startX + room[24] - 1, y: startY + room[25] - 1}
-    const pos07s = {x: startX + room[26] + 1, y: startY + room[27] - 1}
-    const pos07 = {x: startX + room[28] + 1, y: startY + room[29] - 1}
+    const d = -1;
+
+    const pos00 = {x: startX + room[0] + d, y: startY + room[1] + d}
+    const pos01s = {x: startX + room[2] - d, y: startY + room[3] + d}
+    const pos01 = {x: startX + room[4] - d, y: startY + room[5] + d}
+    const pos02s = {x: startX + room[6] - d, y: startY + room[7] + d}
+    const pos02 = {x: startX + room[8] - d, y: startY + room[9] + d}
+    const pos03s = {x: startX + room[10] - d, y: startY + room[11] + d}
+    const pos03 = {x: startX + room[12] - d, y: startY + room[13] + d}
+    const pos04s = {x: startX + room[14] - d, y: startY + room[15] - d}
+    const pos04 = {x: startX + room[16] - d, y: startY + room[17] - d}
+    const pos05s = {x: startX + room[18] - d, y: startY + room[19] - d}
+    const pos05 = {x: startX + room[20] - d, y: startY + room[21] - d}
+    const pos06s = {x: startX + room[22] - d, y: startY + room[23] - d}
+    const pos06 = {x: startX + room[24] - d, y: startY + room[25] - d}
+    const pos07s = {x: startX + room[26] + d, y: startY + room[27] - d}
+    const pos07 = {x: startX + room[28] + d, y: startY + room[29] - d}
 
     //const center = {x: pos00.x + Math.min(pos01s.x - pos00.x, pos06.x - pos00.x) / 2, y: (pos03.y + pos04s.y) / 2}
     const center = {x: pos07.x + 60, y: pos03.y + 30}

@@ -22,8 +22,22 @@ import NewPDF from "../PDF/newPDF";
 import {Redirect} from "react-router";
 
 import {MatFinder} from "./MatFinder";
-import {findClosest} from "../../calculator/superSnake";
-import {RoomTransformer} from "../../calculator/helpers";
+import {
+    findClosest,
+    findNextPit, findShortestCombination,
+    isWayFree,
+    normalSnake,
+    permutator,
+    weakSnake,
+    wireLength, wiresCombinations
+} from "../../calculator/superSnake";
+import {
+    Bulldozer,
+    BulldozerSquad,
+    ColdSpotsTransformer,
+    RoomReshaper,
+    RoomTransformer, SnakeForDrawing
+} from "../../calculator/helpers";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -37,19 +51,51 @@ const Result = () => {
     const buttons = useSelector(state => state.buttons);
     const room = useSelector(state => state.room);
     const spotsArray = useSelector(state => state.points);
+    const transformedSpots = ColdSpotsTransformer(spotsArray, 1);
     const thermostat = useSelector(state => state.thermostat);
     const thermoOut = [thermostat.x, thermostat.y]
 
     const [image] = useImage(thermoImg);
 
-    let massGroup = MatFinder(spotsArray, room)
+    let massGroup = MatFinder(spotsArray, room, thermoOut)
 
-    const start = [12, 3]
-    const finish = [12, 9]
-    const points = [[4, 1], [8, 1], [8, 10], [4, 10], [6, 4], [10, 4], [10, 12], [6, 12]]
-    const array = [[4, 1, 8, 1, 8, 10, 4, 10], [6, 4, 10, 4, 10, 12, 6, 12]]
+    let walls = BulldozerSquad(massGroup[3])
+    let wallsFromRoom = Bulldozer(RoomReshaper(room, -2))
 
-   // console.log(findClosest(start, points))
+    walls.push(...wallsFromRoom)
+    let pitStops = massGroup[2]
+
+    console.log("RESULT")
+    console.log(massGroup[5])
+
+    let nestToDraw = nest => {
+        let result = [];
+        for (let i = 0; i < nest.length; i++) {
+            let snake = []
+            for (let j = 0; j < nest[i].length; j++) {
+                snake.push(nest[i][j][0])
+                snake.push(nest[i][j][1])
+            }
+            result.push(snake)
+        }
+        return result;
+    }
+    let nestXX = nestToDraw(massGroup[5])
+
+  /*  let firstSnake = normalSnake(thermoOut, [0,0], massGroup[2], massGroup[3])
+    console.log("DEMO SNAKE")
+    console.log(firstSnake)*/
+
+   /* const demoToDraw = demo => {
+        let result = [];
+        for (let i = 0; i < demo.length; i++) {
+            result.push(demo[i][0])
+            result.push(demo[i][1])
+        }
+        return result;
+    }*/
+
+   // let demoDraw = demoToDraw(firstSnake)
 
     const listOfParts = {
         "mat5_55": 3,
@@ -81,21 +127,21 @@ const Result = () => {
         });
         setIm(dataURL)
         const styles = StyleSheet.create({
-                page: {
-                    flexDirection: 'column',
-                    backgroundColor: 'white'
-                },
-                section: {
-                    margin: 20,
-                    padding: 20
-                },
-                sectionGrey: {
-                    margin: 20,
-                    padding: 20,
-                    backgroundColor: "#DCDCDC",
-                    borderRadius: 7
-                }
-            });
+            page: {
+                flexDirection: 'column',
+                backgroundColor: 'white'
+            },
+            section: {
+                margin: 20,
+                padding: 20
+            },
+            sectionGrey: {
+                margin: 20,
+                padding: 20,
+                backgroundColor: "#DCDCDC",
+                borderRadius: 7
+            }
+        });
         const PDF2 = () => {
             return (
                 <Document>
@@ -163,17 +209,6 @@ const Result = () => {
                         </Layer>
                         <Layer name="result">
                             {
-                                spotsArray.map(spot => <Line
-                                    x={320}
-                                    y={2}
-                                    points={spot}
-                                    closed
-                                    stroke="#868686"
-                                    strokeWidth={2}
-                                    fill={"white"}
-                                />)
-                            }
-                            {
                                 massGroup[0].map(tail => <Line
                                     x={320}
                                     y={2}
@@ -193,6 +228,35 @@ const Result = () => {
                                     fill="#2B2B2B"
                                 />)
                             }
+                            {
+                                spotsArray.map(spot => <Line
+                                    x={320}
+                                    y={2}
+                                    points={spot}
+                                    closed
+                                    stroke="#868686"
+                                    strokeWidth={2}
+                                    fill={"white"}
+                                />)
+                            }
+                            {
+                                nestXX.map(snake => <Line
+                                    x={320}
+                                    y={2}
+                                    points={snake}
+                                    stroke="#00A0E3"
+                                    strokeWidth={3}
+                                />)
+                            }
+                            {/*
+                                <Line
+                                    x={320}
+                                    y={2}
+                                    points={demoDraw}
+                                    stroke="#094D2A"
+                                    strokeWidth={2}
+                                />
+                            */}
                             <Image image={image}
                                    x={thermostat.x + 320 - 12}
                                    y={thermostat.y - 7}
