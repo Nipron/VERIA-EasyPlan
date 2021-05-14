@@ -105,3 +105,32 @@ export const SnakeForDrawing = snake => {
     }
     return result;
 }
+
+//creating combinations with alternative entries points
+
+export const entriesCombinations = (arr1, arr2) => {
+    let result = []
+    let count = Math.pow(2, arr1.length)
+    let deleted = 0;
+    loop:
+        for (let i = 0; i < count; i++) {
+            result.push([])
+            let temp = i;
+            for (let j = 0; j < arr1.length; j++) {
+                result[i - deleted].push([])
+                if (temp >= Math.pow(2, arr1.length - 1 - j)) {
+                    temp -= Math.pow(2, arr1.length - 1 - j)
+                    result[i - deleted][j] = arr1[j]
+                } else {
+                    if (arr2[j][0] !== null) {
+                        result[i - deleted][j] = arr2[j]
+                    } else {
+                        result.pop();
+                        deleted++;
+                        continue loop;
+                    }
+                }
+            }
+        }
+    return result;
+}

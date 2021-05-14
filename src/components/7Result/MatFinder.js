@@ -4,7 +4,7 @@ import {
     Bomb, BombForMat,
     BombForRoom,
     Bulldozer, BulldozerSquad,
-    ColdSpotsTransformer,
+    ColdSpotsTransformer, entriesCombinations,
     RemoveDoubledPoints, RoomReshaper,
     RoomTransformer
 } from "../../calculator/helpers";
@@ -73,6 +73,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     let resultMats = []
     let connectors = []
     let entryPoints = []
+    let entryPointsAltenative = [] //for mat group rotation cases
     let cE = 0 //current entry index
 
     //for each point finding 4 "icicles" - groups of mats with different length
@@ -217,6 +218,15 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
             const y = icicle[1];
             const growDirection = icicle[2];  //0 - down, 1 - up, 2 - left, 3 - right
             entryPoints.push([[], []])
+            entryPointsAltenative.push([null, null])
+
+            let isRectangular = true
+            for (let i = 3; i < icicle.length - 1; i++) {
+                if (icicle[i] !== icicle[i + 1]) {
+                    isRectangular = false;
+                    break;
+                }
+            }
 
             switch (growDirection) {
                 case 0:
@@ -225,6 +235,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                         x + 4, y + 10,
                         x - 4, y + 10])
                     entryPoints[cE][1] = [x - 4, y + 7]
+                    if (isRectangular) {
+                        entryPointsAltenative[cE][0] = [x - 4, y + 75 + icicle[3] * 50 - 7]
+                    }
                     break;
                 case 1:
                     connectors.push([x - 4, y + 75 - 10,
@@ -232,6 +245,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                         x + 4, y + 75 - 4,
                         x - 4, y + 75 - 4])
                     entryPoints[cE][0] = [x - 4, y + 75 - 7]
+                    if (isRectangular) {
+                        entryPointsAltenative[cE][1] = [x - 4, y - icicle[3] * 50 + 7]
+                    }
                     break;
                 case 2:
                     connectors.push([x + 75 - 10, y - 4,
@@ -239,6 +255,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                         x + 75 - 4, y + 4,
                         x + 75 - 10, y + 4])
                     entryPoints[cE][1] = [x + 75 - 7, y - 4]
+                    if (isRectangular) {
+                        entryPointsAltenative[cE][0] = [x + 7 - icicle[3] * 50, y - 4]
+                    }
                     break;
                 case 3:
                     connectors.push([x + 4, y - 4,
@@ -246,6 +265,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                         x + 10, y + 4,
                         x + 4, y + 4])
                     entryPoints[cE][0] = [x + 7, y - 4]
+                    if (isRectangular) {
+                        entryPointsAltenative[cE][1] = [x - 7 + 75 + icicle[3] * 50, y - 4]
+                    }
                     break;
             }
 
@@ -265,6 +287,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                             x + 4 + 50 * (z - 2), y + 10,
                             x - 4 + 50 * (z - 2), y + 10])
                         entryPoints[cE][0] = [x + 4 + 50 * (z - 2), y + 7]
+                        if (isRectangular) {
+                            entryPointsAltenative[cE][1] = [x + 4 + 50 * (z - 2), y + 75 + icicle[z] * 50 - 7]
+                        }
                         break;
                     case 1:
                         resultMats.push([50 * (z - 3) + x, y - icicle[z] * 50,
@@ -280,6 +305,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                             x + 4 + 50 * (z - 2), y + 75 - 4,
                             x - 4 + 50 * (z - 2), y + 75 - 4])
                         entryPoints[cE][1] = [x + 4 + 50 * (z - 2), y + 75 - 7]
+                        if (isRectangular) {
+                            entryPointsAltenative[cE][0] = [x + 4 + 50 * (z - 2), y - icicle[3] * 50 + 7]
+                        }
                         break;
                     case 2:
                         resultMats.push([x - icicle[z] * 50, y + 50 * (z - 3),
@@ -295,6 +323,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                             x + 75 - 4, y + 4 + 50 * (z - 2),
                             x + 75 - 10, y + 4 + 50 * (z - 2)])
                         entryPoints[cE][0] = [x + 75 - 7, y + 4 + 50 * (z - 2)]
+                        if (isRectangular) {
+                            entryPointsAltenative[cE][1] = [x + 7 - icicle[3] * 50, y + 4 + 50 * (z - 2)]
+                        }
                         break;
                     case 3:
                         resultMats.push([x, y + 50 * (z - 3),
@@ -310,6 +341,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                             x + 10, y + 4 + 50 * (z - 2),
                             x + 4, y + 4 + 50 * (z - 2)])
                         entryPoints[cE][1] = [x + 7, y + 4 + 50 * (z - 2)]
+                        if (isRectangular) {
+                            entryPointsAltenative[cE][0] = [x - 7 + 75 + icicle[3] * 50, y + 4 + 50 * (z - 2)]
+                        }
                         break;
                 }
             }
@@ -336,9 +370,31 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     let spotsForWalls = ColdSpotsTransformer(spotsArray, 1)
     spotsForWalls.push(...resultMats)
 
-    let wC = wiresCombinations(entryPoints, thermoOut)
+    let arrayOfCombinationsWithAlts = entriesCombinations(entryPoints, entryPointsAltenative);
+
+    const creatingSuperMegaArrayOfCombinations = (arr, thermoOut) => {
+        let result = [];
+        for (let i = 0; i < arr.length; i++) {
+            result.push(...wiresCombinations(arr[i], thermoOut))
+        }
+        return result;
+    }
+
+
+
+    let wCc = creatingSuperMegaArrayOfCombinations(arrayOfCombinationsWithAlts, thermoOut)
+  //  console.log(wCc)
+    let wC = wiresCombinations(entryPoints, thermoOut);
+    let wC1 = wiresCombinations(arrayOfCombinationsWithAlts[0], thermoOut)
+    let wC2 = wiresCombinations(arrayOfCombinationsWithAlts[1], thermoOut)
     let walls = BulldozerSquad(spotsForWalls)
     let wallsFromRoom = Bulldozer(RoomReshaper(room, -3))
+
+    console.log(wC)
+    console.log(wC1)
+    console.log(wC2)
+
+   // console.log(arrayOfCombinationsWithAlts)
 
     walls.push(...wallsFromRoom)
 
@@ -358,7 +414,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
         return best;
     }
 
-    let pathZZ = bestPath(wC, pitStopsNoDoubles, walls);
+    let pathZZ = bestPath(wCc, pitStopsNoDoubles, walls);
 
     const snakeNestMaker = (arr, pStops, walls) => {
         let result = [];

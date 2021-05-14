@@ -65,9 +65,6 @@ const Result = () => {
     walls.push(...wallsFromRoom)
     let pitStops = massGroup[2]
 
-    console.log("RESULT")
-    console.log(massGroup[5])
-
     let nestToDraw = nest => {
         let result = [];
         for (let i = 0; i < nest.length; i++) {
