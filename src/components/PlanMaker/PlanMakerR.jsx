@@ -252,7 +252,7 @@ const PlanMakerR = () => {
                                            left: (pos03angled && pos03shadow.x + minDist) || 3 * minDist,
                                            top: (pos03angled && pos03shadow.y + minDist) || 0,
                                            right: maxWidth,
-                                           bottom: (pos04angled && pos04shadow.y - minDist) || (pos04.y - 2 * minDist)
+                                           bottom: (pos03angled && ((pos04angled && pos04shadow.y - minDist) || (pos04.y - 2 * minDist)))  || pos00.y
                                        }
                                    }
                         >

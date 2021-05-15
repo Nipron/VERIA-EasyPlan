@@ -134,3 +134,89 @@ export const entriesCombinations = (arr1, arr2) => {
         }
     return result;
 }
+
+export const connectorsFarm = path => {
+    let connectors = [];
+    let numbers = [];
+    for (let i = 1; i < path.length; i++) {
+        //horizontal icicle
+        if (path[i][0][1] === path[i][1][1]) {
+            //growing down
+            if (path[i][0][0] > path[i][1][0]) {
+                numbers.push([path[i][0][0] - 18, path[i][0][1] - 6, i])
+                if (i !== path.length - 1) numbers.push([path[i][1][0] + 10, path[i][1][1] - 6, i + 1])
+                for (let j = 0; j < (path[i][0][0] - path[i][1][0]) / 50; j++) {
+                    if ((i === path.length - 1) && (j === 0)) {
+                        connectors.push([path[i][1][0] + 4, path[i][1][1] - 3,
+                            path[i][1][0] + 8, path[i][1][1] - 3,
+                            path[i][1][0] + 8, path[i][1][1] + 3,
+                            path[i][1][0] + 4, path[i][1][1] + 3])
+                    } else {
+                        connectors.push([path[i][1][0] + 50 * j, path[i][1][1] - 3,
+                            path[i][1][0] + 50 * j + 8, path[i][1][1] - 3,
+                            path[i][1][0] + 50 * j + 8, path[i][1][1] + 3,
+                            path[i][1][0] + 50 * j, path[i][1][1] + 3])
+                    }
+                }
+            }
+            //growing up
+            if (path[i][0][0] < path[i][1][0]) {
+                numbers.push([path[i][0][0] + 10, path[i][0][1] - 6, i])
+                if (i !== path.length - 1) numbers.push([path[i][1][0] - 18, path[i][1][1] - 6, i + 1])
+                for (let j = 0; j < (path[i][1][0] - path[i][0][0]) / 50; j++) {
+                    if ((i === path.length - 1) && (j === 0)) {
+                        connectors.push([path[i][1][0] - 8, path[i][1][1] - 3,
+                            path[i][1][0] - 4, path[i][1][1] - 3,
+                            path[i][1][0] - 4, path[i][1][1] + 3,
+                            path[i][1][0] - 8, path[i][1][1] + 3])
+                    } else {
+                        connectors.push([path[i][1][0] - 50 * j - 8, path[i][1][1] - 3,
+                            path[i][1][0] - 50 * j, path[i][1][1] - 3,
+                            path[i][1][0] - 50 * j, path[i][1][1] + 3,
+                            path[i][1][0] - 50 * j - 8, path[i][1][1] + 3])
+                    }
+                }
+            }
+        }
+        //vertical icicle
+        if (path[i][0][0] === path[i][0][0]) {
+            //growing left
+            if (path[i][0][1] > path[i][1][1]) {
+                numbers.push([path[i][0][0] - 4, path[i][0][1] - 22, i])
+                if (i !== path.length - 1) numbers.push([path[i][1][0] - 4, path[i][1][1] + 9, i + 1])
+                for (let j = 0; j < (path[i][0][1] - path[i][1][1]) / 50; j++) {
+                    if ((i === path.length - 1) && (j === 0)) {
+                        connectors.push([path[i][1][0] - 3, path[i][1][1] + 4,
+                            path[i][1][0] + 3, path[i][1][1] + 4,
+                            path[i][1][0] + 3, path[i][1][1] + 8,
+                            path[i][1][0] - 3, path[i][1][1] + 8])
+                    } else {
+                        connectors.push([path[i][1][0] - 3, path[i][1][1] + 50 * j,
+                            path[i][1][0] + 3, path[i][1][1] + 50 * j,
+                            path[i][1][0] + 3, path[i][1][1] + 50 * j + 8,
+                            path[i][1][0] - 3, path[i][1][1] + 50 * j + 8])
+                    }
+                }
+            }
+            //growing right
+            if (path[i][0][1] < path[i][1][1]) {
+                numbers.push([path[i][0][0] - 4, path[i][0][1] + 9, i])
+                if (i !== path.length - 1) numbers.push([path[i][1][0] - 4, path[i][1][1] - 22, i + 1])
+                for (let j = 0; j < (path[i][1][1] - path[i][0][1]) / 50; j++) {
+                    if ((i === path.length - 1) && (j === 0)) {
+                        connectors.push([path[i][1][0] - 3, path[i][1][1] - 8,
+                            path[i][1][0] + 3, path[i][1][1] - 8,
+                            path[i][1][0] + 3, path[i][1][1] - 4,
+                            path[i][1][0] - 3, path[i][1][1] - 4])
+                    } else {
+                        connectors.push([path[i][1][0] - 3, path[i][1][1] - 50 * j - 8,
+                            path[i][1][0] + 3, path[i][1][1]  - 50 * j - 8,
+                            path[i][1][0] + 3, path[i][1][1] - 50 * j,
+                            path[i][1][0] - 3, path[i][1][1] - 50 * j])
+                    }
+                }
+            }
+        }
+    }
+    return [connectors, numbers]
+}

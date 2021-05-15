@@ -4,7 +4,7 @@ import {
     Bomb, BombForMat,
     BombForRoom,
     Bulldozer, BulldozerSquad,
-    ColdSpotsTransformer, entriesCombinations,
+    ColdSpotsTransformer, connectorsFarm, entriesCombinations,
     RemoveDoubledPoints, RoomReshaper,
     RoomTransformer
 } from "../../calculator/helpers";
@@ -380,19 +380,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
         return result;
     }
 
-
-
     let wCc = creatingSuperMegaArrayOfCombinations(arrayOfCombinationsWithAlts, thermoOut)
-  //  console.log(wCc)
-    let wC = wiresCombinations(entryPoints, thermoOut);
-    let wC1 = wiresCombinations(arrayOfCombinationsWithAlts[0], thermoOut)
-    let wC2 = wiresCombinations(arrayOfCombinationsWithAlts[1], thermoOut)
     let walls = BulldozerSquad(spotsForWalls)
     let wallsFromRoom = Bulldozer(RoomReshaper(room, -3))
-
-    console.log(wC)
-    console.log(wC1)
-    console.log(wC2)
 
    // console.log(arrayOfCombinationsWithAlts)
 
@@ -416,6 +406,12 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
 
     let pathZZ = bestPath(wCc, pitStopsNoDoubles, walls);
 
+    console.log(pathZZ)
+
+    const connectorsAndNumbers = connectorsFarm(pathZZ)
+
+    console.log(connectorsAndNumbers)
+
     const snakeNestMaker = (arr, pStops, walls) => {
         let result = [];
         for (let i = 0; i < arr.length - 1; i++) {
@@ -425,5 +421,5 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     }
     let snakesNest = snakeNestMaker(pathZZ, pitStopsNoDoubles, walls)
 
-    return [resultMats, connectors, pitStops, spotsForWalls, entryPoints, snakesNest]
+    return [resultMats, connectors, pitStops, spotsForWalls, entryPoints, snakesNest, connectorsAndNumbers[1], connectorsAndNumbers[0]]
 }

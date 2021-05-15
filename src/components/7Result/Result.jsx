@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Document, Page, PDFDownloadLink, StyleSheet, View, Image as PDFImage, Text} from '@react-pdf/renderer';
 import Konva from 'konva';
-import {Layer, Line, Stage, Image} from "react-konva";
+import {Layer, Line, Stage, Image, Text as KonvaText} from "react-konva";
 import {matGroups} from "../../data/matGroups";
 import pointInPolygon from 'point-in-polygon';
 import useImage from 'use-image';
@@ -78,21 +78,6 @@ const Result = () => {
         return result;
     }
     let nestXX = nestToDraw(massGroup[5])
-
-  /*  let firstSnake = normalSnake(thermoOut, [0,0], massGroup[2], massGroup[3])
-    console.log("DEMO SNAKE")
-    console.log(firstSnake)*/
-
-   /* const demoToDraw = demo => {
-        let result = [];
-        for (let i = 0; i < demo.length; i++) {
-            result.push(demo[i][0])
-            result.push(demo[i][1])
-        }
-        return result;
-    }*/
-
-   // let demoDraw = demoToDraw(firstSnake)
 
     const listOfParts = {
         "mat5_55": 3,
@@ -216,7 +201,7 @@ const Result = () => {
                                     fill="#FF3F3F"
                                 />)
                             }
-                            {
+                            {/*
                                 massGroup[1].map(tail => <Line
                                     x={320}
                                     y={2}
@@ -224,7 +209,7 @@ const Result = () => {
                                     closed
                                     fill="#2B2B2B"
                                 />)
-                            }
+                            */}
                             {
                                 spotsArray.map(spot => <Line
                                     x={320}
@@ -241,8 +226,8 @@ const Result = () => {
                                     x={320}
                                     y={2}
                                     points={snake}
-                                    stroke="#00A0E3"
-                                    strokeWidth={3}
+                                    stroke="#9F35CC"
+                                    strokeWidth={2}
                                 />)
                             }
                             {/*
@@ -254,6 +239,25 @@ const Result = () => {
                                     strokeWidth={2}
                                 />
                             */}
+                            {
+                                massGroup[6].map(connector => <KonvaText
+                                    x={connector[0] + 320}
+                                    y={connector[1] + 2}
+                                    text={connector[2]}
+                                    fontSize={15}
+                                    fontFamily='Calibri'
+                                    fill="#E8C6F7"
+                                />)
+                            }
+                            {
+                                massGroup[7].map(connector => <Line
+                                    x={320}
+                                    y={2}
+                                    points={connector}
+                                    closed
+                                    fill={"black"}
+                                />)
+                            }
                             <Image image={image}
                                    x={thermostat.x + 320 - 12}
                                    y={thermostat.y - 7}
@@ -279,7 +283,8 @@ const Result = () => {
             </div>
             <ModalPartsList active={modalPartsActive} setActive={setModalPartsActive} list={listOfParts}/>
         </div>
-    );
+    )
+        ;
 };
 
 export default Result;
