@@ -2,19 +2,13 @@ import React from 'react';
 import {useDispatch} from "react-redux";
 import {HashLink as Link} from 'react-router-hash-link';
 
-
 import {updateButton} from "../../redux/buttonsReducer";
 
 import s from './Start.module.css';
-import {entriesCombinations} from "../../calculator/helpers";
 
 const Start = () => {
 
     const dispatch = useDispatch();
-    const a1 = [0,0,0,0]
-    const a2 = [1,1,[null],1]
-
-    console.log(entriesCombinations(a1,a2))
 
     const handleClick = (page) => {
         dispatch(updateButton(page))

@@ -97,14 +97,14 @@ export const RemoveDoubledPoints = arr => {
 }
 
 //snake transformer for drawing
-export const SnakeForDrawing = snake => {
+/*export const SnakeForDrawing = snake => {
     let result = [];
     for (let i = 0; i < snake.length; i++) {
         result.push(snake[i][0])
         result.push(snake[i][1])
     }
     return result;
-}
+}*/
 
 //creating combinations with alternative entries points
 

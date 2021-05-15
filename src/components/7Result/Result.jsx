@@ -4,12 +4,10 @@ import {Document, Page, PDFDownloadLink, StyleSheet, View, Image as PDFImage, Te
 import Konva from 'konva';
 import {Layer, Line, Stage, Image, Text as KonvaText} from "react-konva";
 import {matGroups} from "../../data/matGroups";
-import pointInPolygon from 'point-in-polygon';
 import useImage from 'use-image';
 import s from "../7Result/Result.module.css";
 import thermoImg from '../../img/ThermostatButton/thermostat.svg'
 import {checkIntersection, colinearPointWithinSegment} from 'line-intersect';
-import PathFinder, {pathLength} from "../../calculator/pathfinder";
 import coldSpot from "../../img/frame_with_coldspot.png";
 import coldSpotWrong from "../../img/frame_with_coldspot_wrong_position.png";
 import {HashLink as Link} from "react-router-hash-link";
@@ -22,22 +20,6 @@ import NewPDF from "../PDF/newPDF";
 import {Redirect} from "react-router";
 
 import {MatFinder} from "./MatFinder";
-import {
-    findClosest,
-    findNextPit, findShortestCombination,
-    isWayFree,
-    normalSnake,
-    permutator,
-    weakSnake,
-    wireLength, wiresCombinations
-} from "../../calculator/superSnake";
-import {
-    Bulldozer,
-    BulldozerSquad,
-    ColdSpotsTransformer,
-    RoomReshaper,
-    RoomTransformer, SnakeForDrawing
-} from "../../calculator/helpers";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -51,19 +33,12 @@ const Result = () => {
     const buttons = useSelector(state => state.buttons);
     const room = useSelector(state => state.room);
     const spotsArray = useSelector(state => state.points);
-    const transformedSpots = ColdSpotsTransformer(spotsArray, 1);
     const thermostat = useSelector(state => state.thermostat);
     const thermoOut = [thermostat.x, thermostat.y]
 
     const [image] = useImage(thermoImg);
 
     let massGroup = MatFinder(spotsArray, room, thermoOut)
-
-    let walls = BulldozerSquad(massGroup[3])
-    let wallsFromRoom = Bulldozer(RoomReshaper(room, -2))
-
-    walls.push(...wallsFromRoom)
-    let pitStops = massGroup[2]
 
     let nestToDraw = nest => {
         let result = [];
@@ -77,7 +52,7 @@ const Result = () => {
         }
         return result;
     }
-    let nestXX = nestToDraw(massGroup[5])
+    let nestXX = nestToDraw(massGroup[1])
 
     const listOfParts = {
         "mat5_55": 3,
@@ -230,32 +205,23 @@ const Result = () => {
                                     strokeWidth={2}
                                 />)
                             }
-                            {/*
-                                <Line
+                            {
+                                massGroup[2].map(connector => <Line
                                     x={320}
                                     y={2}
-                                    points={demoDraw}
-                                    stroke="#094D2A"
-                                    strokeWidth={2}
-                                />
-                            */}
+                                    points={connector}
+                                    closed
+                                    fill={"black"}
+                                />)
+                            }
                             {
-                                massGroup[6].map(connector => <KonvaText
+                                massGroup[3].map(connector => <KonvaText
                                     x={connector[0] + 320}
                                     y={connector[1] + 2}
                                     text={connector[2]}
                                     fontSize={15}
                                     fontFamily='Calibri'
                                     fill="#E8C6F7"
-                                />)
-                            }
-                            {
-                                massGroup[7].map(connector => <Line
-                                    x={320}
-                                    y={2}
-                                    points={connector}
-                                    closed
-                                    fill={"black"}
                                 />)
                             }
                             <Image image={image}

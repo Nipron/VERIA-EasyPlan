@@ -71,16 +71,15 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     const R = RoomTransformer(room, 0)
     let needToSearch = true;
     let resultMats = []
-    let connectors = []
     let entryPoints = []
-    let entryPointsAltenative = [] //for mat group rotation cases
+    let entryPointsAlternative = [] //for mat group rotation cases
     let cE = 0 //current entry index
 
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
         let superMass = []
-        for (let y = 0; y < R[13][1]; y += 2) {
-            for (let x = 0; x < R[7][0]; x += 2) {
+        for (let y = 0; y < R[13][1]; y += 10) {
+            for (let x = 0; x < R[7][0]; x += 10) {
                 //creating horizontal starting row growing down
                 let columnsDown = 0
                 let startRowGrowDown = [0] //0 is code for "down"
@@ -218,7 +217,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
             const y = icicle[1];
             const growDirection = icicle[2];  //0 - down, 1 - up, 2 - left, 3 - right
             entryPoints.push([[], []])
-            entryPointsAltenative.push([null, null])
+            entryPointsAlternative.push([null, null])
 
             let isRectangular = true
             for (let i = 3; i < icicle.length - 1; i++) {
@@ -230,43 +229,27 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
 
             switch (growDirection) {
                 case 0:
-                    connectors.push([x - 4, y + 4,
-                        x + 4, y + 4,
-                        x + 4, y + 10,
-                        x - 4, y + 10])
                     entryPoints[cE][1] = [x - 4, y + 7]
                     if (isRectangular) {
-                        entryPointsAltenative[cE][0] = [x - 4, y + 75 + icicle[3] * 50 - 7]
+                        entryPointsAlternative[cE][0] = [x - 4, y + 75 + icicle[3] * 50 - 7]
                     }
                     break;
                 case 1:
-                    connectors.push([x - 4, y + 75 - 10,
-                        x + 4, y + 75 - 10,
-                        x + 4, y + 75 - 4,
-                        x - 4, y + 75 - 4])
                     entryPoints[cE][0] = [x - 4, y + 75 - 7]
                     if (isRectangular) {
-                        entryPointsAltenative[cE][1] = [x - 4, y - icicle[3] * 50 + 7]
+                        entryPointsAlternative[cE][1] = [x - 4, y - icicle[3] * 50 + 7]
                     }
                     break;
                 case 2:
-                    connectors.push([x + 75 - 10, y - 4,
-                        x + 75 - 4, y - 4,
-                        x + 75 - 4, y + 4,
-                        x + 75 - 10, y + 4])
                     entryPoints[cE][1] = [x + 75 - 7, y - 4]
                     if (isRectangular) {
-                        entryPointsAltenative[cE][0] = [x + 7 - icicle[3] * 50, y - 4]
+                        entryPointsAlternative[cE][0] = [x + 7 - icicle[3] * 50, y - 4]
                     }
                     break;
                 case 3:
-                    connectors.push([x + 4, y - 4,
-                        x + 10, y - 4,
-                        x + 10, y + 4,
-                        x + 4, y + 4])
                     entryPoints[cE][0] = [x + 7, y - 4]
                     if (isRectangular) {
-                        entryPointsAltenative[cE][1] = [x - 7 + 75 + icicle[3] * 50, y - 4]
+                        entryPointsAlternative[cE][1] = [x - 7 + 75 + icicle[3] * 50, y - 4]
                     }
                     break;
             }
@@ -282,13 +265,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                             50 * (z - 2) + x - t, y + t,
                             50 * (z - 2) + x - t, y + 75 + icicle[z] * 50 - t,
                             50 * (z - 3) + x + t, y + 75 + icicle[z] * 50 - t])
-                        connectors.push([x - 4 + 50 * (z - 2), y + 4,
-                            x + 4 + 50 * (z - 2), y + 4,
-                            x + 4 + 50 * (z - 2), y + 10,
-                            x - 4 + 50 * (z - 2), y + 10])
                         entryPoints[cE][0] = [x + 4 + 50 * (z - 2), y + 7]
                         if (isRectangular) {
-                            entryPointsAltenative[cE][1] = [x + 4 + 50 * (z - 2), y + 75 + icicle[z] * 50 - 7]
+                            entryPointsAlternative[cE][1] = [x + 4 + 50 * (z - 2), y + 75 + icicle[z] * 50 - 7]
                         }
                         break;
                     case 1:
@@ -300,13 +279,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                             50 * (z - 2) + x - t, y + 75 - t,
                             50 * (z - 2) + x - t, y - icicle[z] * 50 + t,
                             50 * (z - 3) + x + t, y - icicle[z] * 50 + t])
-                        connectors.push([x - 4 + 50 * (z - 2), y + 75 - 10,
-                            x + 4 + 50 * (z - 2), y + 75 - 10,
-                            x + 4 + 50 * (z - 2), y + 75 - 4,
-                            x - 4 + 50 * (z - 2), y + 75 - 4])
                         entryPoints[cE][1] = [x + 4 + 50 * (z - 2), y + 75 - 7]
                         if (isRectangular) {
-                            entryPointsAltenative[cE][0] = [x + 4 + 50 * (z - 2), y - icicle[3] * 50 + 7]
+                            entryPointsAlternative[cE][0] = [x + 4 + 50 * (z - 2), y - icicle[3] * 50 + 7]
                         }
                         break;
                     case 2:
@@ -318,13 +293,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                             x + 75 - t, y + 50 * (z - 3) + t,
                             x + 75 - t, y + 50 * (z - 2) - t,
                             x - icicle[z] * 50 + t, y + 50 * (z - 2) - t])
-                        connectors.push([x + 75 - 10, y - 4 + 50 * (z - 2),
-                            x + 75 - 4, y - 4 + 50 * (z - 2),
-                            x + 75 - 4, y + 4 + 50 * (z - 2),
-                            x + 75 - 10, y + 4 + 50 * (z - 2)])
                         entryPoints[cE][0] = [x + 75 - 7, y + 4 + 50 * (z - 2)]
                         if (isRectangular) {
-                            entryPointsAltenative[cE][1] = [x + 7 - icicle[3] * 50, y + 4 + 50 * (z - 2)]
+                            entryPointsAlternative[cE][1] = [x + 7 - icicle[3] * 50, y + 4 + 50 * (z - 2)]
                         }
                         break;
                     case 3:
@@ -336,13 +307,9 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                             x + 75 + icicle[z] * 50 - t, y + 50 * (z - 3) + t,
                             x + 75 + icicle[z] * 50 - t, y + 50 * (z - 2) - t,
                             x + t, y + 50 * (z - 2) - t])
-                        connectors.push([x + 4, y - 4 + 50 * (z - 2),
-                            x + 10, y - 4 + 50 * (z - 2),
-                            x + 10, y + 4 + 50 * (z - 2),
-                            x + 4, y + 4 + 50 * (z - 2)])
                         entryPoints[cE][1] = [x + 7, y + 4 + 50 * (z - 2)]
                         if (isRectangular) {
-                            entryPointsAltenative[cE][0] = [x - 7 + 75 + icicle[3] * 50, y + 4 + 50 * (z - 2)]
+                            entryPointsAlternative[cE][0] = [x - 7 + 75 + icicle[3] * 50, y + 4 + 50 * (z - 2)]
                         }
                         break;
                 }
@@ -370,7 +337,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     let spotsForWalls = ColdSpotsTransformer(spotsArray, 1)
     spotsForWalls.push(...resultMats)
 
-    let arrayOfCombinationsWithAlts = entriesCombinations(entryPoints, entryPointsAltenative);
+    let arrayOfCombinationsWithAlts = entriesCombinations(entryPoints, entryPointsAlternative);
 
     const creatingSuperMegaArrayOfCombinations = (arr, thermoOut) => {
         let result = [];
@@ -383,8 +350,6 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     let wCc = creatingSuperMegaArrayOfCombinations(arrayOfCombinationsWithAlts, thermoOut)
     let walls = BulldozerSquad(spotsForWalls)
     let wallsFromRoom = Bulldozer(RoomReshaper(room, -3))
-
-   // console.log(arrayOfCombinationsWithAlts)
 
     walls.push(...wallsFromRoom)
 
@@ -406,11 +371,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
 
     let pathZZ = bestPath(wCc, pitStopsNoDoubles, walls);
 
-    console.log(pathZZ)
-
     const connectorsAndNumbers = connectorsFarm(pathZZ)
-
-    console.log(connectorsAndNumbers)
 
     const snakeNestMaker = (arr, pStops, walls) => {
         let result = [];
@@ -421,5 +382,5 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     }
     let snakesNest = snakeNestMaker(pathZZ, pitStopsNoDoubles, walls)
 
-    return [resultMats, connectors, pitStops, spotsForWalls, entryPoints, snakesNest, connectorsAndNumbers[1], connectorsAndNumbers[0]]
+    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1]]
 }
