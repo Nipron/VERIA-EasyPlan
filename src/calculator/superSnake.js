@@ -2,7 +2,7 @@ import {checkIntersection} from "line-intersect";  //checks if two segments inte
 import _ from 'lodash'; //lodash...
 
 //distance between two points
-const dist = (a, b) => Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2))
+export const dist = (a, b) => Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2))
 
 //wire length between two points
 export const wireLength = path => {
@@ -29,9 +29,7 @@ export const isWayFree = (startPoint, endPoint, walls) => {
     return true;
 }
 
-//find closest to the endPoint pitStop that can be reached directly
-export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
-    //checking if there is a direct single pitStop
+const findDirect = (startPoint, endPoint, pitStops, walls) => {
     let directPitStop = [];
     for (let i = 0; i < pitStops.length; i++) {
         if ((isWayFree(startPoint, pitStops[i], walls)) && (isWayFree(pitStops[i], endPoint, walls))
@@ -44,9 +42,18 @@ export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
             directPitStop = pitStops[i];
         }
     }
-    if (directPitStop.length > 0) {return directPitStop}
+    return directPitStop;
+}
+
+
+//find closest to the endPoint pitStop that can be reached directly
+export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
+    //checking if there is a direct single pitStop
+    let resultPitStop = findDirect(startPoint, endPoint, pitStops, walls)
+    if (resultPitStop.length > 0) {
+        return resultPitStop
+    }
     //if no direct single pitStop, than looking for a closet one to endPoint
-    let resultPitStop = [];
     for (let i = 0; i < pitStops.length; i++) {
         if ((isWayFree(startPoint, pitStops[i], walls))
             && ((resultPitStop.length === 0)
@@ -64,24 +71,28 @@ export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
 //weakSnake - finding path without optimization
 export const weakSnake = (startPoint, endPoint, stops, walls) => {
     let resultPath = [];
-    resultPath.push(startPoint);
-    let currentPitStop = [...startPoint];
-    let pitStops = _.cloneDeep(stops)
-    for (let i = 0; i < pitStops.length; i++) {
-        if (isWayFree(currentPitStop, endPoint, walls)) {
-            resultPath.push(endPoint);
-            return resultPath;
-        } else {
-            currentPitStop = [...findNextPit(currentPitStop, endPoint, pitStops, walls)]
-            if (currentPitStop.length !== 0) {
-                resultPath.push(currentPitStop);
-            }
-            for (let j = 0; j < pitStops.length; j++) {
-                if ((pitStops[j][0] === currentPitStop[0]) && (pitStops[j][1] === currentPitStop[1])) {
-                    pitStops.splice(j, 1)
+    try {
+        resultPath.push(startPoint);
+        let currentPitStop = [...startPoint];
+        let pitStops = _.cloneDeep(stops)
+        for (let i = 0; i < pitStops.length; i++) {
+            if (isWayFree(currentPitStop, endPoint, walls)) {
+                resultPath.push(endPoint);
+                return resultPath;
+            } else {
+                currentPitStop = [...findNextPit(currentPitStop, endPoint, pitStops, walls)]
+                if (currentPitStop.length !== 0) {
+                    resultPath.push(currentPitStop);
+                }
+                for (let j = 0; j < pitStops.length; j++) {
+                    if ((pitStops[j][0] === currentPitStop[0]) && (pitStops[j][1] === currentPitStop[1])) {
+                        pitStops.splice(j, 1)
+                    }
                 }
             }
         }
+    } catch (e) {
+        resultPath = [startPoint, endPoint]
     }
     return resultPath;
 }
@@ -90,14 +101,18 @@ export const weakSnake = (startPoint, endPoint, stops, walls) => {
 export const normalSnake = (startPoint, endPoint, pitStops, walls) => {
     let resultPath = weakSnake(startPoint, endPoint, pitStops, walls)
     if (resultPath.length < 3) return resultPath;
-    let count = resultPath.length
-    for (let i = 0; i < count - 2; i++) {
-        for (let j = 0; j < count - i; j++) {
-            if (isWayFree(resultPath[i], resultPath[count - 1 - j], walls)) {
-                resultPath.splice(i + 1, count - j - i - 2)
-                count = count - j - i - 2
+    try {
+        let count = resultPath.length
+        for (let i = 0; i < count - 2; i++) {
+            for (let j = 0; j < count - i; j++) {
+                if (isWayFree(resultPath[i], resultPath[count - 1 - j], walls)) {
+                    resultPath.splice(i + 1, count - j - i - 2)
+                    count = count - j - i - 2
+                }
             }
         }
+    } catch (e) {
+        resultPath = [startPoint, endPoint]
     }
     return resultPath;
 }

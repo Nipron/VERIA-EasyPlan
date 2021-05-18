@@ -1,3 +1,5 @@
+import pointInPolygon from "point-in-polygon";
+
 //RoomTransformer - transformimg the room into proper array [[x0, y0],[x1, y1],[x2, y2]] for PointInPolygon + resizing it
 export const RoomTransformer = (room, d) => [[room[0] + d, room[1] + d],
     [room[2] - d, room[3] + d], [room[4] - d, room[5] + d],
@@ -80,8 +82,8 @@ export const BombForRoom = room => {
 }
 
 //Removing doubled points
-export const RemoveDoubledPoints = arr => {
-    let result = []
+export const pitStopsCleaner = (arr, spots) => {
+    let resultTemp = []
     for (let i = 0; i < arr.length - 1; i++) {
         let isUnique = true
         for (let j = i + 1; j < arr.length; j++) {
@@ -90,24 +92,25 @@ export const RemoveDoubledPoints = arr => {
                 break;
             }
         }
-        if (isUnique) result.push(arr[i])
+        if (isUnique) resultTemp.push(arr[i])
     }
-    result.push(arr[arr.length - 1])
+    resultTemp.push(arr[arr.length - 1])
+
+    let result = [];
+    loop:
+        for (let i = 0; i < resultTemp.length; i++) {
+            for (let j = 0; j < spots.length; j++) {
+                if (pointInPolygon(resultTemp[i], spots[j])) {
+                    continue loop;
+                } else {
+                    result.push(resultTemp[i])
+                }
+            }
+        }
     return result
 }
 
-//snake transformer for drawing
-/*export const SnakeForDrawing = snake => {
-    let result = [];
-    for (let i = 0; i < snake.length; i++) {
-        result.push(snake[i][0])
-        result.push(snake[i][1])
-    }
-    return result;
-}*/
-
 //creating combinations with alternative entries points
-
 export const entriesCombinations = (arr1, arr2) => {
     let result = []
     let count = Math.pow(2, arr1.length)
@@ -210,7 +213,7 @@ export const connectorsFarm = path => {
                             path[i][1][0] - 3, path[i][1][1] - 4])
                     } else {
                         connectors.push([path[i][1][0] - 3, path[i][1][1] - 50 * j - 8,
-                            path[i][1][0] + 3, path[i][1][1]  - 50 * j - 8,
+                            path[i][1][0] + 3, path[i][1][1] - 50 * j - 8,
                             path[i][1][0] + 3, path[i][1][1] - 50 * j,
                             path[i][1][0] - 3, path[i][1][1] - 50 * j])
                     }

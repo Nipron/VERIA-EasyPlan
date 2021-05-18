@@ -5,8 +5,37 @@ import {HashLink as Link} from 'react-router-hash-link';
 import {updateButton} from "../../redux/buttonsReducer";
 
 import s from './Start.module.css';
+import {isWayFree, weakSnake} from "../../calculator/superSnake";
 
 const Start = () => {
+
+  /*  const start = [0,0]
+    const finish = [100, 100]
+    const stops = [[10,10], [10, 20], [10, 30], [10, 40], [10, 50], [10, 90], [50, 90], [90, 90], [18, 20], [18, 60]]
+    const walls =[[20, 20, 80, 20],[80, 20, 80, 80],[80, 80, 20, 80],[20, 80, 20, 20], [0, 45, 6, 45]]
+
+     const normSnake = (startPoint, endPoint, pitStops, walls) => {
+        let resultPath = weakSnake(startPoint, endPoint, pitStops, walls)
+        if (resultPath.length < 3) return resultPath;
+        let count = resultPath.length
+         console.log(resultPath)
+        for (let i = 0; i < count - 2; i++) {
+            for (let j = 0; j < count - i; j++) {
+                if (isWayFree(resultPath[i], resultPath[count - 1 - j], walls)) {
+                    resultPath.splice(i + 1, count - j - i - 2)
+                    console.log(resultPath)
+                    count = count - j - i - 2
+                }
+            }
+        }
+        return resultPath;
+    }
+
+    console.log(normSnake(start, finish, stops, walls))*/
+
+
+
+
 
     const dispatch = useDispatch();
 

@@ -176,15 +176,6 @@ const Result = () => {
                                     fill="#FF3F3F"
                                 />)
                             }
-                            {/*
-                                massGroup[1].map(tail => <Line
-                                    x={320}
-                                    y={2}
-                                    points={tail}
-                                    closed
-                                    fill="#2B2B2B"
-                                />)
-                            */}
                             {
                                 spotsArray.map(spot => <Line
                                     x={320}
