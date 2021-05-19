@@ -474,7 +474,6 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     }
 
     const pitStopsNoDoubles = pitStopsCleaner(pitStops, resultMats)
-    console.log(pitStopsNoDoubles)
 
     let path = bestPath(waysCombinations, pitStopsNoDoubles, walls);
 
@@ -491,5 +490,5 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
 
     console.log(area)
 
-    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1]]
+    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1], true]
 }

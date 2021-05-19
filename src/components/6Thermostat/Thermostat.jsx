@@ -4,15 +4,24 @@ import {updateButton} from "../../redux/buttonsReducer";
 import {Redirect} from "react-router";
 import s from "../2RoomShape/RoomShape.module.css";
 import {HashLink as Link} from "react-router-hash-link";
+import {MatFinder} from "../7Result/MatFinder";
+import {updateResult} from "../../redux/resultReducer";
 
 const Thermostat = () => {
+
+    let room = useSelector(state => state.room);
+    let thermostat = /*useSelector(state => state.thermostat);*/ {x: 0, y: 0}
+    const spotsArray = useSelector(state => state.points);
 
     const [modalActive, setModalActive] = useState(false);
 
     const buttons = useSelector(state => state.buttons);
     const dispatch = useDispatch();
 
+    let massGroup = MatFinder(spotsArray, room, [thermostat.x, thermostat.y])
+
     const handleClick = (page) => {
+        dispatch(updateResult(massGroup))
         dispatch(updateButton(page))
     }
 

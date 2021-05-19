@@ -8,11 +8,13 @@ import {Layer, Line, Stage} from "react-konva";
 import Draggable from "react-draggable";
 import thermostat from '../../img/ThermostatButton/thermostat.svg'
 import {updateThermostat} from "../../redux/thermostatReducer";
+import {MatFinder} from "../7Result/MatFinder";
+import {updateResult} from "../../redux/resultReducer";
 
 const Placement = () => {
 
     let room = useSelector(state => state.room);
-    let thermostat = useSelector(state => state.thermostat);
+    let thermostat = /*useSelector(state => state.thermostat);*/ {x: 0, y: 0}
     const spotsArray = useSelector(state => state.points);
 
     const startX = 437;
@@ -37,7 +39,7 @@ const Placement = () => {
     const pos07 = {x: startX + room[28] + d, y: startY + room[29] - d}
 
     //const center = {x: pos00.x + Math.min(pos01s.x - pos00.x, pos06.x - pos00.x) / 2, y: (pos03.y + pos04s.y) / 2}
-    const center = {x: pos07.x + 60, y: pos03.y + 30}
+    const center = {x: pos07.x + 60, y: (pos03.y + pos04s.y)/2}
 
     const [thermX, setThermX] = useState(thermostat.x + startX);
     const [thermY, setThermY] = useState(thermostat.y + startY);
@@ -46,20 +48,19 @@ const Placement = () => {
     const [right, setRight] = useState(startX + 1)
     const [top, setTop] = useState(startY - 1)
     const [bottom, setBottom] = useState(startY + 1)
-
-
     const [modalActive, setModalActive] = useState(false);
-
     const buttons = useSelector(state => state.buttons);
     const dispatch = useDispatch();
 
+   // let massGroup = MatFinder(spotsArray, room, [thermostat.x, thermostat.y])
+
     const handleClick = (page) => {
+        //dispatch(updateResult(massGroup))
         dispatch(updateButton(page))
         dispatch(updateThermostat({x: thermX - startX, y: thermY - startY}))
     }
 
     const [p, setP] = useState({x: startX, y: 200})
-
 
     if (!buttons[6]) return <Redirect to="/"/>
 
@@ -72,9 +73,7 @@ const Placement = () => {
             setThermX(600)
             setThermY(30)
         }
-
     }
-
 
     return (
         <div>

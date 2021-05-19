@@ -30,6 +30,8 @@ const Result = () => {
 
     const dispatch = useDispatch();
 
+    const [modalActive, setModalActive] = useState(false);
+
     const buttons = useSelector(state => state.buttons);
     const room = useSelector(state => state.room);
     const spotsArray = useSelector(state => state.points);
@@ -39,6 +41,24 @@ const Result = () => {
     const [image] = useImage(thermoImg);
 
     let massGroup = MatFinder(spotsArray, room, thermoOut)
+    //let massGroup = useSelector(state => state.result)
+
+    console.log("HHH")
+    console.log(massGroup)
+
+   /* if (massGroup[4]) {
+        setModalActive(true)
+    }
+
+    useEffect(() => {
+        if (massGroup[4]) {
+            setModalActive(true)
+        }
+        return () => {
+
+        };
+    }, []);*/
+    
 
     let nestToDraw = nest => {
         let result = [];
@@ -239,6 +259,20 @@ const Result = () => {
                 </div>
             </div>
             <ModalPartsList active={modalPartsActive} setActive={setModalPartsActive} list={listOfParts}/>
+            <Modal active={modalActive} setActive={setModalActive}>
+                <div className="modal-window-floor-type">
+                    <h1 className="modal-title">About Floor Types</h1>
+                    <span className="modal-btn-close" onClick={() => setModalActive(false)}></span>
+                    <div className="modal-ft-left-content-box"></div>
+                    <div className="modal-ft-right-content-box">
+                        <p className="modal-container-description">An important part of the calculation is weather
+                            it is e.g. wood or tiles that goes on top of the heated floor.</p>
+                    </div>
+                    <div className="modal-btn-ok" onClick={() => setModalActive(false)}>
+                        ok
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
         ;

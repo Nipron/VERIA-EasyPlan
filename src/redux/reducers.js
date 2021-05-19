@@ -8,6 +8,7 @@ import {points} from "./coldSpotsPoints";
 import {thermostat} from "./thermostatReducer";
 import {checks} from "./floorChecksReducer";
 import {stageImg} from "./stageImgReducer";
+import {result} from "./resultReducer";
 
 const reducers = combineReducers({
     buttons,
@@ -16,6 +17,7 @@ const reducers = combineReducers({
     angles,
     shapes,
     points,
+    result,
     thermostat,
     checks,
     stageImg
