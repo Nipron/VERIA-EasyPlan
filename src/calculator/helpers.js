@@ -84,28 +84,27 @@ export const BombForRoom = room => {
 //Removing doubled points
 export const pitStopsCleaner = (arr, spots) => {
     let resultTemp = []
-    for (let i = 0; i < arr.length - 1; i++) {
-        let isUnique = true
+    loop1:
+    for (let i = 0; i < arr.length; i++) {
+       // let isUnique = true
         for (let j = i + 1; j < arr.length; j++) {
             if ((arr[i][0] === arr[j][0]) && (arr[i][1] === arr[j][1])) {
-                isUnique = false
-                break;
+               // isUnique = false
+                continue loop1;
             }
         }
-        if (isUnique) resultTemp.push(arr[i])
+        /*if (isUnique)*/ resultTemp.push(arr[i])
     }
-    resultTemp.push(arr[arr.length - 1])
 
     let result = [];
-    loop:
+    loop2:
         for (let i = 0; i < resultTemp.length; i++) {
             for (let j = 0; j < spots.length; j++) {
                 if (pointInPolygon(resultTemp[i], spots[j])) {
-                    continue loop;
-                } else {
-                    result.push(resultTemp[i])
+                    continue loop2;
                 }
             }
+            result.push(resultTemp[i])
         }
     return result
 }

@@ -83,6 +83,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     let entryPointsAlternative = [] //for mat group rotation cases
     let cE = 0 //current entry index
     let connectors = [];
+    let area = 0;
 
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
@@ -93,12 +94,12 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                 let columnsDown = 0
                 let startRowGrowDown = [0] //0 is code for "down"
                 while ((isGroupInsideRoom(x + columnsDown * 50 - 4, y + 1, headVertical, R))
-                   // && (isGroupInsideRoom(x - 3, y + 4 + 1, connectorVertical, R))
-                  //  && (isGroupInsideRoom(x + (columnsDown + 1) * 50 - 1, y + 4 + 1, connectorVertical, R))
+                    // && (isGroupInsideRoom(x - 3, y + 4 + 1, connectorVertical, R))
+                    //  && (isGroupInsideRoom(x + (columnsDown + 1) * 50 - 1, y + 4 + 1, connectorVertical, R))
                     && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - 4, y, headVertical))
                     && (!doesAnyCSOverlapGroup(connectors, x + columnsDown * 50 - 4, y, headVertical))
-                   // && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - 3, y + 4 + 1, connectorVertical))
-                  //  && (!doesAnyCSOverlapGroup(spots, x + (columnsDown + 1) * 50 - 1, y + 4 + 1, connectorVertical))
+                    // && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - 3, y + 4 + 1, connectorVertical))
+                    //  && (!doesAnyCSOverlapGroup(spots, x + (columnsDown + 1) * 50 - 1, y + 4 + 1, connectorVertical))
                     ) {
                     columnsDown++
                     startRowGrowDown.push(0)
@@ -118,12 +119,12 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                 let startRowGrowUp = [1]  //1 is code for "up"
 
                 while ((isGroupInsideRoom(x + columnsUp * 50 - 4, y, headVertical, R))
-                  //  && (isGroupInsideRoom(x - 3, y + headVertical.h - 10, connectorVertical, R))
-                  //  && (isGroupInsideRoom(x - 1 + (columnsUp + 1) * 50, y + headVertical.h - 10, connectorVertical, R))
+                    //  && (isGroupInsideRoom(x - 3, y + headVertical.h - 10, connectorVertical, R))
+                    //  && (isGroupInsideRoom(x - 1 + (columnsUp + 1) * 50, y + headVertical.h - 10, connectorVertical, R))
                     && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 - 4, y, headVertical))
                     && (!doesAnyCSOverlapGroup(connectors, x + columnsUp * 50 - 4, y, headVertical))
-                  //  && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 - 3, y + headVertical.h - 10, connectorVertical))
-                  //  && (!doesAnyCSOverlapGroup(spots, x - 1 + (columnsUp + 1) * 50, y + headVertical.h - 10, connectorVertical))
+                    //  && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 - 3, y + headVertical.h - 10, connectorVertical))
+                    //  && (!doesAnyCSOverlapGroup(spots, x - 1 + (columnsUp + 1) * 50, y + headVertical.h - 10, connectorVertical))
                     ) {
                     columnsUp++
                     startRowGrowUp.push(0)
@@ -144,12 +145,12 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                 let startColumnGrowLeft = [2]
 
                 while ((isGroupInsideRoom(x + 1, y + rowsLeft * 50 - 4, headHorizontal, R))
-                  //  && (isGroupInsideRoom(x + 1 + headHorizontal.w - 10, y - 3, connectorHorizontal, R))
-                  //  && (isGroupInsideRoom(x + 1 + headHorizontal.w - 10, y - 1 + (rowsLeft + 1) * 50, connectorHorizontal, R))
+                    //  && (isGroupInsideRoom(x + 1 + headHorizontal.w - 10, y - 3, connectorHorizontal, R))
+                    //  && (isGroupInsideRoom(x + 1 + headHorizontal.w - 10, y - 1 + (rowsLeft + 1) * 50, connectorHorizontal, R))
                     && (!doesAnyCSOverlapGroup(spots, x, y + rowsLeft * 50 - 4, headHorizontal))
                     && (!doesAnyCSOverlapGroup(connectors, x, y + rowsLeft * 50 - 4, headHorizontal))
-                  //  && (!doesAnyCSOverlapGroup(spots, x + 1 + headHorizontal.w - 10, y - 3, connectorHorizontal))
-                  //  && (!doesAnyCSOverlapGroup(spots, x + 1 + headHorizontal.w - 10, y - 1 + (rowsLeft + 1) * 50, connectorHorizontal))
+                    //  && (!doesAnyCSOverlapGroup(spots, x + 1 + headHorizontal.w - 10, y - 3, connectorHorizontal))
+                    //  && (!doesAnyCSOverlapGroup(spots, x + 1 + headHorizontal.w - 10, y - 1 + (rowsLeft + 1) * 50, connectorHorizontal))
                     ) {
                     rowsLeft++
                     startColumnGrowLeft.push(0)
@@ -170,12 +171,12 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                 let startColumnGrowRight = [3]
 
                 while ((isGroupInsideRoom(x + 1, y + rowsRight * 50 - 4, headHorizontal, R))
-                 //   && (isGroupInsideRoom(x + 1 + 4, y - 3, connectorHorizontal, R))
-                  //  && (isGroupInsideRoom(x + 1 + 4, y - 1 + (rowsRight + 1) * 50, connectorHorizontal, R))
+                    //   && (isGroupInsideRoom(x + 1 + 4, y - 3, connectorHorizontal, R))
+                    //  && (isGroupInsideRoom(x + 1 + 4, y - 1 + (rowsRight + 1) * 50, connectorHorizontal, R))
                     && (!doesAnyCSOverlapGroup(spots, x, y + rowsRight * 50 - 4, headHorizontal))
                     && (!doesAnyCSOverlapGroup(connectors, x, y + rowsRight * 50 - 4, headHorizontal))
-                 //   && (!doesAnyCSOverlapGroup(spots, x + 1 + 4, y - 3, connectorHorizontal))
-                 //   && (!doesAnyCSOverlapGroup(spots, x + 1 + 4, y - 1 + (rowsRight + 1) * 50, connectorHorizontal))
+                    //   && (!doesAnyCSOverlapGroup(spots, x + 1 + 4, y - 3, connectorHorizontal))
+                    //   && (!doesAnyCSOverlapGroup(spots, x + 1 + 4, y - 1 + (rowsRight + 1) * 50, connectorHorizontal))
                     ) {
                     rowsRight++
                     startColumnGrowRight.push(0)
@@ -232,12 +233,18 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
             entryPoints.push([[], []])
             entryPointsAlternative.push([null, null])
 
+            //checking if rectangular
             let isRectangular = true
             for (let i = 3; i < icicle.length - 1; i++) {
                 if (icicle[i] !== icicle[i + 1]) {
                     isRectangular = false;
                     break;
                 }
+            }
+
+            //calculating heated area
+            for (let i = 3; i < icicle.length; i++) {
+                area += icicle[i] + 1.4
             }
 
             switch (growDirection) {
@@ -423,13 +430,32 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
         pitStops.push(...corners)
     }
 
-   /* const pathLength = (path, pitStops, walls) => {
-        let resultLength = 0;
-        for (let i = 0; i < path.length - 1; i++) {
-            resultLength += wireLength(normalSnake(path[i][1], path[i + 1][0], pitStops, walls))
+    //removing extra pitStops from corners
+    loop:
+    for (let i = 0; i < pitStops.length; i++) {
+        for (let j = i + 1; j < pitStops.length; j++) {
+            if (
+                ((pitStops[i][1] === pitStops[j][1]) &&
+                    (Math.abs(pitStops[i][0] - pitStops[j][0]) === 2)) ||
+                ((pitStops[i][0] === pitStops[j][0]) &&
+                    (Math.abs(pitStops[i][1] - pitStops[j][1]) === 2))
+            ) {
+                pitStops[i][0] = pitStops[0][0]
+                pitStops[i][1] = pitStops[0][1]
+                pitStops[j][0] = pitStops[0][0]
+                pitStops[j][1] = pitStops[0][1]
+                continue loop;
+            }
         }
-        return resultLength;
-    }*/
+    }
+
+    /* const pathLength = (path, pitStops, walls) => {
+         let resultLength = 0;
+         for (let i = 0; i < path.length - 1; i++) {
+             resultLength += wireLength(normalSnake(path[i][1], path[i + 1][0], pitStops, walls))
+         }
+         return resultLength;
+     }*/
 
     const pathLengthHamster = path => {
         let resultLength = 0;
@@ -447,7 +473,8 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
         return best;
     }
 
-    const pitStopsNoDoubles = pitStopsCleaner(pitStops, spotsForWalls)
+    const pitStopsNoDoubles = pitStopsCleaner(pitStops, resultMats)
+    console.log(pitStopsNoDoubles)
 
     let path = bestPath(waysCombinations, pitStopsNoDoubles, walls);
 
@@ -461,6 +488,8 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
         return result
     }
     let snakesNest = snakeNestMaker(path, pitStopsNoDoubles, walls)
+
+    console.log(area)
 
     return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1]]
 }
