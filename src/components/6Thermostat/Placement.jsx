@@ -13,6 +13,7 @@ const Placement = () => {
 
     let room = useSelector(state => state.room);
     let thermostat = useSelector(state => state.thermostat);
+    const spotsArray = useSelector(state => state.points);
 
     const startX = 437;
     const startY = 9;
@@ -265,21 +266,18 @@ const Placement = () => {
                                 fillLinearGradientEndPoint={{x: 250, y: 250}}
                                 fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
                             />
+                            {
+                                spotsArray.map(spot => <Line
+                                    x={320}
+                                    y={2}
+                                    points={spot}
+                                    closed
+                                    stroke="#868686"
+                                    strokeWidth={2}
+                                    fill={"white"}
+                                />)
+                            }
                         </Layer>
-                        {/*} <Layer name="chair01">
-                            <Line
-                                x={thermX}
-                                y={thermY}
-                                points={[0, 0, 10, 0, 10, 10, 0, 10]}
-                                closed
-                                draggable
-                                stroke="#868686"
-                                strokeWidth={2}
-                                fill={"pink"}
-                                visible={true}
-                                onDragMove={handleDragMove}
-                            />
-                        </Layer>*/}
                     </Stage>
 
                 </div>

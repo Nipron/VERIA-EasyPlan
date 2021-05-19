@@ -362,39 +362,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
             cE++;
         }
     }
-    //FIRST: Creating array of pitStops - nodal points at the room for wires (corners of the room, cold spots and mats)
-    let pitStops = []
-    //adding room corners
-    const shapes = useSelector(state => state.shapes);
-    const roomCorners = BombForRoom(RoomTransformer(room, -1))
-    //console.log("room corners")
 
-    if (shapes.L) {
-        pitStops.push(roomCorners[3])
-        pitStops.push(roomCorners[4])
-    }
-    if (shapes.T) {
-        pitStops.push(roomCorners[3])
-        pitStops.push(roomCorners[4])
-        pitStops.push(roomCorners[9])
-        pitStops.push(roomCorners[10])
-    }
-   // pitStops.push(...BombForRoom(RoomTransformer(room, -1)))
-    //adding cold spots' corners
-    let spotsForPitStops = ColdSpotsTransformer(spotsArray, 0)
-    for (let i = 0; i < spotsForPitStops.length; i++) {
-        pitStops.push(...Bomb(spotsForPitStops[i]))
-    }
-    //adding all mats' corners
-    for (let i = 0; i < resultMats.length; i++) {
-        let corners = [...BombForMat(resultMats[i])]
-        pitStops.push(...corners)
-    }
-
-    console.log(pitStops)
-
-    let spotsForWalls = ColdSpotsTransformer(spotsArray, 1)
-    spotsForWalls.push(...resultMats)
 
     let arrayOfCombinationsWithAlts = entriesCombinations(entryPoints, entryPointsAlternative);
 
@@ -406,11 +374,54 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
         return result;
     }
 
+
     let waysCombinations = creatingSuperMegaArrayOfCombinations(arrayOfCombinationsWithAlts, thermoOut)
+
+    let spotsForWalls = ColdSpotsTransformer(spotsArray, 1)
+    spotsForWalls.push(...resultMats)
     let walls = BulldozerSquad(spotsForWalls)
     let wallsFromRoom = Bulldozer(RoomReshaper(room, -3))
 
-    walls.push(...wallsFromRoom)
+    //Creating array of pitStops - nodal points at the room for wires (corners of the room, cold spots and mats)
+    let pitStops = []
+    //adding room corners
+    const shapes = useSelector(state => state.shapes);
+    const roomCorners = BombForRoom(RoomTransformer(room, -1))
+    if (shapes.L) {
+        pitStops.push(roomCorners[3])
+        pitStops.push(roomCorners[4])
+        walls.push(wallsFromRoom[1])
+        walls.push(wallsFromRoom[2])
+        walls.push(wallsFromRoom[3])
+        walls.push(wallsFromRoom[4])
+        walls.push(wallsFromRoom[5])
+    }
+    if (shapes.T) {
+        pitStops.push(roomCorners[3])
+        pitStops.push(roomCorners[4])
+        pitStops.push(roomCorners[9])
+        pitStops.push(roomCorners[10])
+        walls.push(wallsFromRoom[1])
+        walls.push(wallsFromRoom[2])
+        walls.push(wallsFromRoom[3])
+        walls.push(wallsFromRoom[4])
+        walls.push(wallsFromRoom[5])
+        walls.push(wallsFromRoom[7])
+        walls.push(wallsFromRoom[8])
+        walls.push(wallsFromRoom[9])
+        walls.push(wallsFromRoom[10])
+        walls.push(wallsFromRoom[11])
+    }
+    //adding cold spots' corners
+    let spotsForPitStops = ColdSpotsTransformer(spotsArray, 0)
+    for (let i = 0; i < spotsForPitStops.length; i++) {
+        pitStops.push(...Bomb(spotsForPitStops[i]))
+    }
+    //adding all mats' corners
+    for (let i = 0; i < resultMats.length; i++) {
+        let corners = [...BombForMat(resultMats[i])]
+        pitStops.push(...corners)
+    }
 
    /* const pathLength = (path, pitStops, walls) => {
         let resultLength = 0;

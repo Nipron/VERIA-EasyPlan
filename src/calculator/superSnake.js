@@ -55,14 +55,24 @@ export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
     }
     //if no direct single pitStop, than looking for a closet one to endPoint
     for (let i = 0; i < pitStops.length; i++) {
-        if ((isWayFree(startPoint, pitStops[i], walls))
-            && ((resultPitStop.length === 0)
-                || (
-                    (dist(startPoint, pitStops[i]) + dist(pitStops[i], endPoint)) < (dist(startPoint, resultPitStop) + dist(resultPitStop, endPoint))
-                )
-            )
-        ) {
-            resultPitStop = pitStops[i];
+        if (isWayFree(startPoint, pitStops[i], walls)) {
+            for (let j = 0; j < pitStops.length; j++) {
+                if (isWayFree(pitStops[i], pitStops[j], walls)) {
+                    if (isWayFree(pitStops[j], endPoint, walls)) {
+                        return pitStops[i];
+                    }
+                    for (let k = 0; k < pitStops.length; k++) {
+                        if ((isWayFree(pitStops[j], pitStops[k], walls)) && (isWayFree(pitStops[k], endPoint, walls))) {
+                            return  pitStops[i]
+                        }
+                    }
+                }
+            }
+            if (resultPitStop.length === 0 ||
+                (dist(startPoint, pitStops[i]) + dist(pitStops[i], endPoint)) < (dist(startPoint, resultPitStop) + dist(resultPitStop, endPoint))
+            ) {
+                resultPitStop = pitStops[i];
+            }
         }
     }
     return resultPitStop;
