@@ -151,8 +151,8 @@ const Placement = () => {
                                 if (sector(pos02, pos03s)) {
                                     setLeft(pos02.x - 1);
                                     setRight(pos03s.x + 1);
-                                    setTop(pos02.y);
-                                    setBottom(pos02.y);
+                                    setTop(pos02.y - 1);
+                                    setBottom(pos02.y + 1);
                                 }
 
                                 if (sector(pos03s, pos03)) {

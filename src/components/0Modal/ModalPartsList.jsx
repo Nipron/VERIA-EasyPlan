@@ -15,28 +15,28 @@ const ModalPartsList = ({active, setActive, list}) => {
                         {Object.keys(list).map(key => {
                                 let name = '';
                                 switch (key) {
-                                    case "mat5-100":
+                                    case "mat5_100":
                                         name = `Veria Clickmat 100, 5m${"\u00B2"}`
                                         break;
-                                    case "mat4-100":
+                                    case "mat4_100":
                                         name = `Veria Clickmat 100, 4m${"\u00B2"}`
                                         break;
-                                    case "mat3-100":
+                                    case "mat3_100":
                                         name = `Veria Clickmat 100, 3m${"\u00B2"}`
                                         break;
-                                    case "mat2-100":
+                                    case "mat2_100":
                                         name = `Veria Clickmat 100, 2m${"\u00B2"}`
                                         break;
-                                    case "mat5-55":
+                                    case "mat5_55":
                                         name = `Veria Clickmat 55, 5m${"\u00B2"}`
                                         break;
-                                    case "mat4-55":
+                                    case "mat4_55":
                                         name = `Veria Clickmat 55, 4m${"\u00B2"}`
                                         break;
-                                    case "mat3-55":
+                                    case "mat3_55":
                                         name = `Veria Clickmat 55, 3m${"\u00B2"}`
                                         break;
-                                    case "mat2-55":
+                                    case "mat2_55":
                                         name = `Veria Clickmat 55, 2m${"\u00B2"}`
                                         break;
                                     case "cord2":

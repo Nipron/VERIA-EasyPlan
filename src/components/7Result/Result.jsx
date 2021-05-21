@@ -21,6 +21,7 @@ import {Redirect} from "react-router";
 
 import {MatFinder} from "./MatFinder";
 import {updateButton} from "../../redux/buttonsReducer";
+import {cordCalc, cords} from "../../calculator/superSnake";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -76,25 +77,46 @@ const Result = () => {
         return result;
     }
     let nestXX = [];
-    if (massGroup[4]) {
-        nestXX = nestToDraw(massGroup[1])
-    }
+
+    let list = []
 
     const listOfParts = {
-        "mat5_55": 3,
-        "mat4-55": 0,
-        "mat3-55": 3,
-        "mat2-55": 0,
-        "mat5-100": 0,
-        "mat4-100": 4,
-        "mat3-100": 1,
-        "mat2-100": 0,
-        "cord2": 4,
-        "cord1": 1,
-        "cord025": 4,
-        "kit100": 1,
+        "mat5_55": 0,
+        "mat4_55": 0,
+        "mat3_55": 0,
+        "mat2_55": 0,
+        "mat5_100": 0,
+        "mat4_100": 0,
+        "mat3_100": 0,
+        "mat2_100": 0,
+        "cord2": 0,
+        "cord1": 0,
+        "cord025": 0,
+        "kit100": 0,
         "kit55": 0
     }
+
+    if (massGroup[4]) {
+        nestXX = nestToDraw(massGroup[1])
+        list = massGroup[6]
+        listOfParts.cord025 = list[4]
+        listOfParts.cord1 = list[5]
+        listOfParts.cord2 = list[6]
+        if (massGroup[5] > 23) {
+            listOfParts.mat2_55 = list[0]
+            listOfParts.mat3_55 = list[1]
+            listOfParts.mat4_55 = list[2]
+            listOfParts.mat5_55 = list[3]
+            listOfParts.kit55 = 1;
+        } else {
+            listOfParts.mat2_100 = list[0]
+            listOfParts.mat3_100 = list[1]
+            listOfParts.mat4_100 = list[2]
+            listOfParts.mat5_100 = list[3]
+            listOfParts.kit100 = 1;
+        }
+    }
+
 
     const [modalNotesActive, setModalNotesActive] = useState(false);
     const [modalPartsActive, setModalPartsActive] = useState(false); //shows modal only first time on page
@@ -185,11 +207,23 @@ const Result = () => {
                                     points={room}
                                     closed
                                     stroke="#868686"
-                                    strokeWidth={1}
+                                    strokeWidth={2}
                                     fillLinearGradientStartPoint={{x: -50, y: -50}}
                                     fillLinearGradientEndPoint={{x: 250, y: 250}}
                                     fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
                                 />
+                                {
+                                massGroup[7].map(tail => <Line
+                                    x={320}
+                                    y={2}
+                                    points={tail}
+                                    closed
+                                    stroke="#6E6E6E"
+                                    globalCompositeOperation="source-atop"
+                                    strokeWidth={2}
+                                    fill="#FA9393"
+                                />)
+                            }
                             </Layer>
                             <Layer name="result">
                                 {
@@ -219,7 +253,8 @@ const Result = () => {
                                         x={320}
                                         y={2}
                                         points={snake}
-                                        stroke="#9F35CC"
+                                       // stroke="#9F35CC"
+                                        stroke="black"
                                         strokeWidth={2}
                                     />)
                                 }
@@ -233,13 +268,14 @@ const Result = () => {
                                     />)
                                 }
                                 {
-                                    massGroup[3].map(connector => <KonvaText
-                                        x={connector[0] + 320}
-                                        y={connector[1] + 2}
-                                        text={connector[2]}
+                                    massGroup[3].map(text => <KonvaText
+                                        x={text[0] + 320}
+                                        y={text[1] + 2}
+                                        text={text[2]}
                                         fontSize={15}
                                         fontFamily='Calibri'
-                                        fill="#E8C6F7"
+                                       // fill="#E8C6F7"
+                                        fill="black"
                                     />)
                                 }
                                 <Image image={image}
@@ -275,15 +311,16 @@ const Result = () => {
                     <div className="modal-ft-right-content-box">
                         <p className="modal-container-description">
                             The size of the heated area in your room is
-                            <b> {Math.round(massGroup[5]*100)/100}</b> sq.m.
+                            <b> {Math.round(massGroup[5] * 100) / 100}</b> sq.m.
                             and exceeds the maximum capacity of the thermostat.</p>
-                    <br/>
+                        <br/>
                         <p className="modal-container-description">
                             Maximum capacity is 42 sq.m. for unburnable subfloor (Veria Wireless Clickkit 55)
                             and 23 sq.m. for burnable subfloor (Veria Wireless Clickkit 100)</p>
-                    <br/>
+                        <br/>
                         <p className="modal-container-description">
-                            Please change room parameters or contact us for further support — <b>veriafloorheating.com</b>
+                            Please change room parameters or contact us for further support
+                            — <b>veriafloorheating.com</b>
                         </p>
                     </div>
                     <div className="modal-btn-ok" onClick={handleModalClick}>
@@ -292,8 +329,7 @@ const Result = () => {
                 </div>
             </Modal>
         </div>
-    )
-        ;
+    );
 };
 
 export default Result;

@@ -9,7 +9,7 @@ import {
     RoomTransformer
 } from "../../calculator/helpers";
 import {
-    combinationLength,
+    combinationLength, cordCalc,
     dist,
     normalSnake,
     weakSnake,
@@ -80,12 +80,22 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
     const R = RoomTransformer(room, 0)
     let needToSearch = true;
     let resultMats = []
+    let resultCuts = []
     let entryPoints = []
     let entryPointsAlternative = [] //for mat group rotation cases
     let cE = 0 //current entry index
     let connectors = [];
     let area = 0;
     const shapes = useSelector(state => state.shapes);
+    let list = [
+        0,  //mat 2m
+        0,  //mat 3m
+        0,  //mat 4m
+        0,  //mat 5m
+        0,  //cord 0,25m
+        0,  //cord 1m
+        0   //cord 2m
+    ]
 
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
@@ -246,7 +256,12 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
             //calculating heated area
             for (let i = 3; i < icicle.length; i++) {
+                console.log(icicle[i])
                 area += icicle[i] + 1.4
+                if (icicle[i] === 0) list[0]++;
+                if (icicle[i] === 1) list[1]++;
+                if (icicle[i] === 2) list[2]++;
+                if (icicle[i] === 3) list[3]++;
             }
 
             if ((area > 42) || ((area > 23) && burnable)) {
@@ -303,6 +318,10 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                             50 * (z - 2) + x, y,
                             50 * (z - 2) + x, 75 + icicle[z] * 50 + y,
                             50 * (z - 3) + x, 75 + icicle[z] * 50 + y])
+                        resultCuts.push([50 * (z - 3) + x, y - 12.5,
+                            50 * (z - 2) + x, y - 12.5,
+                            50 * (z - 2) + x, 75 + icicle[z] * 50 + y + 12.5,
+                            50 * (z - 3) + x, 75 + icicle[z] * 50 + y + 12.5])
                         spots.push([50 * (z - 3) + x + t, y + t,
                             50 * (z - 2) + x - t, y + t,
                             50 * (z - 2) + x - t, y + 75 + icicle[z] * 50 - t,
@@ -321,6 +340,10 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                             50 * (z - 2) + x, y - icicle[z] * 50,
                             50 * (z - 2) + x, y + 75,
                             50 * (z - 3) + x, y + 75])
+                        resultCuts.push([50 * (z - 3) + x, y - icicle[z] * 50 - 12.5,
+                            50 * (z - 2) + x, y - icicle[z] * 50 - 12.5,
+                            50 * (z - 2) + x, y + 75 + 12.5,
+                            50 * (z - 3) + x, y + 75 + 12.5])
                         spots.push([50 * (z - 3) + x + t, y + 75 - t,
                             50 * (z - 2) + x - t, y + 75 - t,
                             50 * (z - 2) + x - t, y - icicle[z] * 50 + t,
@@ -339,6 +362,10 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                             x + 75, y + 50 * (z - 3),
                             x + 75, y + 50 * (z - 2),
                             x - icicle[z] * 50, y + 50 * (z - 2)])
+                        resultCuts.push([x - icicle[z] * 50 - 12.5, y + 50 * (z - 3),
+                            x + 75 + 12.5, y + 50 * (z - 3),
+                            x + 75 + 12.5, y + 50 * (z - 2),
+                            x - icicle[z] * 50 - 12.5, y + 50 * (z - 2)])
                         spots.push([x - icicle[z] * 50 + t, y + 50 * (z - 3) + t,
                             x + 75 - t, y + 50 * (z - 3) + t,
                             x + 75 - t, y + 50 * (z - 2) - t,
@@ -357,6 +384,10 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                             x + 75 + icicle[z] * 50, y + 50 * (z - 3),
                             x + 75 + icicle[z] * 50, y + 50 * (z - 2),
                             x, y + 50 * (z - 2)])
+                        resultCuts.push([x - 12.5, y + 50 * (z - 3),
+                            x + 75 + icicle[z] * 50 + 12.5, y + 50 * (z - 3),
+                            x + 75 + icicle[z] * 50 + 12.5, y + 50 * (z - 2),
+                            x - 12.5, y + 50 * (z - 2)])
                         spots.push([x + t, y + 50 * (z - 3) + t,
                             x + 75 + icicle[z] * 50 - t, y + 50 * (z - 3) + t,
                             x + 75 + icicle[z] * 50 - t, y + 50 * (z - 2) - t,
@@ -455,7 +486,7 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
         }
     }
 
-    /* const pathLength = (path, pitStops, walls) => {
+     /*const pathLength = (path, pitStops, walls) => {
          let resultLength = 0;
          for (let i = 0; i < path.length - 1; i++) {
              resultLength += wireLength(normalSnake(path[i][1], path[i + 1][0], pitStops, walls))
@@ -493,6 +524,10 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
         return result
     }
     let snakesNest = snakeNestMaker(path, pitStopsNoDoubles, walls)
+    let cordsArray = cordCalc(snakesNest)
+    list[4] = cordsArray[0]
+    list[5] = cordsArray[1]
+    list[6] = cordsArray[2]
 
-    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1], true, area]
+    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1], true, area, list, resultCuts]
 }
