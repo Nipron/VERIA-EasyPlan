@@ -33,8 +33,9 @@ const RoomSize = () => {
                     <h2>Adjust Room Size</h2>
                     <p>Adjust the dimensions to match your actual room measurements.
                         Make sure to be as accurate as possible when dimensioning the room to ensure reliable results.
-                        If you right-click anywhere on the room you can zoom in and thus make it easier to adjust the
-                        room's exact size. Remember to zoom out when finished.
+                        You can also enter dimensions in centimeter by double clicking the box on a wall.
+                        If dimesion labels are on your way,
+                        you may hide them by clicking "Show/hide labels" button.
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>

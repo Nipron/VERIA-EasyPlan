@@ -16,7 +16,7 @@ import {updateAngles} from "../../redux/anglesReducer";
 const PlanMakerL = () => {
 
     const ratio = 2; //ratio = cm / pixels
-    const minDist = 8; //minimum distance between points/lines
+    const minDist = 10; //minimum distance between points/lines
     const maxWidth = 720; //constructor max width
     const maxHeight = 315; //constructor max height
 
@@ -189,6 +189,8 @@ const PlanMakerL = () => {
     }, [pos01, pos01shadow, pos02, pos02shadow, pos03, pos03shadow, pos04, pos04shadow,
         pos07, pos07shadow]);
 
+    const top = 14;
+    const left = 35;
 
     return (
         <div className="content-section-grid">
@@ -200,8 +202,8 @@ const PlanMakerL = () => {
                              onClick={() => handleAngle01(!pos01angled)}
                              style={{
                                  backgroundImage: `url(${angIcon01})`,
-                                 top: ((pos01.y + pos01shadow.y) / 2 - 20),
-                                 left: ((pos01.x + pos01shadow.x) / 2 + 31),
+                                 top: ((pos01.y + pos01shadow.y) / 2 - top),
+                                 left: ((pos01.x + pos01shadow.x) / 2 + left),
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
                         </div>
@@ -210,8 +212,8 @@ const PlanMakerL = () => {
                              onClick={() => handleAngle02(!pos02angled)}
                              style={{
                                  backgroundImage: `url(${angIcon02})`,
-                                 top: ((pos02.y + pos02shadow.y) / 2 - 20),
-                                 left: ((pos02.x + pos02shadow.x) / 2 + 31),
+                                 top: ((pos02.y + pos02shadow.y) / 2 - top),
+                                 left: ((pos02.x + pos02shadow.x) / 2 + left),
                                  transform: "rotate(180deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
@@ -221,8 +223,8 @@ const PlanMakerL = () => {
                              onClick={() => handleAngle03(!pos03angled)}
                              style={{
                                  backgroundImage: `url(${angIcon03})`,
-                                 top: ((pos03.y + pos03shadow.y) / 2 - 20),
-                                 left: ((pos03.x + pos03shadow.x) / 2 + 31),
+                                 top: ((pos03.y + pos03shadow.y) / 2 - top),
+                                 left: ((pos03.x + pos03shadow.x) / 2 + left),
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
                         </div>
@@ -231,8 +233,8 @@ const PlanMakerL = () => {
                              onClick={() => handleAngle04(!pos04angled)}
                              style={{
                                  backgroundImage: `url(${angIcon04})`,
-                                 top: ((pos04.y + pos04shadow.y) / 2 - 20),
-                                 left: ((pos04.x + pos04shadow.x) / 2 + 31),
+                                 top: ((pos04.y + pos04shadow.y) / 2 - top),
+                                 left: ((pos04.x + pos04shadow.x) / 2 + left),
                                  transform: "rotate(90deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
@@ -242,8 +244,8 @@ const PlanMakerL = () => {
                              onClick={() => handleAngle07(!pos07angled)}
                              style={{
                                  backgroundImage: `url(${angIcon07})`,
-                                 top: ((pos07.y + pos07shadow.y) / 2 - 20),
-                                 left: ((pos07.x + pos07shadow.x) / 2 + 31),
+                                 top: ((pos07.y + pos07shadow.y) / 2 - top),
+                                 left: ((pos07.x + pos07shadow.x) / 2 + left),
                                  transform: "rotate(180deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>

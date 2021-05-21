@@ -233,6 +233,9 @@ const PlanMakerT = () => {
     }, [pos01, pos01shadow, pos02, pos02shadow, pos03, pos03shadow, pos04, pos04shadow,
         pos05, pos05shadow, pos06, pos06shadow, pos07, pos07shadow]);
 
+    const top = 14;
+    const left = 35;
+
     return (
         <div className="content-section-grid">
             <div className="constructor-box">
@@ -243,8 +246,8 @@ const PlanMakerT = () => {
                              onClick={() => handleAngle01(!pos01angled)}
                              style={{
                                  backgroundImage: `url(${angIcon01})`,
-                                 top: ((pos01.y + pos01shadow.y) / 2 - 20),
-                                 left: ((pos01.x + pos01shadow.x) / 2 + 31),
+                                 top: ((pos01.y + pos01shadow.y) / 2 - top),
+                                 left: ((pos01.x + pos01shadow.x) / 2 + left),
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
                         </div>
@@ -253,8 +256,8 @@ const PlanMakerT = () => {
                              onClick={() => handleAngle02(!pos02angled)}
                              style={{
                                  backgroundImage: `url(${angIcon02})`,
-                                 top: ((pos02.y + pos02shadow.y) / 2 - 20),
-                                 left: ((pos02.x + pos02shadow.x) / 2 + 31),
+                                 top: ((pos02.y + pos02shadow.y) / 2 - top),
+                                 left: ((pos02.x + pos02shadow.x) / 2 + left),
                                  transform: "rotate(180deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
@@ -264,8 +267,8 @@ const PlanMakerT = () => {
                              onClick={() => handleAngle03(!pos03angled)}
                              style={{
                                  backgroundImage: `url(${angIcon03})`,
-                                 top: ((pos03.y + pos03shadow.y) / 2 - 20),
-                                 left: ((pos03.x + pos03shadow.x) / 2 + 31),
+                                 top: ((pos03.y + pos03shadow.y) / 2 - top),
+                                 left: ((pos03.x + pos03shadow.x) / 2 + left),
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
                         </div>
@@ -274,8 +277,8 @@ const PlanMakerT = () => {
                              onClick={() => handleAngle04(!pos04angled)}
                              style={{
                                  backgroundImage: `url(${angIcon04})`,
-                                 top: ((pos04.y + pos04shadow.y) / 2 - 20),
-                                 left: ((pos04.x + pos04shadow.x) / 2 + 31),
+                                 top: ((pos04.y + pos04shadow.y) / 2 - top),
+                                 left: ((pos04.x + pos04shadow.x) / 2 + left),
                                  transform: "rotate(90deg)",
                                  visibility: (anglesMode && !shapes.L) ? 'visible' : 'hidden'
                              }}>
@@ -285,8 +288,8 @@ const PlanMakerT = () => {
                              onClick={() => handleAngle05(!pos05angled)}
                              style={{
                                  backgroundImage: `url(${angIcon05})`,
-                                 top: ((pos05.y + pos05shadow.y) / 2 - 20),
-                                 left: ((pos05.x + pos05shadow.x) / 2 + 31),
+                                 top: ((pos05.y + pos05shadow.y) / 2 - top),
+                                 left: ((pos05.x + pos05shadow.x) / 2 + left),
                                  transform: "rotate(270deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
@@ -296,8 +299,8 @@ const PlanMakerT = () => {
                              onClick={() => handleAngle06(!pos06angled)}
                              style={{
                                  backgroundImage: `url(${angIcon06})`,
-                                 top: ((pos06.y + pos06shadow.y) / 2 - 20),
-                                 left: ((pos06.x + pos06shadow.x) / 2 + 31),
+                                 top: ((pos06.y + pos06shadow.y) / 2 - top),
+                                 left: ((pos06.x + pos06shadow.x) / 2 + left),
                                  transform: "rotate(90deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
@@ -307,8 +310,8 @@ const PlanMakerT = () => {
                              onClick={() => handleAngle07(!pos07angled)}
                              style={{
                                  backgroundImage: `url(${angIcon07})`,
-                                 top: ((pos07.y + pos07shadow.y) / 2 - 20),
-                                 left: ((pos07.x + pos07shadow.x) / 2 + 31),
+                                 top: ((pos07.y + pos07shadow.y) / 2 - top),
+                                 left: ((pos07.x + pos07shadow.x) / 2 + left),
                                  transform: "rotate(180deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>

@@ -16,7 +16,7 @@ import {updateAngles} from "../../redux/anglesReducer";
 const PlanMakerR = () => {
 
     const ratio = 2; //ratio = cm / pixels
-    const minDist = 6; //minimum distance between points/lines
+    const minDist = 10; //minimum distance between points/lines
     const maxWidth = 720; //constructor max width
     const maxHeight = 315; //constructor max height
 
@@ -144,6 +144,8 @@ const PlanMakerR = () => {
     }, [pos03, pos03shadow, pos04, pos04shadow,
         pos07, pos07shadow]);
 
+    const top = 14;
+    const left = 35;
 
     return (
         <div className="content-section-grid">
@@ -156,8 +158,8 @@ const PlanMakerR = () => {
                              onClick={() => handleAngle03(!pos03angled)}
                              style={{
                                  backgroundImage: `url(${angIcon03})`,
-                                 top: ((pos03.y + pos03shadow.y) / 2 - 20),
-                                 left: ((pos03.x + pos03shadow.x) / 2 + 31),
+                                 top: ((pos03.y + pos03shadow.y) / 2 - top),
+                                 left: ((pos03.x + pos03shadow.x) / 2 + left),
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
                         </div>
@@ -166,8 +168,8 @@ const PlanMakerR = () => {
                              onClick={() => handleAngle04(!pos04angled)}
                              style={{
                                  backgroundImage: `url(${angIcon04})`,
-                                 top: ((pos04.y + pos04shadow.y) / 2 - 20),
-                                 left: ((pos04.x + pos04shadow.x) / 2 + 31),
+                                 top: ((pos04.y + pos04shadow.y) / 2 - top),
+                                 left: ((pos04.x + pos04shadow.x) / 2 + left),
                                  transform: "rotate(90deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
@@ -177,8 +179,8 @@ const PlanMakerR = () => {
                              onClick={() => handleAngle07(!pos07angled)}
                              style={{
                                  backgroundImage: `url(${angIcon07})`,
-                                 top: ((pos07.y + pos07shadow.y) / 2 - 20),
-                                 left: ((pos07.x + pos07shadow.x) / 2 + 31),
+                                 top: ((pos07.y + pos07shadow.y) / 2 - top),
+                                 left: ((pos07.x + pos07shadow.x) / 2 + left),
                                  transform: "rotate(180deg)",
                                  visibility: anglesMode ? 'visible' : 'hidden'
                              }}>
@@ -252,7 +254,7 @@ const PlanMakerR = () => {
                                            left: (pos03angled && pos03shadow.x + minDist) || 3 * minDist,
                                            top: (pos03angled && pos03shadow.y + minDist) || 0,
                                            right: maxWidth,
-                                           bottom: (pos03angled && ((pos04angled && pos04shadow.y - minDist) || (pos04.y - 2 * minDist)))  || pos00.y
+                                           bottom: (pos03angled && ((pos04angled && pos04shadow.y - minDist) || (pos04.y - 2 * minDist))) || pos00.y
                                        }
                                    }
                         >
@@ -629,8 +631,7 @@ const PlanMakerR = () => {
                          setAnglesMode(!anglesMode);
                      }}
                      style={anglesMode ? {background: "lightgreen"} : {}}
-                >Create
-                    angled wall
+                >Create angled wall
                 </div>
                 <div id="bnt-labels" className="box_btn-style"
                      onClick={() => setLabVis(!labVis)}
