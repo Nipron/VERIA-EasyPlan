@@ -210,7 +210,8 @@ const Result = () => {
                                     strokeWidth={2}
                                     fillLinearGradientStartPoint={{x: -50, y: -50}}
                                     fillLinearGradientEndPoint={{x: 250, y: 250}}
-                                    fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
+                                    fill="#F7C9C9"
+                                    //fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
                                 />
                                 {
                                 massGroup[7].map(tail => <Line
@@ -249,16 +250,6 @@ const Result = () => {
                                     />)
                                 }
                                 {
-                                    nestXX.map(snake => <Line
-                                        x={320}
-                                        y={2}
-                                        points={snake}
-                                       // stroke="#9F35CC"
-                                        stroke="black"
-                                        strokeWidth={2}
-                                    />)
-                                }
-                                {
                                     massGroup[2].map(connector => <Line
                                         x={320}
                                         y={2}
@@ -278,6 +269,28 @@ const Result = () => {
                                         fill="black"
                                     />)
                                 }
+                                <Line
+                                    x={320}
+                                    y={2}
+                                    points={room}
+                                    closed
+                                    stroke="#868686"
+                                    strokeWidth={2}
+                                    fillLinearGradientStartPoint={{x: -50, y: -50}}
+                                    fillLinearGradientEndPoint={{x: 250, y: 250}}
+                                    //fill="#F7C9C9"
+                                    //fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
+                                />
+                                {
+                                    nestXX.map(snake => <Line
+                                        x={320}
+                                        y={2}
+                                        points={snake}
+                                        // stroke="#9F35CC"
+                                        stroke="black"
+                                        strokeWidth={2}
+                                    />)
+                                }
                                 <Image image={image}
                                        x={thermostat.x + 320 - 12}
                                        y={thermostat.y - 7}
@@ -293,10 +306,10 @@ const Result = () => {
                         <div className="btn-list"
                              onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
                         </div>
-                        {/* <div className="btn-print-project" onMouseEnter={handleEnter}>
+                         <div className="btn-print-project" onMouseEnter={handleEnter}>
                             {pdfLink}
                         </div>
-                         <div className="btn-print-project" onMouseEnter={handleEnter}>
+                        {/*<div className="btn-print-project" onMouseEnter={handleEnter}>
                             <NewPDF/>
                         </div>*/}
                     </div>
