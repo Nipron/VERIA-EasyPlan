@@ -194,7 +194,7 @@ export const cords = snake => {
 
 //calculating amount of cords
 export const cordCalc = arr => {
-    console.log(arr)
+   // console.log(arr)
     let c025 = 0;
     let c1 = 0;
     let c2 = 0;

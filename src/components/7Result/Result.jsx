@@ -18,8 +18,6 @@ import {updateImg} from "../../redux/stageImgReducer";
 import veria from "../../img/forPDF/PDFheader.png";
 import NewPDF from "../PDF/newPDF";
 import {Redirect} from "react-router";
-
-import {MatFinder} from "./MatFinder";
 import {updateButton} from "../../redux/buttonsReducer";
 import {cordCalc, cords} from "../../calculator/superSnake";
 
@@ -29,26 +27,15 @@ const ThermostatImage = () => {
 };
 
 const Result = () => {
-
     const dispatch = useDispatch();
-
     const [modalActive, setModalActive] = useState(false);
-
     const buttons = useSelector(state => state.buttons);
     const room = useSelector(state => state.room);
     const spotsArray = useSelector(state => state.points);
     const thermostat = useSelector(state => state.thermostat);
     const thermoOut = [thermostat.x, thermostat.y]
-
     const [image] = useImage(thermoImg);
-
-    //let massGroup = MatFinder(spotsArray, room, thermoOut)
     const massGroup = useSelector(state => state.result)
-
-
-    /* if (massGroup[4]) {
-         setModalActive(true)
-     }*/
 
     useEffect(() => {
         setModalActive(!massGroup[4])
@@ -63,7 +50,6 @@ const Result = () => {
             return <Redirect to="/"/>
         }
     }
-
     const nestToDraw = nest => {
         let result = [];
         for (let i = 0; i < nest.length; i++) {
@@ -77,9 +63,7 @@ const Result = () => {
         return result;
     }
     let nestXX = [];
-
     let list = []
-
     const listOfParts = {
         "mat5_55": 0,
         "mat4_55": 0,
@@ -95,7 +79,6 @@ const Result = () => {
         "kit100": 0,
         "kit55": 0
     }
-
     if (massGroup[4]) {
         nestXX = nestToDraw(massGroup[1])
         list = massGroup[6]
@@ -117,18 +100,17 @@ const Result = () => {
         }
     }
 
-
     const [modalNotesActive, setModalNotesActive] = useState(false);
     const [modalPartsActive, setModalPartsActive] = useState(false); //shows modal only first time on page
 
     const stageRef = useRef();
     const [im, setIm] = useState(null)
-    const [pdfLink, setPdfLink] = useState("PDF")
+    const [pdfLink, setPdfLink] = useState("Creating PDF...")
 
     const handleEnter = event => {
 
         const dataURL = stageRef.current.toDataURL({
-            pixelRatio: 2
+            pixelRatio: 4
         });
         setIm(dataURL)
         const styles = StyleSheet.create({
@@ -156,7 +138,7 @@ const Result = () => {
                         </View>
                         <View style={styles.sectionGrey}>
                             <Text>
-                                Floor heating: 11,0 m2 | Clickmat | 75% heating coverage
+                                Floor heating: 18.2 sq.m. | Clickmat | 75% heating coverage
                             </Text>
                             <Text>
                                 Top Floor Covering: Laminate
@@ -165,7 +147,7 @@ const Result = () => {
                                 Bottom Floor Construction: Unburnable (Concrete)
                             </Text>
                         </View>
-                        <View style={styles.section}>
+                        <View style={styles.sectionGrey}>
                             <PDFImage src={im}/>
                         </View>
                     </Page>
@@ -174,7 +156,7 @@ const Result = () => {
         };
 
         setPdfLink(<PDFDownloadLink document={<PDF2/>} fileName="EasyPlan.pdf">
-            {({blob, url, loading, error}) => (loading ? 'Loading...' : 'Save as PDF')}
+            {({blob, url, loading, error}) => (loading ? 'Creating PDF...' : 'Save as PDF')}
         </PDFDownloadLink>)
     }
 
@@ -199,24 +181,24 @@ const Result = () => {
                 <div className="constructor-box">
                     {
                         massGroup[4] &&
-                        <Stage width={1220} height={320} ref={stageRef}>
+                        <Stage width={820} height={320} ref={stageRef}>
                             <Layer name="main-layer">
                                 <Line
-                                    x={320}
-                                    y={2}
+                                    x={10}
+                                    y={12}
                                     points={room}
                                     closed
                                     stroke="#868686"
                                     strokeWidth={2}
                                     fillLinearGradientStartPoint={{x: -50, y: -50}}
                                     fillLinearGradientEndPoint={{x: 250, y: 250}}
-                                    fill="#F7C9C9"
+                                    fill="lightgrey"
                                     //fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
                                 />
                                 {
                                 massGroup[7].map(tail => <Line
-                                    x={320}
-                                    y={2}
+                                    x={10}
+                                    y={12}
                                     points={tail}
                                     closed
                                     stroke="#6E6E6E"
@@ -229,8 +211,8 @@ const Result = () => {
                             <Layer name="result">
                                 {
                                     massGroup[0].map(tail => <Line
-                                        x={320}
-                                        y={2}
+                                        x={10}
+                                        y={12}
                                         points={tail}
                                         closed
                                         stroke="#6E6E6E"
@@ -240,8 +222,8 @@ const Result = () => {
                                 }
                                 {
                                     spotsArray.map(spot => <Line
-                                        x={320}
-                                        y={2}
+                                        x={10}
+                                        y={12}
                                         points={spot}
                                         closed
                                         stroke="#868686"
@@ -251,8 +233,8 @@ const Result = () => {
                                 }
                                 {
                                     massGroup[2].map(connector => <Line
-                                        x={320}
-                                        y={2}
+                                        x={10}
+                                        y={12}
                                         points={connector}
                                         closed
                                         fill={"black"}
@@ -260,18 +242,18 @@ const Result = () => {
                                 }
                                 {
                                     massGroup[3].map(text => <KonvaText
-                                        x={text[0] + 320}
-                                        y={text[1] + 2}
+                                        x={text[0] + 10}
+                                        y={text[1] + 12}
                                         text={text[2]}
                                         fontSize={15}
                                         fontFamily='Calibri'
-                                       // fill="#E8C6F7"
+                                        //fill="#E8C6F7"
                                         fill="black"
                                     />)
                                 }
                                 <Line
-                                    x={320}
-                                    y={2}
+                                    x={10}
+                                    y={12}
                                     points={room}
                                     closed
                                     stroke="#868686"
@@ -283,8 +265,8 @@ const Result = () => {
                                 />
                                 {
                                     nestXX.map(snake => <Line
-                                        x={320}
-                                        y={2}
+                                        x={10}
+                                        y={12}
                                         points={snake}
                                         // stroke="#9F35CC"
                                         stroke="black"
@@ -292,8 +274,8 @@ const Result = () => {
                                     />)
                                 }
                                 <Image image={image}
-                                       x={thermostat.x + 320 - 12}
-                                       y={thermostat.y - 7}
+                                       x={thermostat.x + 10 - 12}
+                                       y={thermostat.y - 7 + 10}
                                        scale={{x: 0.6, y: 0.6}}/>
                             </Layer>
                         </Stage>
