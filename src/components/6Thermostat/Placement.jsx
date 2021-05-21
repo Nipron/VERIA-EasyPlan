@@ -52,17 +52,14 @@ const Placement = () => {
     const buttons = useSelector(state => state.buttons);
     const dispatch = useDispatch();
 
-   // let massGroup = MatFinder(spotsArray, room, [thermostat.x, thermostat.y])
-
     const handleClick = (page) => {
-        //dispatch(updateResult(massGroup))
         dispatch(updateButton(page))
         dispatch(updateThermostat({x: thermX - startX, y: thermY - startY}))
     }
 
     const [p, setP] = useState({x: startX, y: 200})
 
-    if (!buttons[6]) return <Redirect to="/"/>
+    if (!buttons[5]) return <Redirect to="/"/>
 
     const handleDragMove = (e) => {
         const stage = e.target.getStage();
@@ -281,7 +278,7 @@ const Placement = () => {
 
                 </div>
                 <div className="button-box">
-                    <Link to="/result" onClick={() => handleClick(7)} className={s.btnNextStep}>
+                    <Link to="/floortype" onClick={() => handleClick(6)} className={s.btnNextStep}>
                         Continue
                     </Link>
                 </div>

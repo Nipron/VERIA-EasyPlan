@@ -565,6 +565,20 @@ input[type=number] {
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
 
+.modal-ft-left-content-box-result {
+    clear: both;
+    width: 270px;
+    height: 423px;
+    background-image: url("../img/changethermo.png");
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    border-radius: 7px;
+    float: left;
+    margin-left: 28px;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.15);
+}
+
 .modal-ft-right-content-box {
     float: right;
     width: 575px;

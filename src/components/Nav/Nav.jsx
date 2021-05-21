@@ -32,11 +32,11 @@ const Nav = () => {
             <Link to="/coldspots" onClick={() => handleClick(4)} className={`${s.btn} ${buttons[4] && s.active}`}>
                 Cold Spots
             </Link>
-            <Link to="/floortype" onClick={() => handleClick(5)} className={`${s.btn} ${buttons[5] && s.active}`}>
-                Floor Type
-            </Link>
-            <Link to="/thermostat" onClick={() => handleClick(6)} className={`${s.btn} ${buttons[6] && s.active}`}>
+            <Link to="/thermostat" onClick={() => handleClick(5)} className={`${s.btn} ${buttons[5] && s.active}`}>
                 Thermostat
+            </Link>
+            <Link to="/floortype" onClick={() => handleClick(6)} className={`${s.btn} ${buttons[6] && s.active}`}>
+                Floor Type
             </Link>
             <Link to="/result" onClick={() => handleClick(7)} className={`${s.btn} ${s.btnResult} ${buttons[7] && s.activeResult}`}>
                 Result

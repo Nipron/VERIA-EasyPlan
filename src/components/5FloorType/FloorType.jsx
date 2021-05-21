@@ -13,10 +13,16 @@ import s from "./FloorType.module.css";
 import {HashLink as Link} from "react-router-hash-link";
 import Modal from "../0Modal/Modal";
 import {updateChecks} from "../../redux/floorChecksReducer";
+import {MatFinder} from "../7Result/MatFinder";
+import {updateResult} from "../../redux/resultReducer";
 
 const FloorType = () => {
 
     const [modalActive, setModalActive] = useState(false);
+
+    const room = useSelector(state => state.room);
+    const thermostat = useSelector(state => state.thermostat);
+    const spotsArray = useSelector(state => state.points);
 
     const buttons = useSelector(state => state.buttons);
     const dispatch = useDispatch();
@@ -27,6 +33,8 @@ const FloorType = () => {
     const [topParquet, setTopParquet] = useState(checks.topParquet);
     const [subUnburnable, setSubUnburnable] = useState(checks.subUnburnable);
     const [subBurnable, setSubBurnable] = useState(checks.subBurnable);
+
+    const massGroup = MatFinder(spotsArray, room, [thermostat.x, thermostat.y], subBurnable)
 
     const [selectColor, setSelectColor] = useState(((topLaminate || topParquet) && (subUnburnable || subBurnable) && "#DBDADA") || "#E82B2B");
     const [continueVisible, setContinueVisible] = useState(((topLaminate || topParquet) && (subUnburnable || subBurnable) && "visible") || "hidden");
@@ -49,6 +57,7 @@ const FloorType = () => {
     }
 
     const handleClick = (page) => {
+        dispatch(updateResult(massGroup))
         dispatch(updateButton(page))
         dispatch(updateChecks({
             topLaminate,
@@ -61,10 +70,10 @@ const FloorType = () => {
     useEffect(() => {
         setSelectColor(((topLaminate || topParquet) && (subUnburnable || subBurnable) && "#DBDADA") || "#E82B2B")
         setContinueVisible(((topLaminate || topParquet) && (subUnburnable || subBurnable) && "visible") || "hidden")
-        if (continueVisible === "hidden") dispatch(updateButton(5))
+        if (continueVisible === "hidden") dispatch(updateButton(6))
     }, [topLaminate, topParquet, subUnburnable, subBurnable, continueVisible])
 
-    if (!buttons[5]) return <Redirect to="/"/>
+    if (!buttons[6]) return <Redirect to="/"/>
 
     return (
         <div>
@@ -133,8 +142,8 @@ const FloorType = () => {
                     <div className="info-area">
                         <span style={{color: selectColor}}>Select please top and subfloor...</span>
                     </div>
-                    <Link to="/thermostat"
-                          onClick={() => handleClick(6)}
+                    <Link to="/result"
+                          onClick={() => handleClick(7)}
                           className={s.btnNextStep}
                           style={{visibility: continueVisible}}>
                         Continue

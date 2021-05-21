@@ -17,6 +17,7 @@ import {
     wiresCombinations
 } from "../../calculator/superSnake";
 import {useSelector} from "react-redux";
+import {useState} from "react";
 
 const isGroupInsideRoom = (groupX0, groupY0, group, R) =>
     pointInPolygon([groupX0, groupY0], R)
@@ -66,7 +67,7 @@ const doesAnyCSOverlapGroup = (CSarray, gX0, gY0, group) => {
     return overlap
 }
 
-export const MatFinder = (spotsArray, room, thermoOut) => {
+export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     const t = -1 //
@@ -84,6 +85,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     let cE = 0 //current entry index
     let connectors = [];
     let area = 0;
+    const shapes = useSelector(state => state.shapes);
 
     //for each point finding 4 "icicles" - groups of mats with different length
     while (needToSearch) {
@@ -247,6 +249,10 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
                 area += icicle[i] + 1.4
             }
 
+            if ((area > 42) || ((area > 23) && burnable)) {
+                return [, , , , false, area]
+            }
+
             switch (growDirection) {
                 case 0:
                     connectors.push([x - 4, y + 4,
@@ -392,7 +398,7 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     //Creating array of pitStops - nodal points at the room for wires (corners of the room, cold spots and mats)
     let pitStops = []
     //adding room corners
-    const shapes = useSelector(state => state.shapes);
+
     const roomCorners = BombForRoom(RoomTransformer(room, -1))
     if (shapes.L) {
         pitStops.push(roomCorners[3])
@@ -488,7 +494,5 @@ export const MatFinder = (spotsArray, room, thermoOut) => {
     }
     let snakesNest = snakeNestMaker(path, pitStopsNoDoubles, walls)
 
-    console.log(area)
-
-    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1], true]
+    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1], true, area]
 }

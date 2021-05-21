@@ -464,7 +464,7 @@ const ColdSpots = () => {
                     <div className="bin-area">
                         <span>Drag here to delete</span>
                     </div>
-                    <Link to="/floortype" onClick={() => handleClick(5)} className={s.btnNextStep}>
+                    <Link to="/thermostat" onClick={() => handleClick(5)} className={s.btnNextStep}>
                         Continues
                     </Link>
                 </div>
@@ -573,7 +573,7 @@ const ColdSpots = () => {
 
                     </div>
                     <Link className="modal-btn-skip"
-                          to="/floortype"
+                          to="/thermostat"
                           onClick={() => handleClick(5)}
                     >
                         skip

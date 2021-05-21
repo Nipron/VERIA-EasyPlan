@@ -20,6 +20,7 @@ import NewPDF from "../PDF/newPDF";
 import {Redirect} from "react-router";
 
 import {MatFinder} from "./MatFinder";
+import {updateButton} from "../../redux/buttonsReducer";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -40,27 +41,29 @@ const Result = () => {
 
     const [image] = useImage(thermoImg);
 
-    let massGroup = MatFinder(spotsArray, room, thermoOut)
-    //let massGroup = useSelector(state => state.result)
+    //let massGroup = MatFinder(spotsArray, room, thermoOut)
+    const massGroup = useSelector(state => state.result)
 
-    console.log("HHH")
-    console.log(massGroup)
 
-   /* if (massGroup[4]) {
-        setModalActive(true)
-    }
+    /* if (massGroup[4]) {
+         setModalActive(true)
+     }*/
 
     useEffect(() => {
-        if (massGroup[4]) {
-            setModalActive(true)
-        }
+        setModalActive(!massGroup[4])
         return () => {
-
         };
-    }, []);*/
-    
+    }, []);
 
-    let nestToDraw = nest => {
+    const handleModalClick = () => {
+        setModalActive(false)
+        if (!massGroup[4]) {
+            dispatch(updateButton(6))
+            return <Redirect to="/"/>
+        }
+    }
+
+    const nestToDraw = nest => {
         let result = [];
         for (let i = 0; i < nest.length; i++) {
             let snake = []
@@ -72,7 +75,10 @@ const Result = () => {
         }
         return result;
     }
-    let nestXX = nestToDraw(massGroup[1])
+    let nestXX = [];
+    if (massGroup[4]) {
+        nestXX = nestToDraw(massGroup[1])
+    }
 
     const listOfParts = {
         "mat5_55": 3,
@@ -150,7 +156,7 @@ const Result = () => {
         </PDFDownloadLink>)
     }
 
-    if (!buttons[7]) return <Redirect to="/"/>
+    if (!buttons[7]) return <Redirect to="/floortype"/>
 
     return (
         <div>
@@ -169,78 +175,80 @@ const Result = () => {
 
             <div className="content-section-grid">
                 <div className="constructor-box">
-
-                    <Stage width={1220} height={320} ref={stageRef}>
-                        <Layer name="main-layer">
-                            <Line
-                                x={320}
-                                y={2}
-                                points={room}
-                                closed
-                                stroke="#868686"
-                                strokeWidth={1}
-                                fillLinearGradientStartPoint={{x: -50, y: -50}}
-                                fillLinearGradientEndPoint={{x: 250, y: 250}}
-                                fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
-                            />
-                        </Layer>
-                        <Layer name="result">
-                            {
-                                massGroup[0].map(tail => <Line
+                    {
+                        massGroup[4] &&
+                        <Stage width={1220} height={320} ref={stageRef}>
+                            <Layer name="main-layer">
+                                <Line
                                     x={320}
                                     y={2}
-                                    points={tail}
-                                    closed
-                                    stroke="#6E6E6E"
-                                    strokeWidth={2}
-                                    fill="#FF3F3F"
-                                />)
-                            }
-                            {
-                                spotsArray.map(spot => <Line
-                                    x={320}
-                                    y={2}
-                                    points={spot}
+                                    points={room}
                                     closed
                                     stroke="#868686"
-                                    strokeWidth={2}
-                                    fill={"white"}
-                                />)
-                            }
-                            {
-                                nestXX.map(snake => <Line
-                                    x={320}
-                                    y={2}
-                                    points={snake}
-                                    stroke="#9F35CC"
-                                    strokeWidth={2}
-                                />)
-                            }
-                            {
-                                massGroup[2].map(connector => <Line
-                                    x={320}
-                                    y={2}
-                                    points={connector}
-                                    closed
-                                    fill={"black"}
-                                />)
-                            }
-                            {
-                                massGroup[3].map(connector => <KonvaText
-                                    x={connector[0] + 320}
-                                    y={connector[1] + 2}
-                                    text={connector[2]}
-                                    fontSize={15}
-                                    fontFamily='Calibri'
-                                    fill="#E8C6F7"
-                                />)
-                            }
-                            <Image image={image}
-                                   x={thermostat.x + 320 - 12}
-                                   y={thermostat.y - 7}
-                                   scale={{x: 0.6, y: 0.6}}/>
-                        </Layer>
-                    </Stage>
+                                    strokeWidth={1}
+                                    fillLinearGradientStartPoint={{x: -50, y: -50}}
+                                    fillLinearGradientEndPoint={{x: 250, y: 250}}
+                                    fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
+                                />
+                            </Layer>
+                            <Layer name="result">
+                                {
+                                    massGroup[0].map(tail => <Line
+                                        x={320}
+                                        y={2}
+                                        points={tail}
+                                        closed
+                                        stroke="#6E6E6E"
+                                        strokeWidth={2}
+                                        fill="#FF3F3F"
+                                    />)
+                                }
+                                {
+                                    spotsArray.map(spot => <Line
+                                        x={320}
+                                        y={2}
+                                        points={spot}
+                                        closed
+                                        stroke="#868686"
+                                        strokeWidth={2}
+                                        fill={"white"}
+                                    />)
+                                }
+                                {
+                                    nestXX.map(snake => <Line
+                                        x={320}
+                                        y={2}
+                                        points={snake}
+                                        stroke="#9F35CC"
+                                        strokeWidth={2}
+                                    />)
+                                }
+                                {
+                                    massGroup[2].map(connector => <Line
+                                        x={320}
+                                        y={2}
+                                        points={connector}
+                                        closed
+                                        fill={"black"}
+                                    />)
+                                }
+                                {
+                                    massGroup[3].map(connector => <KonvaText
+                                        x={connector[0] + 320}
+                                        y={connector[1] + 2}
+                                        text={connector[2]}
+                                        fontSize={15}
+                                        fontFamily='Calibri'
+                                        fill="#E8C6F7"
+                                    />)
+                                }
+                                <Image image={image}
+                                       x={thermostat.x + 320 - 12}
+                                       y={thermostat.y - 7}
+                                       scale={{x: 0.6, y: 0.6}}/>
+                            </Layer>
+                        </Stage>
+                    }
                     {/*<span className="calculation-process">Calculation Project...</span>
                     <span className="printing-project">Printing Project...</span>
                     <span className="calculation-complete">Calculation complete</span>*/}
@@ -261,14 +269,24 @@ const Result = () => {
             <ModalPartsList active={modalPartsActive} setActive={setModalPartsActive} list={listOfParts}/>
             <Modal active={modalActive} setActive={setModalActive}>
                 <div className="modal-window-floor-type">
-                    <h1 className="modal-title">About Floor Types</h1>
-                    <span className="modal-btn-close" onClick={() => setModalActive(false)}></span>
-                    <div className="modal-ft-left-content-box"></div>
+                    <h1 className="modal-title">Thermostat's capacity</h1>
+                    <span className="modal-btn-close" onClick={handleModalClick}></span>
+                    <div className="modal-ft-left-content-box-result"></div>
                     <div className="modal-ft-right-content-box">
-                        <p className="modal-container-description">An important part of the calculation is weather
-                            it is e.g. wood or tiles that goes on top of the heated floor.</p>
+                        <p className="modal-container-description">
+                            The size of the heated area in your room is
+                            <b> {Math.round(massGroup[5]*100)/100}</b> sq.m.
+                            and exceeds the maximum capacity of the thermostat.</p>
+                    <br/>
+                        <p className="modal-container-description">
+                            Maximum capacity is 42 sq.m. for unburnable subfloor (Veria Wireless Clickkit 55)
+                            and 23 sq.m. for burnable subfloor (Veria Wireless Clickkit 100)</p>
+                    <br/>
+                        <p className="modal-container-description">
+                            Please change room parameters or contact us for further support — <b>veriafloorheating.com</b>
+                        </p>
                     </div>
-                    <div className="modal-btn-ok" onClick={() => setModalActive(false)}>
+                    <div className="modal-btn-ok" onClick={handleModalClick}>
                         ok
                     </div>
                 </div>
