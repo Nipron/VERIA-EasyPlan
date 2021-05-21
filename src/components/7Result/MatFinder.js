@@ -516,14 +516,14 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
     const connectorsAndNumbers = connectorsFarm(path)
 
-    const snakeNestMaker = (arr, pStops, walls) => {
+    const snakesNestMaker = (arr, pStops, walls) => {
         let result = [];
         for (let i = 0; i < arr.length - 1; i++) {
             result.push(normalSnake(arr[i][1], arr[i + 1][0], pStops, walls));
         }
         return result
     }
-    let snakesNest = snakeNestMaker(path, pitStopsNoDoubles, walls)
+    let snakesNest = snakesNestMaker(path, pitStopsNoDoubles, walls)
     let cordsArray = cordCalc(snakesNest)
     list[4] = cordsArray[0]
     list[5] = cordsArray[1]

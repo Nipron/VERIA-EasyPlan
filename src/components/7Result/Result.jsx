@@ -310,8 +310,8 @@ const Result = () => {
                             and exceeds the maximum capacity of the thermostat.</p>
                         <br/>
                         <p className="modal-container-description">
-                            Maximum capacity is 42 sq.m. for unburnable subfloor (Veria Wireless Clickkit 55)
-                            and 23 sq.m. for burnable subfloor (Veria Wireless Clickkit 100)</p>
+                            The maximum capacity is 42 sq.m. for burnable subfloor (Veria Wireless Clickkit 55)
+                            and 23 sq.m. for unburnable subfloor (Veria Wireless Clickkit 100)</p>
                         <br/>
                         <p className="modal-container-description">
                             Please change room parameters or contact us for further support
