@@ -51,7 +51,7 @@ const Start = () => {
                     <p>EasyPlan makes it easy to plan your new Veria system.
                         <br/>
                         The application guides you through a few selections and provides a design and layout plan for achieving maximum heated floor area based on your input.
-                        Please note,  that this program serves for visualization purpose. If you are not fully satisfied with the results of our calculations and visualization, please contact us for further engineering support: veriafloorheating.com
+                        Please note,  that this program serves for visualization purpose. If you are not fully satisfied with the results of our calculations and visualization, please contact us for further engineering support: <b>veriafloorheating.com</b>
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>

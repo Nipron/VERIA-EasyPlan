@@ -34,7 +34,7 @@ const FloorType = () => {
     const [subUnburnable, setSubUnburnable] = useState(checks.subUnburnable);
     const [subBurnable, setSubBurnable] = useState(checks.subBurnable);
 
-    const massGroup = MatFinder(spotsArray, room, [thermostat.x, thermostat.y], subBurnable)
+    const massGroup = MatFinder(spotsArray, room, [thermostat.x, thermostat.y], subUnburnable)
 
     const [selectColor, setSelectColor] = useState(((topLaminate || topParquet) && (subUnburnable || subBurnable) && "#DBDADA") || "#E82B2B");
     const [continueVisible, setContinueVisible] = useState(((topLaminate || topParquet) && (subUnburnable || subBurnable) && "visible") || "hidden");
