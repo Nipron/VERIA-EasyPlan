@@ -211,6 +211,12 @@ const Result = () => {
                                 Installations of products on site may vary.
                                 Always be sure to carefully follow the instructions enclosed in the package.
                             </Text>
+                            <Text>
+                                Remember to buy Veria Fillermat (stock code 189B9134) to fill up areas of the floor which are not covered with heating mats. In this way a uniform base  layer for wooden floor is created.
+                            </Text>
+                            <Text>
+                                Enjoy your new floor heating.
+                            </Text>
                         </View>
                     </Page>
                 </Document>
