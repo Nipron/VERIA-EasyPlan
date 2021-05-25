@@ -20,6 +20,7 @@ import NewPDF from "../PDF/newPDF";
 import {Redirect} from "react-router";
 import {updateButton} from "../../redux/buttonsReducer";
 import {cordCalc, cords} from "../../calculator/superSnake";
+import {roomArea} from "../../calculator/helpers";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -36,12 +37,7 @@ const Result = () => {
     const thermoOut = [thermostat.x, thermostat.y]
     const [image] = useImage(thermoImg);
     const massGroup = useSelector(state => state.result)
-
-    useEffect(() => {
-        setModalActive(!massGroup[4])
-        return () => {
-        };
-    }, []);
+    const area = roomArea(room)
 
     const handleModalClick = () => {
         setModalActive(false)
@@ -102,13 +98,11 @@ const Result = () => {
 
     const [modalNotesActive, setModalNotesActive] = useState(false);
     const [modalPartsActive, setModalPartsActive] = useState(false); //shows modal only first time on page
-
     const stageRef = useRef();
     const [im, setIm] = useState(null)
     const [pdfLink, setPdfLink] = useState("Creating PDF...")
 
     const handleEnter = event => {
-
         const dataURL = stageRef.current.toDataURL({
             pixelRatio: 4
         });
@@ -119,14 +113,25 @@ const Result = () => {
                 backgroundColor: 'white'
             },
             section: {
-                margin: 20,
-                padding: 20
+                margin: 10,
+                padding: 10,
+                marginTop: 0,
+                marginBottom: 0
             },
             sectionGrey: {
                 margin: 20,
-                padding: 20,
+                marginTop: 0,
+                marginBottom: 0,
+                padding: 15,
                 backgroundColor: "#DCDCDC",
                 borderRadius: 7
+            },
+            disclaimer: {
+                margin: 20,
+                marginTop: 0,
+                marginBottom: 0,
+                padding: 15,
+                bottom: 0
             }
         });
         const PDF2 = () => {
@@ -138,7 +143,7 @@ const Result = () => {
                         </View>
                         <View style={styles.sectionGrey}>
                             <Text>
-                                Floor heating: 18.2 sq.m. | Clickmat | 75% heating coverage
+                                Room area: {area.toFixed(2)} m&#178; Heated area: {massGroup[5].toFixed(2)} m&#178; ({(100*massGroup[5]/area).toFixed(2)}% coverage)
                             </Text>
                             <Text>
                                 Top Floor Covering: Laminate
@@ -147,8 +152,56 @@ const Result = () => {
                                 Bottom Floor Construction: Unburnable (Concrete)
                             </Text>
                         </View>
-                        <View style={styles.sectionGrey}>
+                        <View style={styles.section}>
                             <PDFImage src={im}/>
+                        </View>
+                        <View style={styles.sectionGrey}>
+                            {(listOfParts.mat5_55 !== 0) && <Text>
+                                {listOfParts.mat5_55} x Veria Clickmat 55, 5m&#178;
+                            </Text>}
+                            {(listOfParts.mat4_55 !== 0) && <Text>
+                                {listOfParts.mat4_55} x Veria Clickmat 55, 4m&#178;
+                            </Text>}
+                            {(listOfParts.mat3_55 !== 0) && <Text>
+                                {listOfParts.mat3_55} x Veria Clickmat 55, 3m&#178;
+                            </Text>}
+                            {(listOfParts.mat2_55 !== 0) && <Text>
+                                {listOfParts.mat2_55} x Veria Clickmat 55, 2m&#178;
+                            </Text>}
+                            {(listOfParts.mat5_100 !== 0) && <Text>
+                                {listOfParts.mat5_100} x Veria Clickmat 100, 5m&#178;
+                            </Text>}
+                            {(listOfParts.mat4_100 !== 0) && <Text>
+                                {listOfParts.mat4_100} x Veria Clickmat 100, 4m&#178;
+                            </Text>}
+                            {(listOfParts.mat3_100 !== 0) && <Text>
+                                {listOfParts.mat3_100} x Veria Clickmat 100, 3m&#178;
+                            </Text>}
+                            {(listOfParts.mat2_100 !== 0) && <Text>
+                                {listOfParts.mat2_100} x Veria Clickmat 100, 2m&#178;
+                            </Text>}
+                            {(listOfParts.cord2 !== 0) && <Text>
+                                {listOfParts.cord2} x Veria Clickmat extension cord, 2m
+                            </Text>}
+                            {(listOfParts.cord1 !== 0) && <Text>
+                                {listOfParts.cord1} x Veria Clickmat extension cord, 1m
+                            </Text>}
+                            {(listOfParts.cord025 !== 0) && <Text>
+                                {listOfParts.cord025} x Veria Clickmat extension cord, 0.25m
+                            </Text>}
+                            {(listOfParts.kit100 !== 0) && <Text>
+                                {listOfParts.kit100} x Veria Wireless Clickkit 100
+                            </Text>}
+                            {(listOfParts.kit55 !== 0) && <Text>
+                                {listOfParts.kit55} x Veria Wireless Clickkit 55
+                            </Text>}
+                        </View>
+                        <View style={styles.disclaimer}>
+                            <Text>
+                                DISCLAMER: Please note that this is a computer genereted simulation.
+                                Installations of products on site may vary.
+                                Always be sure to carefully follow the instructions enclosed in the package.
+                            </Text>
                         </View>
                     </Page>
                 </Document>
@@ -159,6 +212,13 @@ const Result = () => {
             {({blob, url, loading, error}) => (loading ? 'Creating PDF...' : 'Save as PDF')}
         </PDFDownloadLink>)
     }
+
+    useEffect(() => {
+        setModalActive(!massGroup[4])
+        handleEnter();
+        return () => {
+        };
+    }, []);
 
     if (!buttons[7]) return <Redirect to="/floortype"/>
 
@@ -181,11 +241,13 @@ const Result = () => {
                 <div className="constructor-box">
                     {
                         massGroup[4] &&
-                        <Stage width={820} height={320} ref={stageRef}>
+                        <Stage width={630} height={380} ref={stageRef}
+                               x={5}
+                               y={-12}>
                             <Layer name="main-layer">
                                 <Line
                                     x={10}
-                                    y={12}
+                                    y={20}
                                     points={room}
                                     closed
                                     stroke="#868686"
@@ -198,7 +260,7 @@ const Result = () => {
                                 {
                                 massGroup[7].map(tail => <Line
                                     x={10}
-                                    y={12}
+                                    y={20}
                                     points={tail}
                                     closed
                                     stroke="#6E6E6E"
@@ -212,7 +274,7 @@ const Result = () => {
                                 {
                                     massGroup[0].map(tail => <Line
                                         x={10}
-                                        y={12}
+                                        y={20}
                                         points={tail}
                                         closed
                                         stroke="#6E6E6E"
@@ -223,7 +285,7 @@ const Result = () => {
                                 {
                                     spotsArray.map(spot => <Line
                                         x={10}
-                                        y={12}
+                                        y={20}
                                         points={spot}
                                         closed
                                         stroke="#868686"
@@ -234,7 +296,7 @@ const Result = () => {
                                 {
                                     massGroup[2].map(connector => <Line
                                         x={10}
-                                        y={12}
+                                        y={20}
                                         points={connector}
                                         closed
                                         fill={"black"}
@@ -243,7 +305,7 @@ const Result = () => {
                                 {
                                     massGroup[3].map(text => <KonvaText
                                         x={text[0] + 10}
-                                        y={text[1] + 12}
+                                        y={text[1] + 20}
                                         text={text[2]}
                                         fontSize={15}
                                         fontFamily='Calibri'
@@ -253,7 +315,7 @@ const Result = () => {
                                 }
                                 <Line
                                     x={10}
-                                    y={12}
+                                    y={20}
                                     points={room}
                                     closed
                                     stroke="#868686"
@@ -266,7 +328,7 @@ const Result = () => {
                                 {
                                     nestXX.map(snake => <Line
                                         x={10}
-                                        y={12}
+                                        y={20}
                                         points={snake}
                                         // stroke="#9F35CC"
                                         stroke="black"
@@ -274,8 +336,8 @@ const Result = () => {
                                     />)
                                 }
                                 <Image image={image}
-                                       x={thermostat.x + 10 - 12}
-                                       y={thermostat.y - 7 + 10}
+                                       x={thermostat.x + 2}
+                                       y={thermostat.y + 13}
                                        scale={{x: 0.6, y: 0.6}}/>
                             </Layer>
                         </Stage>
@@ -288,7 +350,7 @@ const Result = () => {
                         <div className="btn-list"
                              onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
                         </div>
-                         <div className="btn-print-project" onMouseEnter={handleEnter}>
+                         <div className="btn-print-project" /*onMouseEnter={handleEnter}*/>
                             {pdfLink}
                         </div>
                         {/*<div className="btn-print-project" onMouseEnter={handleEnter}>

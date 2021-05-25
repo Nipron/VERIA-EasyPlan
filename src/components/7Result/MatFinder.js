@@ -67,7 +67,7 @@ const doesAnyCSOverlapGroup = (CSarray, gX0, gY0, group) => {
     return overlap
 }
 
-export const MatFinder = (spotsArray, room, thermoOut, unburnable) => {
+export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     const t = -1 //
@@ -263,8 +263,8 @@ export const MatFinder = (spotsArray, room, thermoOut, unburnable) => {
                 if (icicle[i] === 3) list[3]++;
             }
 
-            if ((area > 42) || ((area > 23) && unburnable)) {
-                return [, , , , !unburnable, area]
+            if ((area > 42) || ((area > 23) && !burnable)) {
+                return [, , , , false, area]
             }
 
             switch (growDirection) {
@@ -528,5 +528,5 @@ export const MatFinder = (spotsArray, room, thermoOut, unburnable) => {
     list[5] = cordsArray[1]
     list[6] = cordsArray[2]
 
-    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1], unburnable, area, list, resultCuts]
+    return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1], true, area, list, resultCuts]
 }

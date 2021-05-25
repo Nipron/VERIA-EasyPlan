@@ -85,16 +85,17 @@ export const BombForRoom = room => {
 export const pitStopsCleaner = (arr, spots) => {
     let resultTemp = []
     loop1:
-    for (let i = 0; i < arr.length; i++) {
-       // let isUnique = true
-        for (let j = i + 1; j < arr.length; j++) {
-            if ((arr[i][0] === arr[j][0]) && (arr[i][1] === arr[j][1])) {
-               // isUnique = false
-                continue loop1;
+        for (let i = 0; i < arr.length; i++) {
+            // let isUnique = true
+            for (let j = i + 1; j < arr.length; j++) {
+                if ((arr[i][0] === arr[j][0]) && (arr[i][1] === arr[j][1])) {
+                    // isUnique = false
+                    continue loop1;
+                }
             }
+            /*if (isUnique)*/
+            resultTemp.push(arr[i])
         }
-        /*if (isUnique)*/ resultTemp.push(arr[i])
-    }
 
     let result = [];
     loop2:
@@ -222,3 +223,18 @@ export const connectorsFarm = path => {
     }
     return [connectors, numbers]
 }
+
+export const roomArea = r => (
+    (r[5] - r[3]) * (r[4] + r[2]) / 2 +
+    (r[7] - r[5]) * (r[6] + r[4]) / 2 +
+    (r[9] - r[7]) * (r[8] + r[6]) / 2 +
+    (r[11] - r[9]) * (r[10] + r[8]) / 2 +
+    (r[13] - r[11]) * (r[12] + r[10]) / 2 +
+    (r[15] - r[13]) * (r[14] + r[12]) / 2 +
+    (r[17] - r[15]) * (r[16] + r[14]) / 2 +
+    (r[19] - r[17]) * (r[18] + r[16]) / 2 +
+    (r[21] - r[19]) * (r[20] + r[18]) / 2 +
+    (r[23] - r[21]) * (r[22] + r[20]) / 2 +
+    (r[25] - r[23]) * (r[24] + r[22]) / 2 +
+    (r[29] - r[27]) * r[26] / 2
+) / 2500

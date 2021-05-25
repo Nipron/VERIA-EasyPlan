@@ -17,7 +17,7 @@ const PlanMakerR = () => {
 
     const ratio = 2; //ratio = cm / pixels
     const minDist = 10; //minimum distance between points/lines
-    const maxWidth = 720; //constructor max width
+    const maxWidth = 600; //constructor max width
     const maxHeight = 315; //constructor max height
 
     const dispatch = useDispatch();
@@ -137,15 +137,15 @@ const PlanMakerR = () => {
         setSquare((
             (pos03.y - pos03shadow.y) * (pos03.x + pos03shadow.x) / 2 +
             (pos04shadow.y - pos03.y) * (pos04shadow.x + pos03.x) / 2 +
-            (pos04.y - pos04shadow.y) * (pos04.x + pos04shadow.x) / 2 -
-            (pos07.y - pos07shadow.y) * pos07.x / 2) / 10000 * ratio * ratio
+            (pos04.y - pos04shadow.y) * (pos04.x + pos04shadow.x) / 2 +
+            (pos07.y - pos07shadow.y) * pos07shadow.x / 2) / 10000 * ratio * ratio
         )
 
     }, [pos03, pos03shadow, pos04, pos04shadow,
         pos07, pos07shadow]);
 
     const top = 14;
-    const left = 35;
+    const left = 86;
 
     return (
         <div className="content-section-grid">
@@ -326,7 +326,7 @@ const PlanMakerR = () => {
                                        {
                                            left: (pos04angled && ((pos07angled && (pos07shadow.x + minDist)) || pos07shadow + 2 * minDist))
                                                || ((pos03angled && Math.max(pos03shadow.x + minDist, pos07shadow.x + 2 * minDist)) || ((pos07angled && pos07shadow.x + 2 * minDist)) || 3 * minDist),
-                                           top: (pos04angled && (pos04shadow.y + minDist)) || (pos03angled && (pos03.y + 2 * minDist)) || (pos03.y + 3 * minDist),
+                                           top: Math.max((pos07angled && pos07.y + minDist), (pos04angled && pos04shadow.y + minDist), (pos03angled && pos03.y + 2 * minDist), pos03.y + 3 * minDist),
                                            right: (pos04angled && (pos04shadow.x - minDist)) || maxWidth,
                                            bottom: maxHeight
                                        }
@@ -418,7 +418,7 @@ const PlanMakerR = () => {
 
                         <div className={s.dimContainer} style={{
                             top: (pos00.y + pos03shadow.y) / 2 - 8,
-                            left: (pos00.x + pos03shadow.x) / 2 + 20,
+                            left: (pos00.x + pos03shadow.x) / 2 + 20 + 53,
                             visibility: labVis ? 'visible' : 'hidden'
                         }}>
                             {dim00to03SeditMode
@@ -453,7 +453,7 @@ const PlanMakerR = () => {
 
                         <div className={s.dimContainer} style={{
                             top: (pos04.y + pos07shadow.y) / 2 - 8,
-                            left: (pos04.x + pos07shadow.x) / 2 + 20,
+                            left: (pos04.x + pos07shadow.x) / 2 + 20 + 53,
                             visibility: labVis ? 'visible' : 'hidden'
                         }}>
                             {dim04to07SeditMode
@@ -492,7 +492,7 @@ const PlanMakerR = () => {
 
                         <div className={s.dimContainer} style={{
                             top: (pos03.y + pos04shadow.y) / 2 - 8,
-                            left: (pos03.x + pos04shadow.x) / 2 + 20,
+                            left: (pos03.x + pos04shadow.x) / 2 + 20 + 53,
                             visibility: labVis ? 'visible' : 'hidden'
                         }}>
                             {dim03to04SeditMode
@@ -526,7 +526,7 @@ const PlanMakerR = () => {
 
                         <div className={s.dimContainer} style={{
                             top: (pos07.y + pos00.y) / 2 - 8,
-                            left: (pos07.x + pos00.x) / 2 + 20,
+                            left: (pos07.x + pos00.x) / 2 + 20 + 53,
                             visibility: labVis ? 'visible' : 'hidden'
                         }}>
                             {dim07to00editMode
@@ -562,7 +562,7 @@ const PlanMakerR = () => {
                         <div className={s.dimContainer}
                              style={{
                                  top: ((pos03.y + pos03shadow.y) / 2 - 8),
-                                 left: ((pos03.x + pos03shadow.x) / 2 + 20),
+                                 left: ((pos03.x + pos03shadow.x) / 2 + 20 + 53),
                                  visibility: labVis && pos03angled && !anglesMode ? 'visible' : 'hidden'
                              }}>
                     <span>{`${Math.round(Math.sqrt(
@@ -574,7 +574,7 @@ const PlanMakerR = () => {
                         <div className={s.dimContainer}
                              style={{
                                  top: ((pos04.y + pos04shadow.y) / 2 - 8),
-                                 left: ((pos04.x + pos04shadow.x) / 2 + 20),
+                                 left: ((pos04.x + pos04shadow.x) / 2 + 20 + 53),
                                  visibility: labVis && pos04angled && !anglesMode ? 'visible' : 'hidden'
                              }}>
                     <span>{`${Math.round(Math.sqrt(
@@ -586,7 +586,7 @@ const PlanMakerR = () => {
                         <div className={s.dimContainer}
                              style={{
                                  top: ((pos07.y + pos07shadow.y) / 2 - 8),
-                                 left: ((pos07.x + pos07shadow.x) / 2 + 20),
+                                 left: ((pos07.x + pos07shadow.x) / 2 + 20 + 53),
                                  visibility: labVis && pos07angled && !anglesMode ? 'visible' : 'hidden'
                              }}>
                     <span>{`${Math.round(Math.sqrt(

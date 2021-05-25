@@ -249,7 +249,8 @@ const Placement = () => {
                     </div>
 
 
-                    <Stage width={1220} height={320}>
+                    <Stage width={1420} height={320}
+                           x={0}>
                         <Layer name="main-layer">
                             <Line
                                 x={320}
