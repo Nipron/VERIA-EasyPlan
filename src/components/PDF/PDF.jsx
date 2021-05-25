@@ -1,5 +1,19 @@
 import React from 'react';
-import {Page, Text, View, Document, StyleSheet, Image, Svg, Path, LinearGradient, Stop, Defs } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+import {
+    pdf,
+    Page,
+    Text,
+    View,
+    Document,
+    StyleSheet,
+    Image,
+    Svg,
+    Path,
+    LinearGradient,
+    Stop,
+    Defs, Image as PDFImage
+} from '@react-pdf/renderer';
 import s from "../Header/Header.module.css";
 import veria from "../../img/forPDF/PDFheader.png";
 import ReactFlagsSelect from "react-flags-select";
@@ -35,20 +49,55 @@ const blobs = {
     }
 }
 
-const PDF = (props) => {
-   const stageImg = useSelector(state => state.stageImg);
+const PDF3 = (image) => {
 
+   // const stageImg = useSelector(state => state.stageImg);
     return (
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={styles.section}>
-                    <Image src={stageImg}/>
+                    <PDFImage src={image}/>
                 </View>
             </Page>
         </Document>
     );
 };
 
-export default PDF;
+export default PDF3;
 
+
+/*export const generatePDFDocument = async () => {
+    const blob = await pdf(
+        <Document>
+            <Page>// My document data</Page>
+        </Document>
+    ).toBlob();
+    console.log(blob);
+};*/
+
+const b = 7;
+
+const PdfDocument = (dat) => {
+    return (
+        <Document>
+            <Page>
+                <View>
+                    <Text>
+                        {dat}
+                    </Text>
+                </View>
+            </Page>
+        </Document>
+            )
+}
+
+export const NewPDF = async (data) => {
+    const blob = await pdf((
+        <PdfDocument
+            title='My PDF'
+            pdfDocumentData={data}
+        />
+    )).toBlob();
+    saveAs(blob, "gg");
+}
 

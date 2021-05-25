@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Document, Page, PDFDownloadLink, StyleSheet, View, Image as PDFImage, Text} from '@react-pdf/renderer';
+import {Document, Page, PDFDownloadLink, StyleSheet, View, Image as PDFImage, Text, pdf} from '@react-pdf/renderer';
 import Konva from 'konva';
 import {Layer, Line, Stage, Image, Text as KonvaText} from "react-konva";
 import {matGroups} from "../../data/matGroups";
@@ -21,6 +21,8 @@ import {Redirect} from "react-router";
 import {updateButton} from "../../redux/buttonsReducer";
 import {cordCalc, cords} from "../../calculator/superSnake";
 import {roomArea} from "../../calculator/helpers";
+import PDF3 from "../PDF/PDF";
+import {saveAs} from 'file-saver';
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -37,7 +39,6 @@ const Result = () => {
     const thermoOut = [thermostat.x, thermostat.y]
     const [image] = useImage(thermoImg);
     const massGroup = useSelector(state => state.result)
-    const area = roomArea(room)
 
     const handleModalClick = () => {
         setModalActive(false)
@@ -75,9 +76,11 @@ const Result = () => {
         "kit100": 0,
         "kit55": 0
     }
+
     if (massGroup[4]) {
         nestXX = nestToDraw(massGroup[1])
         list = massGroup[6]
+        // area = roomArea(room)
         listOfParts.cord025 = list[4]
         listOfParts.cord1 = list[5]
         listOfParts.cord2 = list[6]
@@ -102,11 +105,14 @@ const Result = () => {
     const [im, setIm] = useState(null)
     const [pdfLink, setPdfLink] = useState("Creating PDF...")
 
-    const handleEnter = event => {
-        const dataURL = stageRef.current.toDataURL({
-            pixelRatio: 4
-        });
-        setIm(dataURL)
+    const handleEnter = async (event) => {
+        let dataURL = "";
+        if (massGroup[4]) {
+            dataURL = stageRef.current.toDataURL({
+                pixelRatio: 4
+            });
+        }
+
         const styles = StyleSheet.create({
             page: {
                 flexDirection: 'column',
@@ -134,6 +140,8 @@ const Result = () => {
                 bottom: 0
             }
         });
+        let area = roomArea(room);
+        let heatedArea = massGroup[5];
         const PDF2 = () => {
             return (
                 <Document>
@@ -143,7 +151,8 @@ const Result = () => {
                         </View>
                         <View style={styles.sectionGrey}>
                             <Text>
-                                Room area: {area.toFixed(2)} m&#178; Heated area: {massGroup[5].toFixed(2)} m&#178; ({(100*massGroup[5]/area).toFixed(2)}% coverage)
+                                Room area: {area.toFixed(2)} m&#178; Heated
+                                area: {heatedArea.toFixed(2)} m&#178; ({(100 * heatedArea / area).toFixed(2)}% coverage)
                             </Text>
                             <Text>
                                 Top Floor Covering: Laminate
@@ -153,7 +162,7 @@ const Result = () => {
                             </Text>
                         </View>
                         <View style={styles.section}>
-                            <PDFImage src={im}/>
+                            <PDFImage src={dataURL}/>
                         </View>
                         <View style={styles.sectionGrey}>
                             {(listOfParts.mat5_55 !== 0) && <Text>
@@ -213,6 +222,20 @@ const Result = () => {
         </PDFDownloadLink>)
     }
 
+    const generatePDFDocument = async () => {
+        const blob = await pdf(
+            <Document>
+                <Page>// My document data</Page>
+            </Document>
+        ).toBlob();
+        console.log("BLOB")
+        console.log(blob);
+        return blob;
+    };
+
+    generatePDFDocument().then(r => console.log(r));
+
+
     useEffect(() => {
         setModalActive(!massGroup[4])
         handleEnter();
@@ -237,127 +260,119 @@ const Result = () => {
                 <div className="ellipse-faq-btn">?</div>
             </div>
 
-            <div className="content-section-grid">
+            <div className="content-section-grid">{massGroup[4] &&
                 <div className="constructor-box">
-                    {
-                        massGroup[4] &&
-                        <Stage width={630} height={380} ref={stageRef}
-                               x={5}
-                               y={-12}>
-                            <Layer name="main-layer">
-                                <Line
-                                    x={10}
-                                    y={20}
-                                    points={room}
-                                    closed
-                                    stroke="#868686"
-                                    strokeWidth={2}
-                                    fillLinearGradientStartPoint={{x: -50, y: -50}}
-                                    fillLinearGradientEndPoint={{x: 250, y: 250}}
-                                    fill="lightgrey"
-                                    //fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
-                                />
-                                {
-                                massGroup[7].map(tail => <Line
-                                    x={10}
-                                    y={20}
-                                    points={tail}
-                                    closed
-                                    stroke="#6E6E6E"
-                                    globalCompositeOperation="source-atop"
-                                    strokeWidth={2}
-                                    fill="#FA9393"
-                                />)
-                            }
-                            </Layer>
-                            <Layer name="result">
-                                {
-                                    massGroup[0].map(tail => <Line
-                                        x={10}
-                                        y={20}
-                                        points={tail}
-                                        closed
-                                        stroke="#6E6E6E"
-                                        strokeWidth={2}
-                                        fill="#FF3F3F"
-                                    />)
-                                }
-                                {
-                                    spotsArray.map(spot => <Line
-                                        x={10}
-                                        y={20}
-                                        points={spot}
-                                        closed
-                                        stroke="#868686"
-                                        strokeWidth={2}
-                                        fill={"white"}
-                                    />)
-                                }
-                                {
-                                    massGroup[2].map(connector => <Line
-                                        x={10}
-                                        y={20}
-                                        points={connector}
-                                        closed
-                                        fill={"black"}
-                                    />)
-                                }
-                                {
-                                    massGroup[3].map(text => <KonvaText
-                                        x={text[0] + 10}
-                                        y={text[1] + 20}
-                                        text={text[2]}
-                                        fontSize={15}
-                                        fontFamily='Calibri'
-                                        //fill="#E8C6F7"
-                                        fill="black"
-                                    />)
-                                }
-                                <Line
-                                    x={10}
-                                    y={20}
-                                    points={room}
-                                    closed
-                                    stroke="#868686"
-                                    strokeWidth={2}
-                                    fillLinearGradientStartPoint={{x: -50, y: -50}}
-                                    fillLinearGradientEndPoint={{x: 250, y: 250}}
-                                    //fill="#F7C9C9"
-                                    //fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
-                                />
-                                {
-                                    nestXX.map(snake => <Line
-                                        x={10}
-                                        y={20}
-                                        points={snake}
-                                        // stroke="#9F35CC"
-                                        stroke="black"
-                                        strokeWidth={2}
-                                    />)
-                                }
-                                <Image image={image}
-                                       x={thermostat.x + 2}
-                                       y={thermostat.y + 13}
-                                       scale={{x: 0.6, y: 0.6}}/>
-                            </Layer>
-                        </Stage>
-                    }
-                    {/*<span className="calculation-process">Calculation Project...</span>
-                    <span className="printing-project">Printing Project...</span>
-                    <span className="calculation-complete">Calculation complete</span>*/}
+                <Stage width={630} height={380} ref={stageRef}
+                       x={5}
+                       y={-12}>
+                    <Layer name="main-layer">
+                        <Line
+                            x={10}
+                            y={20}
+                            points={room}
+                            closed
+                            stroke="#868686"
+                            strokeWidth={2}
+                            fillLinearGradientStartPoint={{x: -50, y: -50}}
+                            fillLinearGradientEndPoint={{x: 250, y: 250}}
+                            fill="lightgrey"
+                            //fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
+                        />
+                        {
+                            massGroup[7].map(tail => <Line
+                                x={10}
+                                y={20}
+                                points={tail}
+                                closed
+                                stroke="#6E6E6E"
+                                globalCompositeOperation="source-atop"
+                                strokeWidth={2}
+                                fill="#FA9393"
+                            />)
+                        }
+                    </Layer>
+                    <Layer name="result">
+                        {
+                            massGroup[0].map(tail => <Line
+                                x={10}
+                                y={20}
+                                points={tail}
+                                closed
+                                stroke="#6E6E6E"
+                                strokeWidth={2}
+                                fill="#FF3F3F"
+                            />)
+                        }
+                        {
+                            spotsArray.map(spot => <Line
+                                x={10}
+                                y={20}
+                                points={spot}
+                                closed
+                                stroke="#868686"
+                                strokeWidth={2}
+                                fill={"white"}
+                            />)
+                        }
+                        {
+                            massGroup[2].map(connector => <Line
+                                x={10}
+                                y={20}
+                                points={connector}
+                                closed
+                                fill={"black"}
+                            />)
+                        }
+                        {
+                            massGroup[3].map(text => <KonvaText
+                                x={text[0] + 10}
+                                y={text[1] + 20}
+                                text={text[2]}
+                                fontSize={15}
+                                fontFamily='Calibri'
+                                //fill="#E8C6F7"
+                                fill="black"
+                            />)
+                        }
+                        <Line
+                            x={10}
+                            y={20}
+                            points={room}
+                            closed
+                            stroke="#868686"
+                            strokeWidth={2}
+                            fillLinearGradientStartPoint={{x: -50, y: -50}}
+                            fillLinearGradientEndPoint={{x: 250, y: 250}}
+                            //fill="#F7C9C9"
+                            //fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
+                        />
+                        {
+                            nestXX.map(snake => <Line
+                                x={10}
+                                y={20}
+                                points={snake}
+                                // stroke="#9F35CC"
+                                stroke="black"
+                                strokeWidth={2}
+                            />)
+                        }
+                        <Image image={image}
+                               x={thermostat.x + 2}
+                               y={thermostat.y + 13}
+                               scale={{x: 0.6, y: 0.6}}/>
+                    </Layer>
+                </Stage>
+
                     <div className="block-button">
                         <div className="btn-notes">Add Notes</div>
                         <div className="btn-list"
                              onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
                         </div>
-                         <div className="btn-print-project" /*onMouseEnter={handleEnter}*/>
+                        <div className="btn-print-project" /*onMouseEnter={handleEnter}*/>
                             {pdfLink}
                         </div>
-                        {/*<div className="btn-print-project" onMouseEnter={handleEnter}>
-                            <NewPDF/>
-                        </div>*/}
                     </div>
-                </div>
+                </div>}
             </div>
             <ModalPartsList active={modalPartsActive} setActive={setModalPartsActive} list={listOfParts}/>
             <Modal active={modalActive} setActive={setModalActive}>
