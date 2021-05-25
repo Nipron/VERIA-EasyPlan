@@ -119,9 +119,9 @@ const Result = () => {
                 backgroundColor: 'white'
             },
             section: {
-                margin: 10,
-                padding: 10,
-                marginTop: 0,
+                margin: 20,
+                padding: 15,
+                marginTop: 10,
                 marginBottom: 0
             },
             sectionGrey: {
@@ -136,9 +136,15 @@ const Result = () => {
                 margin: 20,
                 marginTop: 0,
                 marginBottom: 0,
-                padding: 15,
-                bottom: 0
+                padding: 15
+            },
+            text1: {
+                fontSize: 10
+            },
+            text2: {
+                fontSize: 12
             }
+
         });
         let area = roomArea(room);
         let heatedArea = massGroup[5];
@@ -165,57 +171,63 @@ const Result = () => {
                             <PDFImage src={dataURL}/>
                         </View>
                         <View style={styles.sectionGrey}>
-                            {(listOfParts.mat5_55 !== 0) && <Text>
+                            {(listOfParts.mat5_55 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.mat5_55} x Veria Clickmat 55, 5m&#178;
                             </Text>}
-                            {(listOfParts.mat4_55 !== 0) && <Text>
+                            {(listOfParts.mat4_55 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.mat4_55} x Veria Clickmat 55, 4m&#178;
                             </Text>}
-                            {(listOfParts.mat3_55 !== 0) && <Text>
+                            {(listOfParts.mat3_55 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.mat3_55} x Veria Clickmat 55, 3m&#178;
                             </Text>}
-                            {(listOfParts.mat2_55 !== 0) && <Text>
+                            {(listOfParts.mat2_55 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.mat2_55} x Veria Clickmat 55, 2m&#178;
                             </Text>}
-                            {(listOfParts.mat5_100 !== 0) && <Text>
+                            {(listOfParts.mat5_100 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.mat5_100} x Veria Clickmat 100, 5m&#178;
                             </Text>}
-                            {(listOfParts.mat4_100 !== 0) && <Text>
+                            {(listOfParts.mat4_100 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.mat4_100} x Veria Clickmat 100, 4m&#178;
                             </Text>}
-                            {(listOfParts.mat3_100 !== 0) && <Text>
+                            {(listOfParts.mat3_100 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.mat3_100} x Veria Clickmat 100, 3m&#178;
                             </Text>}
-                            {(listOfParts.mat2_100 !== 0) && <Text>
+                            {(listOfParts.mat2_100 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.mat2_100} x Veria Clickmat 100, 2m&#178;
                             </Text>}
-                            {(listOfParts.cord2 !== 0) && <Text>
+                            {(listOfParts.cord2 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.cord2} x Veria Clickmat extension cord, 2m
                             </Text>}
-                            {(listOfParts.cord1 !== 0) && <Text>
+                            {(listOfParts.cord1 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.cord1} x Veria Clickmat extension cord, 1m
                             </Text>}
-                            {(listOfParts.cord025 !== 0) && <Text>
+                            {(listOfParts.cord025 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.cord025} x Veria Clickmat extension cord, 0.25m
                             </Text>}
-                            {(listOfParts.kit100 !== 0) && <Text>
+                            {(listOfParts.kit100 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.kit100} x Veria Wireless Clickkit 100
                             </Text>}
-                            {(listOfParts.kit55 !== 0) && <Text>
+                            {(listOfParts.kit55 !== 0) && <Text style={styles.text2}>
                                 {listOfParts.kit55} x Veria Wireless Clickkit 55
                             </Text>}
                         </View>
                         <View style={styles.disclaimer}>
-                            <Text>
+                            <Text style={styles.text1}>
                                 DISCLAMER: Please note that this is a computer genereted simulation.
                                 Installations of products on site may vary.
                                 Always be sure to carefully follow the instructions enclosed in the package.
                             </Text>
-                            <Text>
-                                Remember to buy Veria Fillermat (stock code 189B9134) to fill up areas of the floor which are not covered with heating mats. In this way a uniform base  layer for wooden floor is created.
+                        </View>
+                        <View style={styles.disclaimer}>
+                            <Text style={styles.text1}>
+                                Remember to buy Veria Fillermat (stock code 189B9134) to fill up areas of the floor
+                                which are not covered with heating mats. In this way a uniform base layer for wooden
+                                floor is created.
                             </Text>
+                        </View>
+                        <View style={styles.section}>
                             <Text>
-                                Enjoy your new floor heating.
+                                Enjoy your new floor heating!!!
                             </Text>
                         </View>
                     </Page>
@@ -267,7 +279,7 @@ const Result = () => {
             </div>
 
             <div className="content-section-grid">{massGroup[4] &&
-                <div className="constructor-box">
+            <div className="constructor-box">
                 <Stage width={630} height={380} ref={stageRef}
                        x={5}
                        y={-12}>
@@ -369,16 +381,16 @@ const Result = () => {
                     </Layer>
                 </Stage>
 
-                    <div className="block-button">
-                        <div className="btn-notes">Add Notes</div>
-                        <div className="btn-list"
-                             onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
-                        </div>
-                        <div className="btn-print-project" /*onMouseEnter={handleEnter}*/>
-                            {pdfLink}
-                        </div>
+                <div className="block-button">
+                    <div className="btn-notes">Add Notes</div>
+                    <div className="btn-list"
+                         onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
                     </div>
-                </div>}
+                    <div className="btn-print-project" /*onMouseEnter={handleEnter}*/>
+                        {pdfLink}
+                    </div>
+                </div>
+            </div>}
             </div>
             <ModalPartsList active={modalPartsActive} setActive={setModalPartsActive} list={listOfParts}/>
             <Modal active={modalActive} setActive={setModalActive}>
