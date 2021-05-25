@@ -83,7 +83,7 @@ const FloorType = () => {
                     <p>Top floor covering is the type of surface that you wish to lay on top of the floor after
                         installing the floor heating.
 
-                        Subfloor construction is the surface that the heating elements will be laid out on.
+                        Subfloor construction is the surface where the heating elements will be installed on.
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>
@@ -157,8 +157,7 @@ const FloorType = () => {
                     <span className="modal-btn-close" onClick={() => setModalActive(false)}></span>
                     <div className="modal-ft-left-content-box"></div>
                     <div className="modal-ft-right-content-box">
-                        <p className="modal-container-description">An important part of the calculation is weather
-                            it is e.g. wood or tiles that goes on top of the heated floor.</p>
+                        <p className="modal-container-description">Type of floor covering is an important part of the calculation: wood or tiles that will be on top of the heated floor.</p>
                     </div>
                     <div className="modal-btn-ok" onClick={() => setModalActive(false)}>
                         ok

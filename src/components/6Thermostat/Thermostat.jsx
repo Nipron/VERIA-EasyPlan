@@ -26,7 +26,7 @@ const Thermostat = () => {
             <div className="info-section">
                 <div>
                     <h2>Add Thermostat</h2>
-                    <p>You need this thermostat kit to connect to the 1st mat and to a socket. The kit also has a wired
+                    <p>You need this thermostat kit to be connected to the 1st mat and to a socket. The kit also has a wired
                         floor sensor.
                         With Veria Wireless Clickkit you will be able to control the temperature quickly and precisely.
                         You may also program

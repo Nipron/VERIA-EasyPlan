@@ -556,8 +556,6 @@ const ColdSpots = () => {
                               <p>
                                A cold spot indicates an area of the floor that cannot or should not be heated.
                              <br/>
-                                      These are areas where obstacles, e.g. adresser with less than 6 cm of free space, can cause too much heat to accumulate in the floor.
-                            <br/>
                               Cold spots should be added to these areas to prevent this from happening.
                              </p>
                                 </span>
@@ -565,9 +563,9 @@ const ColdSpots = () => {
                       <img src={coldSpotWrong} alt="cold-spot-wrong-position"/>
                        <h2>Not a cold spot</h2>
                   <p>
-                      Any obstacle with at least 7 cm of free space above the floor should not be considered a cold spot.
+                      Any with at least 7 cm of free space above the floor should not be considered a cold spot.
                              <br/>
-                               The floor under here should have underfloor heating like the rest of the room.
+                               The floor here should have underfloor heating like the rest of the room.
                         </p>
                           </span>
 

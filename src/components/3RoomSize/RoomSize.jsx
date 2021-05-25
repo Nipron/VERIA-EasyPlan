@@ -34,7 +34,7 @@ const RoomSize = () => {
                     <p>Adjust the dimensions to match your actual room measurements.
                         Make sure to be as accurate as possible when dimensioning the room to ensure reliable results.
                         You can also enter dimensions in centimeter by double clicking the box on a wall.
-                        If dimesion labels are on your way,
+                        If dimension labels are in your way,
                         you may hide them by clicking "Show/hide labels" button.
                     </p>
                 </div>
