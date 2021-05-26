@@ -12,10 +12,12 @@ import {updateShape} from "../../redux/shapesReducer";
 import {updateButton} from "../../redux/buttonsReducer";
 import {updateRoom} from "../../redux/roomReducer";
 import {updateAngles} from "../../redux/anglesReducer";
+import {useTranslation} from "react-i18next";
 
 const RoomShape = () => {
 
     const dispatch = useDispatch();
+    const {t} = useTranslation();
 
     let shapes = useSelector(state => state.shapes);
     let buttons = useSelector(state => state.buttons);
@@ -41,7 +43,7 @@ const RoomShape = () => {
         <div>
             <div className="info-section">
                 <div>
-                    <h2>Select Room Shape</h2>
+                    <h2>{t("select_room_shape")}</h2>
                     <p>Please choose a shape similar to the room where you will be installing underfloor heating.
                         <br/>
                         The size of the room will be adjusted at a later step.</p>

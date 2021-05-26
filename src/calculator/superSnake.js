@@ -29,7 +29,7 @@ export const isWayFree = (startPoint, endPoint, walls) => {
     return true;
 }
 
-const findDirect = (startPoint, endPoint, pitStops, walls) => {
+export const findDirect = (startPoint, endPoint, pitStops, walls) => {
     let directPitStop = [];
     for (let i = 0; i < pitStops.length; i++) {
         if ((isWayFree(startPoint, pitStops[i], walls)) && (isWayFree(pitStops[i], endPoint, walls))
@@ -165,41 +165,27 @@ export const combinationLength = comb => {
 
 //amount of cords for 1 snake
 export const cords = snake => {
-    let c025 = 0;
-    let c1 = 0;
-    let c2 = 0;
-    let cL = wireLength(snake) + 5 //cord length
-   // console.log(cL * 2)
-    c2 = Math.round(cL - cL % 100) / 100
+    let cL = wireLength(snake) + 5 //cord length; 5 - extra 10cm
+    let c2 = Math.round(cL - cL % 100) / 100
     let rest = cL - c2 * 100
     if (rest > 62.5) {
         return [0, 0, c2 + 1]
     }
-    if(rest > 50) {
+    if (rest > 50) {
         return [1, 1, c2]
     }
-    if(rest > 12.5) {
+    if (rest > 12.5) {
         return [0, 1, c2]
     }
     return [1, 0, c2]
-
-   /* c1 = Math.round((cL - c2 * 100) - (cL - c2 * 100) % 50) / 50
-    c025 = Math.ceil((cL - c2 * 100 - c1 * 50) / 12.5)
-    if (c025 > 1) {
-        c1++
-        c025 = 0
-    }
-    return [c025, c1, c2]*/
 }
 
-//calculating amount of cords
+//calculating amount of all cords
 export const cordCalc = arr => {
-   // console.log(arr)
     let c025 = 0;
     let c1 = 0;
     let c2 = 0;
     for (let i = 0; i < arr.length; i++) {
-       // console.log(cords(arr[i]))
         let cord = cords(arr[i])
         c025 += cord[0]
         c1 += cord[1]

@@ -528,7 +528,7 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
     const pitStopsNoDoubles = pitStopsCleaner(pitStops, resultMats)
 
-    let path = bestPath(waysCombinations, pitStopsNoDoubles, walls);
+    let path = bestPath(waysCombinations/*, pitStopsNoDoubles, walls*/);
 
     const connectorsAndNumbers = connectorsFarm(path)
   //  console.log("PATH")

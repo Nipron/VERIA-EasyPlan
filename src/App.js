@@ -28,9 +28,9 @@ const App = () => {
                     <Route path='/roomshape' component={RoomShape}/>
                     <Route path='/roomsize' component={RoomSize}/>
                     <Route path='/coldspots' component={ColdSpots}/>
-                    <Route path='/floortype' component={FloorType}/>
                     <Route path='/thermostat' component={Thermostat}/>
                     <Route path='/placement' component={Placement}/>
+                    <Route path='/floortype' component={FloorType}/>
                     <Route path='/result' component={Result}/>
                     <Route component={Start}/>
                 </Switch>

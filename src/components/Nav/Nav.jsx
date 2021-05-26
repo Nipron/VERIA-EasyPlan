@@ -7,10 +7,12 @@ import {updateButton} from "../../redux/buttonsReducer";
 import '../../styles/main.css';
 import '../../styles/modals.css';
 import s from './Nav.module.css';
+import {useTranslation} from "react-i18next";
 
 const Nav = () => {
 
     const dispatch = useDispatch();
+    const {t} = useTranslation();
 
     let buttons = useSelector(state => state.buttons);
 
@@ -21,25 +23,25 @@ const Nav = () => {
     return (
         <div className="controler-section">
             <Link to="/" onClick={() => handleClick(1)} className={`${s.btn} ${s.btnStart}`}>
-                    Start here
+                {t("start")}
             </Link>
             <Link to="/roomshape" onClick={() => handleClick(2)} className={`${s.btn} ${buttons[2] && s.active}`}>
-                Room Shape
+                {t("room_shape")}
             </Link>
             <Link to="/roomsize" onClick={() => handleClick(3)} className={`${s.btn} ${buttons[3] && s.active}`}>
-                Room Size
+                {t("room_size")}
             </Link>
             <Link to="/coldspots" onClick={() => handleClick(4)} className={`${s.btn} ${buttons[4] && s.active}`}>
-                Cold Spots
+                {t("cold_spots")}
             </Link>
             <Link to="/thermostat" onClick={() => handleClick(5)} className={`${s.btn} ${buttons[5] && s.active}`}>
-                Thermostat
+                {t("thermostat")}
             </Link>
             <Link to="/floortype" onClick={() => handleClick(6)} className={`${s.btn} ${buttons[6] && s.active}`}>
-                Floor Type
+                {t("floor_type")}
             </Link>
             <Link to="/result" onClick={() => handleClick(7)} className={`${s.btn} ${s.btnResult} ${buttons[7] && s.activeResult}`}>
-                Result
+                {t("result")}
             </Link>
         </div>
     );

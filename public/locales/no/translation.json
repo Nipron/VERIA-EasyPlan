@@ -1,0 +1,19 @@
+{
+  "start": "Start",
+  "room_shape": "Romform",
+  "room_size": "Romstørrelse",
+  "cold_spots": "Kalde soner",
+  "thermostat": "Termostat",
+  "floor_type": "Gulvtype",
+  "result": "Resultat",
+
+  "plan_your_room": "Planlegg ditt rom",
+  "plan_your_room_text_p1": "EasyPlan ber om noen opplysninger om rommet. Deretter får du et forslag til leggeplan og en produktliste.",
+  "plan_your_room_text_p2": "Vær oppmerksom på at  dette er et dataprogram. Hvis du ikke er helt fornøyd med forslaget, er du velkommen til å kontakte oss for ytterligere hjelp: ",
+
+  "select_room_shape": "Velg romform",
+  "select_room_shape_text_p1": "",
+  "rectangular": "",
+  "L_shaped": "",
+  "T_shaped": ""
+}

@@ -9,6 +9,7 @@ import './styles/main.css';
 import './styles/modals.css';
 import './styles/normalize.css';
 import App from './App';
+import "./i18n";
 
 const store = createStore(reducers);
 window.store = store;

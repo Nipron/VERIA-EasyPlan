@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 import s from "./Header.module.css"
 
@@ -6,9 +6,30 @@ import '../../styles/main.css';
 import '../../styles/modals.css';
 import veria from "../../img/veria-logo.png";
 
+import {useTranslation} from "react-i18next";
+
 const Header = () => {
 
+    const {i18n} = useTranslation();
+
+    const changeLanguage = lng => {
+        i18n.changeLanguage(lng);
+    };
+
     const [selected, setSelected] = useState('GB');
+
+    useEffect(() => {
+        switch (selected) {
+            case "GB":
+                changeLanguage("en")
+                break;
+            case "NO":
+                changeLanguage("no")
+                break;
+            default:
+                changeLanguage("en")
+        }
+    }, [selected])
 
     return (
         <div>
@@ -22,7 +43,7 @@ const Header = () => {
                     selected={selected}
                     onSelect={code => setSelected(code)}
                     countries={["GB", "NO"]}
-                    customLabels={{"GB": "EN","NO": "NO"}}
+                    customLabels={{"GB": "EN", "NO": "NO"}}
                     selectedSize={12}
                     optionsSize={12}/>
                 <div>

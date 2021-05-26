@@ -83,9 +83,10 @@ export const BombForRoom = room => {
     return result;
 }
 
-//Removing doubled points
+
 export const pitStopsCleaner = (arr, spots) => {
     let resultTemp = []
+    //Removing doubled points
     loop1:
         for (let i = 0; i < arr.length; i++) {
             // let isUnique = true
@@ -100,6 +101,7 @@ export const pitStopsCleaner = (arr, spots) => {
         }
 
     let result = [];
+    //Removing pit stops inside mats
     loop2:
         for (let i = 0; i < resultTemp.length; i++) {
             for (let j = 0; j < spots.length; j++) {
