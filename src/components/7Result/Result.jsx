@@ -143,6 +143,9 @@ const Result = () => {
             },
             text2: {
                 fontSize: 12
+            },
+            textBold: {
+                fontWeight: 'bold'
             }
 
         });
@@ -382,7 +385,7 @@ const Result = () => {
                 </Stage>
 
                 <div className="block-button">
-                    <div className="btn-notes">Add Notes</div>
+                    {/*<div className="btn-notes">Add Notes</div>*/}
                     <div className="btn-list"
                          onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
                     </div>
