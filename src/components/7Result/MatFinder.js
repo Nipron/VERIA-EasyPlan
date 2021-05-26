@@ -428,6 +428,8 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
     //Creating array of pitStops - nodal points at the room for wires (corners of the room, cold spots and mats)
     let pitStops = []
     //adding room corners
+    console.log("PIT STOPS before room corners")
+    console.log(pitStops)
 
     const roomCorners = BombForRoom(RoomTransformer(room, -1))
     if (shapes.L) {
@@ -455,20 +457,31 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
         walls.push(wallsFromRoom[10])
         walls.push(wallsFromRoom[11])
     }
+    console.log("PIT STOPS before adding cold spots corners")
+    let pit2 = _.cloneDeep(pitStops)
+    console.log(pit2)
     //adding cold spots' corners
     let spotsForPitStops = ColdSpotsTransformer(spotsArray, 0)
+
     for (let i = 0; i < spotsForPitStops.length; i++) {
         pitStops.push(...Bomb(spotsForPitStops[i]))
     }
+    console.log("PIT STOPS before adding mat corners")
+    let pit3 = _.cloneDeep(pitStops)
+    console.log(pit3)
     //adding all mats' corners
     for (let i = 0; i < resultMats.length; i++) {
         let corners = [...BombForMat(resultMats[i])]
         pitStops.push(...corners)
     }
 
+    console.log("PIT STOPS before remove extra")
+    let pit4 = _.cloneDeep(pitStops)
+    console.log(pit4)
+
     //removing extra pitStops from corners
     loop:
-    for (let i = 0; i < pitStops.length; i++) {
+    for (let i = 0; i < pitStops.length - 1; i++) {
         for (let j = i + 1; j < pitStops.length; j++) {
             if (
                 ((pitStops[i][1] === pitStops[j][1]) &&
@@ -509,11 +522,23 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
         return best;
     }
 
+    console.log("PIT STOPS")
+    let pit5 = _.cloneDeep(pitStops)
+    console.log(pit5)
+
     const pitStopsNoDoubles = pitStopsCleaner(pitStops, resultMats)
 
     let path = bestPath(waysCombinations, pitStopsNoDoubles, walls);
 
     const connectorsAndNumbers = connectorsFarm(path)
+  //  console.log("PATH")
+  //  console.log(path)
+    console.log("PIT STOPS NO DOUBLES")
+    console.log(pitStopsNoDoubles)
+    let pit6 = _.cloneDeep(pitStopsNoDoubles)
+    console.log(pit6)
+  //  console.log("WALLS")
+  //  console.log(walls)
 
     const snakesNestMaker = (arr, pStops, walls) => {
         let result = [];

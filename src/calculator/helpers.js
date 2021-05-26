@@ -27,10 +27,12 @@ export const RoomReshaper = (room, d) => [
 export const ColdSpotsTransformer = (spots, d) => {
     let result = [];
     for (let i = 0; i < spots.length; i++) {
-        result.push([spots[i][0] + d, spots[i][1] + d,
-            spots[i][2] - d, spots[i][3] + d,
-            spots[i][4] - d, spots[i][5] - d,
-            spots[i][6] + d, spots[i][7] - d])
+        if (spots[i].length !== 0) {
+            result.push([spots[i][0] + d, spots[i][1] + d,
+                spots[i][2] - d, spots[i][3] + d,
+                spots[i][4] - d, spots[i][5] - d,
+                spots[i][6] + d, spots[i][7] - d])
+        }
     }
     return result;
 }
