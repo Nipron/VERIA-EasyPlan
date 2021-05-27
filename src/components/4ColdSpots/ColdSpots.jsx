@@ -24,6 +24,7 @@ import triangle4white from '../../img/ColdSpotIcons/triangle4white.svg';
 import triangle4grey from '../../img/ColdSpotIcons/triangle4grey.svg';
 import {updateColdSpots} from "../../redux/coldSpotsReducer";
 import {updatePoints} from "../../redux/coldSpotsPoints";
+import {useTranslation} from "react-i18next";
 
 
 const ColdSpot = spot => <Line
@@ -41,6 +42,8 @@ const ColdSpot = spot => <Line
 
 
 const ColdSpots = () => {
+    const {t} = useTranslation();
+
 
     const dispatch = useDispatch();
     const buttons = useSelector(state => state.buttons);
@@ -131,7 +134,7 @@ const ColdSpots = () => {
         }
         if (figure === 5) {
             //pts = [width / 2, height / 2, width, 0, width, height, 0, height]
-              pts = [0, 0, width / 2, - height / 2, width / 2, height / 2, - width / 2, height / 2]
+            pts = [0, 0, width / 2, -height / 2, width / 2, height / 2, -width / 2, height / 2]
         }
 
         if (currentColdSpot === 0) {
@@ -340,11 +343,9 @@ const ColdSpots = () => {
         <div>
             <div className="info-section">
                 <div>
-                    <h2>Cold spots</h2>
-                    <p>Here you can add 'cold spots' for areas where underfloor heating should not be placed due to
-                        obstacles or certain types of furniture.
-                        Note that you can only place the cold spot within the exterior walls (cold spot is yellow). If
-                        the cold spot crosses the exterior wall (cold spot is red) it must be moved with the room again.
+                    <h2>{t("cold_spots")}</h2>
+                    <p>{t("cold_spots_text_p1")}
+                        {t("cold_spots_text_p2")}
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>
@@ -455,29 +456,29 @@ const ColdSpots = () => {
                              setFigure04picture(triangle3white);
                              setFigure05picture(triangle4white);
                          }
-                         }>Add Cold Spot
+                         }>{t("add_cold_spot")}
                     </div>
                     <div id="btn-help-cold-spot" className="box_btn-style-black"
-                         onClick={() => setModalHelpActive(true)}>Need help?
+                         onClick={() => setModalHelpActive(true)}>{t("need_help")}
                     </div>
 
                     <div className="bin-area">
-                        <span>Drag here to delete</span>
+                        <span>{t("drag_here")}</span>
                     </div>
                     <Link to="/thermostat" onClick={() => handleClick(5)} className={s.btnNextStep}>
-                        Continues
+                        {t("continue")}
                     </Link>
                 </div>
             </div>
             <Modal active={modalActive} setActive={setModalActive}>
                 <div className="modal-window-cold-spot">
-                    <h1 className="modal-title-coldspot">Add Cold Spot</h1>
+                    <h1 className="modal-title-coldspot">{t("add_cold_spot")}</h1>
                     <span className="modal-btn-close-add-modal" onClick={() => setModalActive(false)}></span>
                     <form className="form-coldspot" id="coldspot" method="GET" action="">
-                        <label className="form-coldspot-lable">width:</label>
+                        <label className="form-coldspot-lable">{t("width")}</label>
                         <input name="width" type="number" value={(width * 2).toString()}
                                onChange={e => setWidth(e.target.value / 2)}/>
-                        <label className="form-coldspot-lable">height:</label>
+                        <label className="form-coldspot-lable">{t("height")}</label>
                         <input name="height" type="number" value={(height * 2).toString()}
                                onChange={e => setHeight(e.target.value / 2)}/>
                     </form>
@@ -540,32 +541,32 @@ const ColdSpots = () => {
                 }}></li>
           </ul>
         </span>
-                    <button onClick={handleAdd}>add</button>
+                    <button onClick={handleAdd}>{t("add")}</button>
                 </div>
             </Modal>
 
             <Modal active={modalHelpActive} setActive={setModalHelpActive}>
                 <div className="modal-window-cold-spot-help">
-                    <h1 className="modal-title">Add Cold Spots</h1>
-                    <span className="modal-btn-close" onClick={() => setModalActive(false)}></span>
+                    <h1 className="modal-title">{t("add_cold_spots")}</h1>
+                    <span className="modal-btn-close" onClick={() => setModalHelpActive(false)}></span>
                     <div className="modal-cs-left-content-box"></div>
                     <div className="modal-cs-right-content-box">
                        <span>
                           <img src={coldSpot} alt="cold-spot-position"/>
-                             <h2>Cold Spot</h2>
+                             <h2>{t("cold_spot")}</h2>
                               <p>
-                               A cold spot indicates an area of the floor that cannot or should not be heated.
-                             <br/>
-                              Cold spots should be added to these areas to prevent this from happening.
+                               {t("cold_spot_text_p1")}
+                                  <br/>
+                                  {t("cold_spot_text_p2")}
                              </p>
                                 </span>
                         <span>
                       <img src={coldSpotWrong} alt="cold-spot-wrong-position"/>
-                       <h2>Not a cold spot</h2>
+                       <h2>{t("not_cold_spot")}</h2>
                   <p>
-                      Any with at least 7 cm of free space above the floor should not be considered a cold spot.
-                             <br/>
-                               The floor here should have underfloor heating like the rest of the room.
+                     {t("not_cold_spot_text_p1")}
+                      <br/>
+                      {t("not_cold_spot_text_p2")}
                         </p>
                           </span>
 
@@ -574,13 +575,9 @@ const ColdSpots = () => {
                           to="/thermostat"
                           onClick={() => handleClick(5)}
                     >
-                        skip
+                        {t("skip")}
                     </Link>
-
-                    {/*}   <a href="">
-                        <span className="modal-btn-skip">skip</span>
-                    </a> */}
-                    <div className="modal-btn-continue" onClick={() => setModalHelpActive(false)}>continue</div>
+                    <div className="modal-btn-continue" onClick={() => setModalHelpActive(false)}>{t("continue")}</div>
                 </div>
             </Modal>
         </div>

@@ -44,9 +44,9 @@ const RoomShape = () => {
             <div className="info-section">
                 <div>
                     <h2>{t("select_room_shape")}</h2>
-                    <p>Please choose a shape similar to the room where you will be installing underfloor heating.
+                    <p>{t("select_room_shape_text_p1")}
                         <br/>
-                        The size of the room will be adjusted at a later step.</p>
+                        {t("select_room_shape_text_p2")}</p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>
             </div>
@@ -57,7 +57,7 @@ const RoomShape = () => {
                         <Link to="/roomsize" onClick={() => handleClick(3, "R")}
                               className={`${s.btnShapeSelection} ${shapes.R && s.active}`}
                         >
-                            Rectangular
+                            {t("rectangular")}
                         </Link>
                     </div>
                     <div className="object-container">
@@ -65,7 +65,7 @@ const RoomShape = () => {
                         <Link to="/roomsize" onClick={() => handleClick(3, "L")}
                               className={`${s.btnShapeSelection} ${shapes.L && s.active}`}
                         >
-                            L-Shaped
+                            {t("L_shaped")}
                         </Link>
                     </div>
                     <div className="object-container">
@@ -73,7 +73,7 @@ const RoomShape = () => {
                         <Link to="/roomsize" onClick={() => handleClick(3, "T")}
                               className={`${s.btnShapeSelection} ${shapes.T && s.active}`}
                         >
-                            T-Shaped
+                            {t("T_shaped")}
                         </Link>
                     </div>
                 </div>

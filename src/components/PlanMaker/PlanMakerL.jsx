@@ -12,8 +12,11 @@ import DimInput from "../../elements/DimInput/DimInput";
 import {Stage, Layer, Star, Text, Line} from 'react-konva';
 import {updateRoom} from "../../redux/roomReducer";
 import {updateAngles} from "../../redux/anglesReducer";
+import {useTranslation} from "react-i18next";
 
 const PlanMakerL = () => {
+
+    const {t} = useTranslation();
 
     const ratio = 2; //ratio = cm / pixels
     const minDist = 10; //minimum distance between points/lines
@@ -956,20 +959,19 @@ const PlanMakerL = () => {
                          setAnglesMode(!anglesMode);
                      }}
                      style={anglesMode ? {background: "lightgreen"} : {}}
-                >Create
-                    angled wall
+                >{t("create_angled_walls")}
                 </div>
                 <div id="bnt-labels" className="box_btn-style"
                      onClick={() => setLabVis(!labVis)}
-                >Show/hide labels
+                >{t("show_hide_labels")}
                 </div>
                 <div id="btn-help-room-size" className="box_btn-style-black"
-                     onClick={() => setModalActive(true)}>Need help?
+                     onClick={() => setModalActive(true)}>{t("need_help")}
                 </div>
                 <div id="room-size-count">{square.toFixed(2)} m<sup>2</sup></div>
             </div>
             <Link to="/coldspots" onClick={() => handleClick(4)} className={s.btnNextStep}>
-                Continue
+                {t("continue")}
             </Link>
             <ModalRoomSize active={modalActive} setActive={setModalActive}/>
         </div>

@@ -268,9 +268,10 @@
     display: inline-block;
     margin: 31px 0 12px 52px;
     font-family: 'Roboto';
+    text-align: center;
     font-style: normal;
     font-weight: bold;
-    font-size: 28px;
+    font-size: 26px;
     line-height: 33px;
 }
 

@@ -12,8 +12,46 @@
   "plan_your_room_text_p2": "Vær oppmerksom på at  dette er et dataprogram. Hvis du ikke er helt fornøyd med forslaget, er du velkommen til å kontakte oss for ytterligere hjelp: ",
 
   "select_room_shape": "Velg romform",
-  "select_room_shape_text_p1": "",
-  "rectangular": "",
-  "L_shaped": "",
-  "T_shaped": ""
+  "select_room_shape_text_p1": "Velg formen som ligner mest på rommet der du skal installere gulvvarme.",
+  "select_room_shape_text_p2": "Rommets størrelse justerer du i neste trinn.",
+  "rectangular": "Firkantet",
+  "L_shaped": "L-formet",
+  "T_shaped": "T-formet",
+
+  "adjust_room_size": "Juster romstørrelsen",
+  "adjust_room_size_text_p1": "Juster dimensjonene for å matche dine faktiske rommål. Sørg for å være så nøyaktig som mulig når du dimensjonerer rommet for å sikre pålitelige resultater. Du kan også angi dimensjoner i centimeter ved å dobbeltklikke på boksen på en vegg. Hvis dimensjonsetiketter er i veien for deg, kan du skjule dem ved å klikke på \"Vis / skjul etiketter\" -knappen.",
+
+  "create_angled_walls": "Lag vinklede vegger",
+  "show_hide_labels": "Vis/skjul mål",
+  "need_help": "Trenger hjelp?",
+  "continue": "Fortsett",
+
+
+  "adjusting_the_room_size": "Justere romstørrelsen",
+  "how_to_adjust": "Slik justerer du målene:",
+  "how_to_adjust_text": "Trykk og dra i hjørnene til målene samsvarer med dine mål. Du kan også angi målene i centimeter ved å dobbeltklikke i boksene med oppgitte mål.",
+  "how_to_add_wall": "Slik legger du til en vinklet vegg:",
+  "how_to_add_wall_text": "Klikk på knappen \"Opprett vinklet vegg«, hvis rommet ditt har en vinklet vegg. Klikk en gang på hjørnet du trenger å endre, trykk og dra deretter hjørnet for å justere målene. Gjenta for å legge til flere vinklede vegger.",
+  "show_hide_dimension_labels": "Vis / skjul målene:",
+  "show_hide_dimension_labels_text": "Du kan skjule målene ved å klikke på \"Vis / skjul mål\".",
+
+  "cold_spots_text_p1": "Her kan du legge til \"kalde soner\" for områder der gulvvarme ikke skal plasseres på grunn av hindringer eller visse møbler.",
+  "cold_spots_text_p2": "Merk at du bare kan plassere det kalde stedet innenfor ytterveggene (kaldt sone er gult). Hvis det kalde stedet krysser ytterveggen (kaldt sone er rødt), må det flyttes med rommet igjen.",
+
+  "add_cold_spots": "Legg til kald soner",
+  "cold_spot": "Kalde soner",
+  "cold_spot_text_p1": "En kald sone er et område av gulvet som ikke skal varmes opp. Det kan være en peis, kjøkkenskap el.l. som er i direkte kontakt med gulvoverflaten (ikke forhøyet eller litt forhøyet fra gulvet).",
+  "cold_spot_text_p2": "Her legges det til kalde soner for å hindre overoppheting.",
+  "not_cold_spot": "Ikke kalde soner",
+  "not_cold_spot_text_p1": "Møbel med minst 7 cm luft over gulvet skal ikke betraktes som kald sone.",
+  "not_cold_spot_text_p2": "Gulvet kan ha gulvvarme som resten av rommet.",
+
+  "skip": "Skip",
+  "drag_here": "Dra hit for å slette",
+  "add_cold_spot": "Legg til kald sone",
+  "width": "Bredde:",
+  "height": "Høyde:",
+  "add": "Legg til",
+
+  "g": ""
 }

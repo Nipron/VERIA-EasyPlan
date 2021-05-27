@@ -13,6 +13,7 @@ import PlanMakerL from "../PlanMaker/PlanMakerL";
 import ModalRoomSize from "../0Modal/ModalRoomSize";
 import PlanMakerT from "../PlanMaker/PlanMakerT";
 import PlanMakerR from "../PlanMaker/PlanMakerR";
+import {useTranslation} from "react-i18next";
 
 const RoomSize = () => {
 
@@ -24,18 +25,16 @@ const RoomSize = () => {
 
     const dispatch = useDispatch();
 
+    const {t} = useTranslation();
+
     if (!buttons[3]) return <Redirect to="/"/>;
 
     return (
         <div>
             <div className="info-section">
                 <div>
-                    <h2>Adjust Room Size</h2>
-                    <p>Adjust the dimensions to match your actual room measurements.
-                        Make sure to be as accurate as possible when dimensioning the room to ensure reliable results.
-                        You can also enter dimensions in centimeter by double clicking the box on a wall.
-                        If dimension labels are in your way,
-                        you may hide them by clicking "Show/hide labels" button.
+                    <h2>{t("adjust_room_size")}</h2>
+                    <p>{t("adjust_room_size_text_p1")}
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>

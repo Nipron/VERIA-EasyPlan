@@ -12,9 +12,45 @@
   "plan_your_room_text_p2": "Please note, that this program serves for visualization purpose. If you are not fully satisfied with the results of our calculations, please contact us for further engineering support: ",
 
   "select_room_shape": "Select Room Shape",
-  "select_room_shape_text_p1": "",
-  "rectangular": "",
-  "L_shaped": "",
-  "T_shaped": ""
+  "select_room_shape_text_p1": "Please choose a shape similar to the room where you will be installing underfloor heating.",
+  "select_room_shape_text_p2": "The size of the room will be adjusted at a later step.",
+  "rectangular": "Rectangular",
+  "L_shaped": "L-shaped",
+  "T_shaped": "T-shaped",
 
+  "adjust_room_size": "Adjust Room Size",
+  "adjust_room_size_text_p1": "Adjust the dimensions to match your actual room measurements. Make sure to be as accurate as possible when dimensioning the room to ensure reliable results. You can also enter dimensions in centimeters by double-clicking the box on a wall. If dimension labels are in your way, you may hide them by clicking the \"Show/hide labels\" button.",
+
+  "create_angled_walls": "Create angled walls",
+  "show_hide_labels": "Show/hide labels",
+  "need_help": "Need help?",
+  "continue": "Continue",
+
+  "adjusting_the_room_size": "Adjusting the Room Size",
+  "how_to_adjust": "How to adjust the dimensions:",
+  "how_to_adjust_text": "Press and drag the corner handles until the dimensions match your actual room measurements. You can also enter dimensions in centimeter by double clicking the box on a wall.",
+  "how_to_add_wall": "How to add an angled wall:",
+  "how_to_add_wall_text": "If your room has an angled wall or other obstacle simply click the \"Create angled wall\" button. Click once on the corner you need to change, then press and drag the corner handle to adjust the dimensions. Repeat to add more angled walls.",
+  "show_hide_dimension_labels": "Show/hide dimension labels:",
+  "show_hide_dimension_labels_text": "If dimension labels are in your way, you may hide them by clicking \"Show/hide labels\" button.",
+
+  "cold_spots_text_p1": "Here you can add 'cold spots' for areas where underfloor heating should not be placed due to obstacles or certain types of furniture.",
+  "cold_spots_text_p2": "Note that you can only place the cold spot within the exterior walls (cold spot is yellow). If the cold spot crosses the exterior wall (cold spot is red) it must be moved with the room again.",
+
+  "add_cold_spots": "Add Cold Spots",
+  "cold_spot": "Cold Spot",
+  "cold_spot_text_p1": "A cold spot indicates an area of the floor that cannot or should not be heated.",
+  "cold_spot_text_p2": "Cold spots should be added to these areas to prevent this from happening.",
+  "not_cold_spot": "Not a cold spot",
+  "not_cold_spot_text_p1": "Any object with at least 7 cm of free space above the floor should not be considered a cold spot.",
+  "not_cold_spot_text_p2": "The floor under here should have underfloor heating like the rest of the room.",
+
+  "skip": "Skip",
+  "drag_here": "Drag here to delete",
+  "add_cold_spot": "Add Cold Spot",
+  "width": "Width:",
+  "height": "Height:",
+  "add": "Add",
+
+  "g": ""
 }
