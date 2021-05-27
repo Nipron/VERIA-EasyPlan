@@ -23,6 +23,8 @@ import {cordCalc, cords} from "../../calculator/superSnake";
 import {roomArea} from "../../calculator/helpers";
 import PDF3 from "../PDF/PDF";
 import {saveAs} from 'file-saver';
+import {useTranslation} from "react-i18next";
+import i18n from "i18next";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -30,6 +32,8 @@ const ThermostatImage = () => {
 };
 
 const Result = () => {
+
+    const {t} = useTranslation();
     const dispatch = useDispatch();
     const [modalActive, setModalActive] = useState(false);
     const buttons = useSelector(state => state.buttons);
@@ -38,7 +42,10 @@ const Result = () => {
     const thermostat = useSelector(state => state.thermostat);
     const thermoOut = [thermostat.x, thermostat.y]
     const [image] = useImage(thermoImg);
+    const checks = useSelector(state => state.checks);
     const massGroup = useSelector(state => state.result)
+
+    console.log(checks)
 
     const handleModalClick = () => {
         setModalActive(false)
@@ -103,7 +110,7 @@ const Result = () => {
     const [modalPartsActive, setModalPartsActive] = useState(false); //shows modal only first time on page
     const stageRef = useRef();
     const [im, setIm] = useState(null)
-    const [pdfLink, setPdfLink] = useState("Creating PDF...")
+    const [pdfLink, setPdfLink] = useState(i18n.t("creating_pgf"))
 
     const handleEnter = async (event) => {
         let dataURL = "";
@@ -144,6 +151,9 @@ const Result = () => {
             text2: {
                 fontSize: 12
             },
+            text16: {
+                fontSize: 16
+            },
             textBold: {
                 fontWeight: 'bold'
             }
@@ -151,6 +161,22 @@ const Result = () => {
         });
         let area = roomArea(room);
         let heatedArea = massGroup[5];
+
+        let topFloor = "";
+        let subFloor = "";
+
+        if (checks.topLaminate) {
+            topFloor = i18n.t("laminate")
+        } else {
+            topFloor = i18n.t("parquet")
+        }
+
+        if (checks.subUnburnable) {
+            subFloor = i18n.t("unburnable_pdf")
+        } else {
+            subFloor = i18n.t("burnable_pdf")
+        }
+
         const PDF2 = () => {
             return (
                 <Document>
@@ -159,15 +185,16 @@ const Result = () => {
                             <PDFImage src={veria}/>
                         </View>
                         <View style={styles.sectionGrey}>
-                            <Text>
-                                Room area: {area.toFixed(2)} m&#178; Heated
-                                area: {heatedArea.toFixed(2)} m&#178; ({(100 * heatedArea / area).toFixed(2)}% coverage)
+                            <Text style={styles.text16}>
+                                {i18n.t("room_area")} {area.toFixed(2)} m&#178;
+                                {i18n.t("heated_area")} {heatedArea.toFixed(2)} m&#178;
+                                ({(100 * heatedArea / area).toFixed(2)}% {i18n.t("coverage")})
                             </Text>
-                            <Text>
-                                Top Floor Covering: Laminate
+                            <Text style={styles.text16}>
+                                {i18n.t("top_floor_pdf")} {topFloor}
                             </Text>
-                            <Text>
-                                Bottom Floor Construction: Unburnable (Concrete)
+                            <Text style={styles.text16}>
+                                {i18n.t("bottom_floor_pdf")} {subFloor}
                             </Text>
                         </View>
                         <View style={styles.section}>
@@ -199,38 +226,34 @@ const Result = () => {
                                 {listOfParts.mat2_100} x Veria Clickmat 100, 2m&#178;
                             </Text>}
                             {(listOfParts.cord2 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.cord2} x Veria Clickmat extension cord, 2m
+                                {listOfParts.cord2} x Veria Clickmat {i18n.t("extension_cord")}, 2m
                             </Text>}
                             {(listOfParts.cord1 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.cord1} x Veria Clickmat extension cord, 1m
+                                {listOfParts.cord1} x Veria Clickmat {i18n.t("extension_cord")}, 1m
                             </Text>}
                             {(listOfParts.cord025 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.cord025} x Veria Clickmat extension cord, 0.25m
+                                {listOfParts.cord025} x Veria Clickmat {i18n.t("extension_cord")}, 0.25m
                             </Text>}
                             {(listOfParts.kit100 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.kit100} x Veria Wireless Clickkit 100
+                                {listOfParts.kit100} x Veria {i18n.t("wireless_click_kit")} 100
                             </Text>}
                             {(listOfParts.kit55 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.kit55} x Veria Wireless Clickkit 55
+                                {listOfParts.kit55} x Veria {i18n.t("wireless_click_kit")} 55
                             </Text>}
                         </View>
                         <View style={styles.disclaimer}>
                             <Text style={styles.text1}>
-                                DISCLAMER: Please note that this is a computer genereted simulation.
-                                Installations of products on site may vary.
-                                Always be sure to carefully follow the instructions enclosed in the package.
+                                {i18n.t("disclaimer")}
                             </Text>
                         </View>
                         <View style={styles.disclaimer}>
                             <Text style={styles.text1}>
-                                Remember to buy Veria Fillermat (stock code 189B9134) to fill up areas of the floor
-                                which are not covered with heating mats. In this way a uniform base layer for wooden
-                                floor is created.
+                                {i18n.t("remember")}
                             </Text>
                         </View>
                         <View style={styles.section}>
                             <Text>
-                                Enjoy your new floor heating!!!
+                                {i18n.t("enjoy")}
                             </Text>
                         </View>
                     </Page>
@@ -239,7 +262,7 @@ const Result = () => {
         };
 
         setPdfLink(<PDFDownloadLink document={<PDF2/>} fileName="EasyPlan.pdf">
-            {({blob, url, loading, error}) => (loading ? 'Creating PDF...' : 'Save as PDF')}
+            {({blob, url, loading, error}) => (loading ? i18n.t("creating_pgf") : i18n.t("save_as_pdf"))}
         </PDFDownloadLink>)
     }
 
@@ -249,8 +272,6 @@ const Result = () => {
                 <Page>// My document data</Page>
             </Document>
         ).toBlob();
-        console.log("BLOB")
-        console.log(blob);
         return blob;
     };
 
@@ -270,12 +291,11 @@ const Result = () => {
         <div>
             <div className="info-section">
                 <div>
-                    <h2>Result</h2>
+                    <h2>{t("result")}</h2>
                     <p>
-                        Please note that this is a computer generated simulation.
+                        {t("result_text_p1")}<a href="https://www.veriafloorheating.com/" target="_blank"><b>veriafloorheating.com</b></a>
                         <br/>
-                        Installation of products on site may vary. Always be sure to carefully follow the instructions
-                        enclosed in the package.
+                        {t("result_text_p2")}
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>
@@ -385,9 +405,9 @@ const Result = () => {
                 </Stage>
 
                 <div className="block-button">
-                    {/*<div className="btn-notes">Add Notes</div>*/}
+                    {/*<div className="btn-notes">{t("add_notes")}</div>*/}
                     <div className="btn-list"
-                         onClick={() => setModalPartsActive(true)}>List of Parts / Where to Buy
+                         onClick={() => setModalPartsActive(true)}>{t("list_of_parts_where")}
                     </div>
                     <div className="btn-print-project" /*onMouseEnter={handleEnter}*/>
                         {pdfLink}
@@ -398,22 +418,22 @@ const Result = () => {
             <ModalPartsList active={modalPartsActive} setActive={setModalPartsActive} list={listOfParts}/>
             <Modal active={modalActive} setActive={setModalActive}>
                 <div className="modal-window-floor-type">
-                    <h1 className="modal-title">Thermostat's capacity</h1>
+                    <h1 className="modal-title">{t("thermostats_capacity")}</h1>
                     <span className="modal-btn-close" onClick={handleModalClick}></span>
                     <div className="modal-ft-left-content-box-result"></div>
                     <div className="modal-ft-right-content-box">
                         <p className="modal-container-description">
-                            The size of the heated area in your room is
-                            <b> {Math.round(massGroup[5] * 100) / 100}</b> sq.m.
-                            and exceeds the maximum capacity of the thermostat.</p>
+                            {t("capacity_text1")}
+                            <b> {Math.round(massGroup[5] * 100) / 100} m<sup>2</sup></b>
+                            {t("capacity_text2")}</p>
                         <br/>
                         <p className="modal-container-description">
-                            The maximum capacity is 42 sq.m. for burnable subfloor (Veria Wireless Clickkit 55)
-                            and 23 sq.m. for unburnable subfloor (Veria Wireless Clickkit 100)</p>
+                            {t("capacity_text3")} 42 m<sup>2</sup> {t("capacity_text4")} (Veria {t("wireless_click_kit")} 55)
+                            {t("capacity_text5")} 23 m<sup>2</sup> {t("capacity_text6")} (Veria {t("wireless_click_kit")} 100)</p>
                         <br/>
                         <p className="modal-container-description">
-                            Please change room parameters or contact us for further support
-                            — <b>veriafloorheating.com</b>
+                            {t("capacity_text7")}
+                            — <a href="https://www.veriafloorheating.com/" target="_blank"><b>veriafloorheating.com</b></a>
                         </p>
                     </div>
                     <div className="modal-btn-ok" onClick={handleModalClick}>

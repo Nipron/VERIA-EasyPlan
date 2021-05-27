@@ -17,6 +17,8 @@ import {useTranslation} from "react-i18next";
 
 const RoomSize = () => {
 
+    const {t} = useTranslation();
+
     const [modalActive, setModalActive] = useState(false);
 
 
@@ -25,7 +27,7 @@ const RoomSize = () => {
 
     const dispatch = useDispatch();
 
-    const {t} = useTranslation();
+
 
     if (!buttons[3]) return <Redirect to="/"/>;
 

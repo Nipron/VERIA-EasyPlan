@@ -1,15 +1,19 @@
 import React from 'react';
 import Modal from "./Modal";
+import {useTranslation} from "react-i18next";
 
 const ModalPartsList = ({active, setActive, list}) => {
+
+    const {t} = useTranslation();
+
     return (
         <Modal active={active} setActive={setActive}>
             <div className="modal-window-parts-list">
-                <h1 className="modal-title">List of parts</h1>
+                <h1 className="modal-title">{t("list_of_parts")}</h1>
                 <span className="modal-btn-close" onClick={() => setActive(false)}></span>
                 <div className="parts-list-inner-field">
                     <div className="parts-list-header">
-                        <span className="parts-list-header-text">Qty & Part name (part no.)</span>
+                        <span className="parts-list-header-text">{t("quantity_and_parts")}</span>
                     </div>
                     <div className="parts-list-content">
                         {Object.keys(list).map(key => {
@@ -40,22 +44,22 @@ const ModalPartsList = ({active, setActive, list}) => {
                                         name = `Veria Clickmat 55, 2m${"\u00B2"}`
                                         break;
                                     case "cord2":
-                                        name = `Veria Clickmat extension cord, 2m`
+                                        name = `Veria Clickmat ${t("extension_cord")}, 2m`
                                         break;
                                     case "cord1":
-                                        name = `Veria Clickmat extension cord, 1m`
+                                        name = `Veria Clickmat ${t("extension_cord")}, 1m`
                                         break;
                                     case "cord025":
-                                        name = `Veria Clickmat extension cord, 0.25m`
+                                        name = `Veria Clickmat ${t("extension_cord")}, 0.25m`
                                         break;
                                     case "kit100":
-                                        name = `Veria Wireless Clickkit 100`
+                                        name = `Veria ${t("wireless_click_kit")} 100`
                                         break;
                                     case "kit55":
-                                        name = `Veria Wireless Clickkit 55`
+                                        name = `Veria ${t("wireless_click_kit")} 55`
                                         break;
                                     default:
-                                        name = "something wrong";
+                                        name = `${t("wireless_click_kit")}`;
                                 }
 
                                 if (list[key] > 0) {
@@ -67,11 +71,9 @@ const ModalPartsList = ({active, setActive, list}) => {
                         )
                         }
                     </div>
-                    <div className="find-dealers">Find dealers</div>
+                    <div className="find-dealers">{t("find_dealers")}</div>
                     <div className="dealers-site">
-                        <a href="https://www.veriafloorheating.com/"
-                           target="_blank"
-                           style={{textDecoration: "none"}}>veriafloorheating.com</a>
+                        <a href="https://www.veriafloorheating.com/" target="_blank"><b>veriafloorheating.com</b></a>
                     </div>
                 </div>
                 <div className="modal-btn-ok" onClick={() => setActive(false)}>ok</div>

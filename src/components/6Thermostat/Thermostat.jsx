@@ -6,18 +6,12 @@ import s from "../2RoomShape/RoomShape.module.css";
 import {HashLink as Link} from "react-router-hash-link";
 import {MatFinder} from "../7Result/MatFinder";
 import {updateResult} from "../../redux/resultReducer";
+import {useTranslation} from "react-i18next";
 
 const Thermostat = () => {
 
-  /*  const [modalActive, setModalActive] = useState(false);*/
-
+    const {t} = useTranslation();
     const buttons = useSelector(state => state.buttons);
-   /* const dispatch = useDispatch();*/
-
-   /* const handleClick = (page) => {
-        dispatch(updateResult(massGroup))
-        dispatch(updateButton(page))
-    }*/
 
     if (!buttons[5]) return <Redirect to="/"/>
 
@@ -25,12 +19,8 @@ const Thermostat = () => {
         <div>
             <div className="info-section">
                 <div>
-                    <h2>Add Thermostat</h2>
-                    <p>You need this thermostat kit to be connected to the 1st mat and to a socket. The kit also has a wired
-                        floor sensor.
-                        With Veria Wireless Clickkit you will be able to control the temperature quickly and precisely.
-                        You may also program
-                        4 different time zones during the weekdays and weekend.
+                    <h2>{t("add_thermostat")}</h2>
+                    <p>{t("add_thermostat_text")}
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>
@@ -40,13 +30,13 @@ const Thermostat = () => {
                 <div className="constructor-box">
                     <div className="product-box">
                         <Link to="/placement" className="btn-accept-product">
-                            Wireles Clickkit
+                            {t("wireless_click_kit")}
                         </Link>
                     </div>
                 </div>
                 <div className="button-box">
                     <div className="info-area-thermostat">
-                        <span>Select please...</span>
+                        <span>{t("select_please")}</span>
                     </div>
                 </div>
             </div>

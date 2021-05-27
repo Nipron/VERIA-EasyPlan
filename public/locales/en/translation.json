@@ -52,5 +52,58 @@
   "height": "Height:",
   "add": "Add",
 
+  "add_thermostat": "Add Thermostat",
+  "add_thermostat_text": "You need this wireless thermostat kit to be connected  to the male 1st mat and to a socket. The kit also has a wired floor sensor.",
+  "wireless_click_kit": "Wireless Clickkit",
+  "select_please": "Select please...",
+  "place_thermostat": "Place Thermostat",
+  "place_thermostat_text": "Drag the thermostat along the edges of the room, so it matches the placement in the actual room.",
+
+  "select_floor_type": "Select Floor type",
+  "select_floor_type_text": "Top floor covering is the type of surface that you wish to lay on top of the floor after installing the floor heating. Subfloor construction is the surface where the heating mats will be installed.",
+  "top_floor_covering": "Top floor",
+  "laminate": "Laminate",
+  "parquet": "Parquet",
+  "subfloor_covering": "Sub floor",
+  "unburnable": "Unburnable",
+  "burnable": "Burnable",
+  "please_select_subfloor": "Select please top and subfloor...",
+  "about_floor_types": "About Floor Types",
+  "about_floor_types_text": "Type of floor covering for Veria Clickmat is parquet or laminate from min. 8mm thickness",
+
+  "result_text_p1": "Please note that this is a computer generated simulation. If you are not fully satisfied with the results of our calculations, please contact us for further engineering support: ",
+  "result_text_p2": "Always be sure to carefully follow the instructions enclosed in the package.",
+  "add_notes": "Add notes",
+  "list_of_parts_where": "List of parts / Where to buy",
+  "creating_pgf": "Creating PDF...",
+  "save_as_pdf": "Save as PDF",
+
+  "list_of_parts": "List of parts",
+  "quantity_and_parts": "Qty & Part name",
+  "extension_cord": "Extension Cord",
+  "something_wrong": "Something wrong...",
+  "find_dealers": "Find dealers",
+
+  "thermostats_capacity": "Thermostat's capacity",
+  "capacity_text1": "The size of the heated area in your room is",
+  "capacity_text2": " and exceeds the maximum capacity of the thermostat.",
+  "capacity_text3": "The maximum capacity is",
+  "capacity_text4": "for burnable subfloor",
+  "capacity_text5": "and",
+  "capacity_text6": "for unburnable subfloor",
+  "capacity_text7": "Please change room parameters or contact us for further support ",
+
+  "room_area": "Room area: ",
+  "heated_area": "Heated area: ",
+  "coverage": "coverage",
+  "top_floor_pdf": "Top Floor Covering: ",
+  "bottom_floor_pdf": "Bottom Floor Construction: ",
+  "unburnable_pdf": "Unburnable (concrete, tiles etc.) ",
+  "burnable_pdf": "Burnable (wood etc.)",
+
+  "disclaimer": "DISCLAIMER: Please note that this is a computer generated simulation. Installations of products on site may vary. Always be sure to carefully follow the instructions enclosed in the package.",
+  "remember": "Note! Easyplan does not calculate fillermats. Remember to buy Veria Fillermat (stock code 189B9134) to fill up areas of the floor which are not covered with heating mats or cut off material from them. In this way a uniform base  layer for wooden floor is created.",
+  "enjoy": "Enjoy your new floor heating!!!",
+
   "g": ""
 }

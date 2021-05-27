@@ -10,9 +10,11 @@ import thermostat from '../../img/ThermostatButton/thermostat.svg'
 import {updateThermostat} from "../../redux/thermostatReducer";
 import {MatFinder} from "../7Result/MatFinder";
 import {updateResult} from "../../redux/resultReducer";
+import {useTranslation} from "react-i18next";
 
 const Placement = () => {
 
+    const {t} = useTranslation();
     let room = useSelector(state => state.room);
     let thermostat = /*useSelector(state => state.thermostat);*/ {x: 0, y: 0}
     const spotsArray = useSelector(state => state.points);
@@ -76,8 +78,8 @@ const Placement = () => {
         <div>
             <div className="info-section">
                 <div>
-                    <h2>Place Thermostat</h2>
-                    <p>Drag the thermostat along the edges of the room, so it matches the placement in the actual room.
+                    <h2>{t("place_thermostat")}</h2>
+                    <p>{t("place_thermostat_text")}
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>
@@ -280,7 +282,7 @@ const Placement = () => {
                 </div>
                 <div className="button-box">
                     <Link to="/floortype" onClick={() => handleClick(6)} className={s.btnNextStep}>
-                        Continue
+                        {t("continue")}
                     </Link>
                 </div>
             </div>
