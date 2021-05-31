@@ -16,14 +16,15 @@ import {updateChecks} from "../../redux/floorChecksReducer";
 import {MatFinder} from "../7Result/MatFinder";
 import {updateResult} from "../../redux/resultReducer";
 import {useTranslation} from "react-i18next";
+import Preloader from "../Preloader/Preloader";
 
 const FloorType = () => {
 
     const {t} = useTranslation();
 
-    const room = useSelector(state => state.room);
-    const thermostat = useSelector(state => state.thermostat);
-    const spotsArray = useSelector(state => state.points);
+  //  const room = useSelector(state => state.room);
+  //  const thermostat = useSelector(state => state.thermostat);
+  //  const spotsArray = useSelector(state => state.points);
     const buttons = useSelector(state => state.buttons);
     const dispatch = useDispatch();
     const checks = useSelector(state => state.checks);
@@ -36,7 +37,7 @@ const FloorType = () => {
     const [selectColor, setSelectColor] = useState(((topLaminate || topParquet) && (subUnburnable || subBurnable) && "#DBDADA") || "#E82B2B");
     const [continueVisible, setContinueVisible] = useState(((topLaminate || topParquet) && (subUnburnable || subBurnable) && "visible") || "hidden");
 
-    const massGroup = MatFinder(spotsArray, room, [thermostat.x, thermostat.y], subBurnable)
+   // const massGroup = MatFinder(spotsArray, room, [thermostat.x, thermostat.y], subBurnable)
 
     const handleTopLaminate = () => {
         setTopLaminate(!topLaminate)
@@ -56,7 +57,7 @@ const FloorType = () => {
     }
 
     const handleClick = (page) => {
-        dispatch(updateResult(massGroup))
+      //  dispatch(updateResult(massGroup))
         dispatch(updateButton(page))
         dispatch(updateChecks({
             topLaminate,
@@ -72,7 +73,13 @@ const FloorType = () => {
         if (continueVisible === "hidden") dispatch(updateButton(6))
     }, [topLaminate, topParquet, subUnburnable, subBurnable, continueVisible])
 
+
+
+
+
     if (!buttons[6]) return <Redirect to="/"/>
+
+
 
     return (
         <div>

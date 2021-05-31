@@ -25,6 +25,8 @@ import PDF3 from "../PDF/PDF";
 import {saveAs} from 'file-saver';
 import {useTranslation} from "react-i18next";
 import i18n from "i18next";
+import {MatFinder} from "./MatFinder";
+import Preloader from "../Preloader/Preloader";
 
 const ThermostatImage = () => {
     const [image] = useImage(thermoImg);
@@ -43,9 +45,12 @@ const Result = () => {
     const thermoOut = [thermostat.x, thermostat.y]
     const [image] = useImage(thermoImg);
     const checks = useSelector(state => state.checks);
-    const massGroup = useSelector(state => state.result)
+   // const [subBurnable, setSubBurnable] = useState(checks.subBurnable);
 
-    console.log(checks)
+    const massGroup = MatFinder(spotsArray, room, thermoOut, checks.subBurnable)
+
+  //  const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const handleModalClick = () => {
         setModalActive(false)
@@ -284,6 +289,16 @@ const Result = () => {
         return () => {
         };
     }, []);
+
+    useEffect(() => {
+        if (loading) {
+            setTimeout(() => {
+                setLoading(false);
+            }, 4000);
+        }
+    }, [loading]);
+
+    if (loading) return <Preloader />
 
     if (!buttons[7]) return <Redirect to="/floortype"/>
 
