@@ -38,6 +38,7 @@ const Result = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const [modalActive, setModalActive] = useState(false);
+    const [modalLoading, setModalLoading] = useState(true);
     const buttons = useSelector(state => state.buttons);
     const room = useSelector(state => state.room);
     const spotsArray = useSelector(state => state.points);
@@ -51,6 +52,14 @@ const Result = () => {
 
   //  const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (loading) {
+            setTimeout(() => {
+                setLoading(false);
+            }, 4000);
+        }
+    }, [loading]);
 
     const handleModalClick = () => {
         setModalActive(false)
@@ -290,15 +299,9 @@ const Result = () => {
         };
     }, []);
 
-    useEffect(() => {
-        if (loading) {
-            setTimeout(() => {
-                setLoading(false);
-            }, 4000);
-        }
-    }, [loading]);
 
-    if (loading) return <Preloader />
+
+   // if (loading) return <Preloader />
 
     if (!buttons[7]) return <Redirect to="/floortype"/>
 
@@ -431,6 +434,9 @@ const Result = () => {
             </div>}
             </div>
             <ModalPartsList active={modalPartsActive} setActive={setModalPartsActive} list={listOfParts}/>
+            <Modal active={loading} setActive={setLoading}>
+                <Preloader/>
+            </Modal>
             <Modal active={modalActive} setActive={setModalActive}>
                 <div className="modal-window-floor-type">
                     <h1 className="modal-title">{t("thermostats_capacity")}</h1>
