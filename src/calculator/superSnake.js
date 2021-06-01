@@ -56,143 +56,131 @@ export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
     //if no direct single pitStop, than looking for a closet one to endPoint
     for (let i = 0; i < pitStops.length; i++) {
         if (isWayFree(startPoint, pitStops[i], walls)) {
-            for (let j = 0; j < pitStops.length; j++) {
-                if (isWayFree(pitStops[i], pitStops[j], walls)) {
-                    if (isWayFree(pitStops[j], endPoint, walls)) {
-                        return pitStops[i];
+                if (resultPitStop.length === 0 ||
+                    (dist(startPoint, pitStops[i]) + dist(pitStops[i], endPoint)) < (dist(startPoint, resultPitStop) + dist(resultPitStop, endPoint))
+                ) {
+                    resultPitStop = pitStops[i];
+                }
+            }
+        }
+        return resultPitStop;
+    }
+
+//weakSnake - finding path without optimization
+    export const weakSnake = (startPoint, endPoint, stops, walls) => {
+        let resultPath = [];
+        try {
+            resultPath.push(startPoint);
+            let currentPitStop = [...startPoint];
+            let pitStops = _.cloneDeep(stops)
+            for (let i = 0; i < pitStops.length; i++) {
+                if (isWayFree(currentPitStop, endPoint, walls)) {
+                    resultPath.push(endPoint);
+                    return resultPath;
+                } else {
+                    currentPitStop = [...findNextPit(currentPitStop, endPoint, pitStops, walls)]
+                    if (currentPitStop.length !== 0) {
+                        resultPath.push(currentPitStop);
                     }
-                    for (let k = 0; k < pitStops.length; k++) {
-                        if ((isWayFree(pitStops[j], pitStops[k], walls)) && (isWayFree(pitStops[k], endPoint, walls))) {
-                            return pitStops[i]
+                    for (let j = 0; j < pitStops.length; j++) {
+                        if ((pitStops[j][0] === currentPitStop[0]) && (pitStops[j][1] === currentPitStop[1])) {
+                            pitStops.splice(j, 1)
                         }
                     }
                 }
             }
-            if (resultPitStop.length === 0 ||
-                (dist(startPoint, pitStops[i]) + dist(pitStops[i], endPoint)) < (dist(startPoint, resultPitStop) + dist(resultPitStop, endPoint))
-            ) {
-                resultPitStop = pitStops[i];
-            }
+        } catch (e) {
+            resultPath = [startPoint, endPoint]
         }
+        return resultPath;
     }
-    return resultPitStop;
-}
 
-//weakSnake - finding path without optimization
-export const weakSnake = (startPoint, endPoint, stops, walls) => {
-    let resultPath = [];
-    try {
-        resultPath.push(startPoint);
-        let currentPitStop = [...startPoint];
-        let pitStops = _.cloneDeep(stops)
-        for (let i = 0; i < pitStops.length; i++) {
-            if (isWayFree(currentPitStop, endPoint, walls)) {
-                resultPath.push(endPoint);
-                return resultPath;
-            } else {
-                currentPitStop = [...findNextPit(currentPitStop, endPoint, pitStops, walls)]
-                if (currentPitStop.length !== 0) {
-                    resultPath.push(currentPitStop);
-                }
-                for (let j = 0; j < pitStops.length; j++) {
-                    if ((pitStops[j][0] === currentPitStop[0]) && (pitStops[j][1] === currentPitStop[1])) {
-                        pitStops.splice(j, 1)
+//removing excess points
+    export const normalSnake = (startPoint, endPoint, pitStops, walls) => {
+        let resultPath = weakSnake(startPoint, endPoint, pitStops, walls)
+        if (resultPath.length < 3) return resultPath;
+        try {
+            let count = resultPath.length
+            for (let i = 0; i < count - 2; i++) {
+                for (let j = 0; j < count - i; j++) {
+                    if (isWayFree(resultPath[i], resultPath[count - 1 - j], walls)) {
+                        resultPath.splice(i + 1, count - j - i - 2)
+                        count = count - j - i - 2
                     }
                 }
             }
+        } catch (e) {
+            resultPath = [startPoint, endPoint]
         }
-    } catch (e) {
-        resultPath = [startPoint, endPoint]
+        return resultPath;
     }
-    return resultPath;
-}
 
-//removing excess points
-export const normalSnake = (startPoint, endPoint, pitStops, walls) => {
-    let resultPath = weakSnake(startPoint, endPoint, pitStops, walls)
-    if (resultPath.length < 3) return resultPath;
-    try {
-        let count = resultPath.length
-        for (let i = 0; i < count - 2; i++) {
-            for (let j = 0; j < count - i; j++) {
-                if (isWayFree(resultPath[i], resultPath[count - 1 - j], walls)) {
-                    resultPath.splice(i + 1, count - j - i - 2)
-                    count = count - j - i - 2
+    export const permutator = inputArr => {
+        let results = [];
+        const permute = (arr, memoZ) => {
+            let cur, memo = memoZ || [];
+            for (let i = 0; i < arr.length; i++) {
+                cur = arr.splice(i, 1);
+                if (arr.length === 0) {
+                    results.push(memo.concat(cur));
                 }
+                permute(arr.slice(), memo.concat(cur));
+                arr.splice(i, 0, cur[0]);
             }
+            return results;
         }
-    } catch (e) {
-        resultPath = [startPoint, endPoint]
+        return permute(inputArr);
     }
-    return resultPath;
-}
 
-export const permutator = inputArr => {
-    let results = [];
-    const permute = (arr, memoZ) => {
-        let cur, memo = memoZ || [];
+    export const addThermo = (arr, thermostat) => {
+        let result = [];
         for (let i = 0; i < arr.length; i++) {
-            cur = arr.splice(i, 1);
-            if (arr.length === 0) {
-                results.push(memo.concat(cur));
-            }
-            permute(arr.slice(), memo.concat(cur));
-            arr.splice(i, 0, cur[0]);
+            result.push([])
+            result[i].push([[null, null], thermostat])
+            result[i].push(...arr[i])
         }
-        return results;
+        return result;
     }
-    return permute(inputArr);
-}
+    export const wiresCombinations = (arr, thermostat) => addThermo(permutator(arr), thermostat)
 
-export const addThermo = (arr, thermostat) => {
-    let result = [];
-    for (let i = 0; i < arr.length; i++) {
-        result.push([])
-        result[i].push([[null, null], thermostat])
-        result[i].push(...arr[i])
+    export const combinationLength = comb => {
+        let result = 0;
+        for (let i = 0; i < comb.length - 1; i++) {
+            result += wireLength(comb[i][1], comb[i + 1][0])
+        }
+        return result;
     }
-    return result;
-}
-export const wiresCombinations = (arr, thermostat) => addThermo(permutator(arr), thermostat)
-
-export const combinationLength = comb => {
-    let result = 0;
-    for (let i = 0; i < comb.length - 1; i++) {
-        result += wireLength(comb[i][1], comb[i + 1][0])
-    }
-    return result;
-}
 
 //amount of cords for 1 snake
-export const cords = snake => {
-    let cL = wireLength(snake) + 5 //cord length; 5 - extra 10cm
-    let c2 = Math.round(cL - cL % 100) / 100
-    let rest = cL - c2 * 100
-    if (rest > 62.5) {
-        return [0, 0, c2 + 1]
+    export const cords = snake => {
+        let cL = wireLength(snake) + 5 //cord length; 5 - extra 10cm
+        let c2 = Math.round(cL - cL % 100) / 100
+        let rest = cL - c2 * 100
+        if (rest > 62.5) {
+            return [0, 0, c2 + 1]
+        }
+        if (rest > 50) {
+            return [1, 1, c2]
+        }
+        if (rest > 12.5) {
+            return [0, 1, c2]
+        }
+        return [1, 0, c2]
     }
-    if (rest > 50) {
-        return [1, 1, c2]
-    }
-    if (rest > 12.5) {
-        return [0, 1, c2]
-    }
-    return [1, 0, c2]
-}
 
 //calculating amount of all cords
-export const cordCalc = arr => {
-    let c025 = 0;
-    let c1 = 0;
-    let c2 = 0;
-    for (let i = 0; i < arr.length; i++) {
-        let cord = cords(arr[i])
-        c025 += cord[0]
-        c1 += cord[1]
-        c2 += cord[2]
+    export const cordCalc = arr => {
+        let c025 = 0;
+        let c1 = 0;
+        let c2 = 0;
+        for (let i = 0; i < arr.length; i++) {
+            let cord = cords(arr[i])
+            c025 += cord[0]
+            c1 += cord[1]
+            c2 += cord[2]
+        }
+        return [c025, c1, c2]
     }
-    return [c025, c1, c2]
-}
 
 
 
