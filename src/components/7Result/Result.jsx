@@ -54,12 +54,13 @@ const Result = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (loading) {
-            setTimeout(() => {
+
+        const loadingTimer = setTimeout(() => {
                 setLoading(false);
             }, 4000);
-        }
-    }, [loading]);
+
+        return () => clearTimeout(loadingTimer);
+    }, []);
 
     const handleModalClick = () => {
         setModalActive(false)

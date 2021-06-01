@@ -11,7 +11,7 @@ import {
 import {
     combinationLength, cordCalc,
     dist,
-    normalSnake,
+    normalSnake, twoWaySnake,
     weakSnake,
     wireLength,
     wiresCombinations
@@ -543,7 +543,7 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
     const snakesNestMaker = (arr, pStops, walls) => {
         let result = [];
         for (let i = 0; i < arr.length - 1; i++) {
-            result.push(normalSnake(arr[i][1], arr[i + 1][0], pStops, walls));
+            result.push(twoWaySnake(arr[i][1], arr[i + 1][0], pStops, walls));
         }
         return result
     }

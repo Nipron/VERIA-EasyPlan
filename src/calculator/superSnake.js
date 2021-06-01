@@ -115,6 +115,16 @@ export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
         return resultPath;
     }
 
+    export const twoWaySnake = (startPoint, endPoint, pitStops, walls) => {
+        let snakeForward = normalSnake(startPoint, endPoint, pitStops, walls)
+        let snakeBack = normalSnake(endPoint, startPoint, pitStops, walls)
+        if (wireLength(snakeForward) < wireLength(snakeBack)) {
+            return snakeForward
+        } else {
+            return snakeBack
+        }
+    }
+
     export const permutator = inputArr => {
         let results = [];
         const permute = (arr, memoZ) => {
