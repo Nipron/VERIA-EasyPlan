@@ -230,6 +230,7 @@ const ColdSpots = () => {
     const handleDragMove00 = (e) => {
         const stage = e.target.getStage();
         const layer = stage.findOne(".main-layer");
+        const layer2 = stage.findOne(".bin");
 
         let A = e.target.position()
         let B = {x: A.x + spot00.B.x - spot00.A.x, y: A.y + spot00.B.y - spot00.A.y};
@@ -247,11 +248,15 @@ const ColdSpots = () => {
         else {
             setSpot00({...spot00, color: "red"})
         }
+        if (layer2.getIntersection(A)) {
+            setSpot00({...spot00, visible: false})
+        }
     }
 
     const handleDragMove01 = (e) => {
         const stage = e.target.getStage();
         const layer = stage.findOne(".main-layer");
+        const layer2 = stage.findOne(".bin");
 
         let A = e.target.position()
         let B = {x: A.x + spot01.B.x - spot01.A.x, y: A.y + spot01.B.y - spot01.A.y};
@@ -267,13 +272,17 @@ const ColdSpots = () => {
             && layer.getIntersection({x: A.x + width / 2, y: A.y + height / 2}))
             setSpot01({...spot01, color: "yellow", A: A, B: B, C: C, D: D})
         else {
-            setSpot01({...spot01, color: "red"})
+            setSpot01({...spot01, vi: "red"})
+        }
+        if (layer2.getIntersection(A)) {
+            setSpot01({...spot01, visible: false})
         }
     }
 
     const handleDragMove02 = (e) => {
         const stage = e.target.getStage();
         const layer = stage.findOne(".main-layer");
+        const layer2 = stage.findOne(".bin");
 
         let A = e.target.position()
         let B = {x: A.x + spot02.B.x - spot02.A.x, y: A.y + spot02.B.y - spot02.A.y};
@@ -291,11 +300,15 @@ const ColdSpots = () => {
         else {
             setSpot02({...spot02, color: "red"})
         }
+        if (layer2.getIntersection(A)) {
+            setSpot02({...spot02, visible: false})
+        }
     }
 
     const handleDragMove03 = (e) => {
         const stage = e.target.getStage();
         const layer = stage.findOne(".main-layer");
+        const layer2 = stage.findOne(".bin");
 
         let A = e.target.position()
         let B = {x: A.x + spot03.B.x - spot03.A.x, y: A.y + spot03.B.y - spot03.A.y};
@@ -313,11 +326,15 @@ const ColdSpots = () => {
         else {
             setSpot03({...spot03, color: "red"})
         }
+        if (layer2.getIntersection(A)) {
+            setSpot03({...spot03, visible: false})
+        }
     }
 
     const handleDragMove04 = (e) => {
         const stage = e.target.getStage();
         const layer = stage.findOne(".main-layer");
+        const layer2 = stage.findOne(".bin");
 
         let A = e.target.position()
         let B = {x: A.x + spot04.B.x - spot04.A.x, y: A.y + spot04.B.y - spot04.A.y};
@@ -334,6 +351,9 @@ const ColdSpots = () => {
             setSpot04({...spot04, color: "yellow", A: A, B: B, C: C, D: D})
         else {
             setSpot04({...spot04, color: "red"})
+        }
+        if (layer2.getIntersection(A)) {
+            setSpot04({...spot04, visible: false})
         }
     }
 
@@ -366,6 +386,18 @@ const ColdSpots = () => {
                                 fillLinearGradientStartPoint={{x: -50, y: -50}}
                                 fillLinearGradientEndPoint={{x: 250, y: 250}}
                                 fillLinearGradientColorStops={[0, 'white', 1, 'lightgrey']}
+                            />
+                        </Layer>
+                        <Layer name="bin">
+                            <Line
+                                x={1050}
+                                y={80}
+                                points={[0, 0, 170, 0, 170, 200, 0, 200]}
+                                closed
+                                stroke="#868686"
+                                strokeWidth={0}
+                                opacity={0}
+                                fill="white"
                             />
                         </Layer>
                         <Layer name="coldSpot1">
