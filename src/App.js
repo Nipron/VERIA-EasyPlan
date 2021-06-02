@@ -15,11 +15,17 @@ import FloorType from "./components/5FloorType/FloorType";
 import Thermostat from "./components/6Thermostat/Thermostat";
 import Placement from "./components/6Thermostat/Placement";
 import Result from "./components/7Result/Result";
+import {useTranslation} from "react-i18next";
 
 const App = () => {
 
+    const {t} = useTranslation();
+
     return (
         <div className="page-bg">
+            <div className="mobile">
+                {t("mobile_warning")}
+            </div>
             <div className="app-grid">
                 <Header/>
                 <Nav/>
