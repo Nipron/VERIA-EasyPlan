@@ -102,7 +102,7 @@ export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
         try {
             let count = resultPath.length
             for (let i = 0; i < count - 2; i++) {
-                for (let j = 0; j < count - i; j++) {
+                for (let j = 0; j < count - i - 2; j++) {
                     if (isWayFree(resultPath[i], resultPath[count - 1 - j], walls)) {
                         resultPath.splice(i + 1, count - j - i - 2)
                         count = count - j - i - 2
@@ -116,8 +116,8 @@ export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
     }
 
     export const twoWaySnake = (startPoint, endPoint, pitStops, walls) => {
-        let snakeForward = normalSnake(startPoint, endPoint, pitStops, walls)
-        let snakeBack = normalSnake(endPoint, startPoint, pitStops, walls)
+        let snakeForward = weakSnake(startPoint, endPoint, pitStops, walls)
+        let snakeBack = weakSnake(endPoint, startPoint, pitStops, walls)
         if (wireLength(snakeForward) < wireLength(snakeBack)) {
             return snakeForward
         } else {

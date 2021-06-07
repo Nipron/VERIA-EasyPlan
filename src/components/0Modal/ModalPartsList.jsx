@@ -20,43 +20,43 @@ const ModalPartsList = ({active, setActive, list}) => {
                                 let name = '';
                                 switch (key) {
                                     case "mat5_100":
-                                        name = `Veria Clickmat 100, 5m${"\u00B2"}`
+                                        name = `Veria Clickmat 100, 5m${"\u00B2"} (189B9130)`
                                         break;
                                     case "mat4_100":
-                                        name = `Veria Clickmat 100, 4m${"\u00B2"}`
+                                        name = `Veria Clickmat 100, 4m${"\u00B2"} (189B9128)`
                                         break;
                                     case "mat3_100":
-                                        name = `Veria Clickmat 100, 3m${"\u00B2"}`
+                                        name = `Veria Clickmat 100, 3m${"\u00B2"} (189B9126)`
                                         break;
                                     case "mat2_100":
-                                        name = `Veria Clickmat 100, 2m${"\u00B2"}`
+                                        name = `Veria Clickmat 100, 2m${"\u00B2"} (189B9124)`
                                         break;
                                     case "mat5_55":
-                                        name = `Veria Clickmat 55, 5m${"\u00B2"}`
+                                        name = `Veria Clickmat 55, 5m${"\u00B2"} (189B9120)`
                                         break;
                                     case "mat4_55":
-                                        name = `Veria Clickmat 55, 4m${"\u00B2"}`
+                                        name = `Veria Clickmat 55, 4m${"\u00B2"} (189B9118)`
                                         break;
                                     case "mat3_55":
-                                        name = `Veria Clickmat 55, 3m${"\u00B2"}`
+                                        name = `Veria Clickmat 55, 3m${"\u00B2"} (189B9116)`
                                         break;
                                     case "mat2_55":
-                                        name = `Veria Clickmat 55, 2m${"\u00B2"}`
+                                        name = `Veria Clickmat 55, 2m${"\u00B2"} (189B9114)`
                                         break;
                                     case "cord2":
-                                        name = `Veria Clickmat ${t("extension_cord")}, 2m`
+                                        name = `Veria Clickmat ${t("extension_cord")}, 2m (189B9110)`
                                         break;
                                     case "cord1":
-                                        name = `Veria Clickmat ${t("extension_cord")}, 1m`
+                                        name = `Veria Clickmat ${t("extension_cord")}, 1m (189B9108)`
                                         break;
                                     case "cord025":
-                                        name = `Veria Clickmat ${t("extension_cord")}, 0.25m`
+                                        name = `Veria Clickmat ${t("extension_cord")}, 0.25m (189B9106)`
                                         break;
                                     case "kit100":
-                                        name = `Veria ${t("wireless_click_kit")} 100`
+                                        name = `Veria ${t("wireless_click_kit")} 100 (189B9105)`
                                         break;
                                     case "kit55":
-                                        name = `Veria ${t("wireless_click_kit")} 55`
+                                        name = `Veria ${t("wireless_click_kit")} 55 (189B9104)`
                                         break;
                                     default:
                                         name = `${t("wireless_click_kit")}`;

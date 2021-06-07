@@ -263,7 +263,7 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                 if (icicle[i] === 3) list[3]++;
             }
 
-            if ((area > 42) || ((area > 23) && !burnable)) {
+            if (area > 42)  {
                 return [, , , , false, area]
             }
 

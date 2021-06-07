@@ -202,6 +202,8 @@ const Result = () => {
                         <View style={styles.sectionGrey}>
                             <Text style={styles.text16}>
                                 {i18n.t("room_area")} {area.toFixed(2)} m&#178;
+                            </Text>
+                            <Text>
                                 {i18n.t("heated_area")} {heatedArea.toFixed(2)} m&#178;
                                 ({(100 * heatedArea / area).toFixed(2)}% {i18n.t("coverage")})
                             </Text>
@@ -217,43 +219,43 @@ const Result = () => {
                         </View>
                         <View style={styles.sectionGrey}>
                             {(listOfParts.mat5_55 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.mat5_55} x Veria Clickmat 55, 5m&#178;
+                                {listOfParts.mat5_55} x Veria Clickmat 55, 5m&#178; (189B9120)
                             </Text>}
                             {(listOfParts.mat4_55 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.mat4_55} x Veria Clickmat 55, 4m&#178;
+                                {listOfParts.mat4_55} x Veria Clickmat 55, 4m&#178; (189B9118)
                             </Text>}
                             {(listOfParts.mat3_55 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.mat3_55} x Veria Clickmat 55, 3m&#178;
+                                {listOfParts.mat3_55} x Veria Clickmat 55, 3m&#178; (189B9116)
                             </Text>}
                             {(listOfParts.mat2_55 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.mat2_55} x Veria Clickmat 55, 2m&#178;
+                                {listOfParts.mat2_55} x Veria Clickmat 55, 2m&#178; (189B9114)
                             </Text>}
                             {(listOfParts.mat5_100 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.mat5_100} x Veria Clickmat 100, 5m&#178;
+                                {listOfParts.mat5_100} x Veria Clickmat 100, 5m&#178; (189B9130)
                             </Text>}
                             {(listOfParts.mat4_100 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.mat4_100} x Veria Clickmat 100, 4m&#178;
+                                {listOfParts.mat4_100} x Veria Clickmat 100, 4m&#178; (189B9128)
                             </Text>}
                             {(listOfParts.mat3_100 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.mat3_100} x Veria Clickmat 100, 3m&#178;
+                                {listOfParts.mat3_100} x Veria Clickmat 100, 3m&#178; (189B9126)
                             </Text>}
                             {(listOfParts.mat2_100 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.mat2_100} x Veria Clickmat 100, 2m&#178;
+                                {listOfParts.mat2_100} x Veria Clickmat 100, 2m&#178; (189B9124)
                             </Text>}
                             {(listOfParts.cord2 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.cord2} x Veria Clickmat {i18n.t("extension_cord")}, 2m
+                                {listOfParts.cord2} x Veria Clickmat {i18n.t("extension_cord")}, 2m (189B9110)
                             </Text>}
                             {(listOfParts.cord1 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.cord1} x Veria Clickmat {i18n.t("extension_cord")}, 1m
+                                {listOfParts.cord1} x Veria Clickmat {i18n.t("extension_cord")}, 1m (189B9108)
                             </Text>}
                             {(listOfParts.cord025 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.cord025} x Veria Clickmat {i18n.t("extension_cord")}, 0.25m
+                                {listOfParts.cord025} x Veria Clickmat {i18n.t("extension_cord")}, 0.25m (189B9106)
                             </Text>}
                             {(listOfParts.kit100 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.kit100} x Veria {i18n.t("wireless_click_kit")} 100
+                                {listOfParts.kit100} x Veria {i18n.t("wireless_click_kit")} 100 (189B9105)
                             </Text>}
                             {(listOfParts.kit55 !== 0) && <Text style={styles.text2}>
-                                {listOfParts.kit55} x Veria {i18n.t("wireless_click_kit")} 55
+                                {listOfParts.kit55} x Veria {i18n.t("wireless_click_kit")} 55 (189B9104)
                             </Text>}
                         </View>
                         <View style={styles.disclaimer}>
