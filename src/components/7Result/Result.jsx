@@ -208,7 +208,7 @@ const Result = () => {
                             <Text style={styles.text16}>
                                 {i18n.t("room_area")} {area.toFixed(2)} m&#178;
                             </Text>
-                            <Text>
+                            <Text style={styles.text16}>
                                 {i18n.t("heated_area")} {heatedArea.toFixed(2)} m&#178;
                                 ({(100 * heatedArea / area).toFixed(2)}% {i18n.t("coverage")})
                             </Text>
