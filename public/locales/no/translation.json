@@ -35,8 +35,8 @@
   "show_hide_dimension_labels": "Vis / skjul målene:",
   "show_hide_dimension_labels_text": "Du kan skjule målene ved å klikke på \"Vis / skjul mål\".",
 
-  "cold_spots_text_p1": "Her kan du legge til \"kalde soner\" for områder der gulvvarme ikke skal plasseres på grunn av hindringer eller visse møbler.",
-  "cold_spots_text_p2": "Merk at du bare kan plassere det kalde stedet innenfor ytterveggene (kaldt sone er gult). Hvis det kalde stedet krysser ytterveggen (kaldt sone er rødt), må det flyttes med rommet igjen.",
+  "cold_spots_text_p1": "Her kan du legge til \"kalde soner\" for områder der gulvvarme ikke skal plasseres på grunn av hindringer eller møbler uten føtter.",
+  "cold_spots_text_p2": "Merk at du bare kan plassere den kalde sonen innenfor ytterveggene (kaldt sone er gult). Hvis den kalde sonen krysser ytterveggen (kald sone er rødt), må det flyttes inn i rommet igjen.",
 
   "add_cold_spots": "Legg til kald soner",
   "cold_spot": "Kalde soner",
