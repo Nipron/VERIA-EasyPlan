@@ -158,7 +158,9 @@ const Result = () => {
                 margin: 20,
                 marginTop: 0,
                 marginBottom: 0,
-                padding: 15
+                padding: 15,
+                paddingTop: 10,
+                paddingBottom: 0,
             },
             text1: {
                 fontSize: 10
@@ -168,6 +170,9 @@ const Result = () => {
             },
             text16: {
                 fontSize: 16
+            },
+            text20: {
+                fontSize: 20
             },
             textBold: {
                 fontWeight: 'bold'
@@ -269,7 +274,7 @@ const Result = () => {
                             </Text>
                         </View>
                         <View style={styles.section}>
-                            <Text>
+                            <Text style={styles.text20}>
                                 {i18n.t("enjoy")}
                             </Text>
                         </View>
