@@ -364,8 +364,7 @@ const ColdSpots = () => {
             <div className="info-section">
                 <div>
                     <h2>{t("cold_spots")}</h2>
-                    <p>{t("cold_spots_text_p1")}
-                        {t("cold_spots_text_p2")}
+                    <p>{t("cold_spots_text_p1")} {t("cold_spots_text_p2")}
                     </p>
                 </div>
                 <div className="ellipse-faq-btn">?</div>
