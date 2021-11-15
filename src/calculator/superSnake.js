@@ -73,7 +73,9 @@ export const findNextPit = (startPoint, endPoint, pitStops, walls) => {
             resultPath.push(startPoint);
             let currentPitStop = [...startPoint];
             let pitStops = _.cloneDeep(stops)
-            for (let i = 0; i < pitStops.length; i++) {
+            const pitStopsArrayLength = pitStops.length  //pitStops array will be reduced later on
+
+            for (let i = 0; i < pitStopsArrayLength; i++) {
                 if (isWayFree(currentPitStop, endPoint, walls)) {
                     resultPath.push(endPoint);
                     return resultPath;
