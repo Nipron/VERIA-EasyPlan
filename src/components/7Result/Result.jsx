@@ -20,7 +20,7 @@ import NewPDF from "../PDF/newPDF";
 import {Redirect} from "react-router";
 import {updateButton} from "../../redux/buttonsReducer";
 import {cordCalc, cords} from "../../calculator/superSnake";
-import {roomArea} from "../../calculator/helpers";
+import {roomArea, RoomReshaper} from "../../calculator/helpers";
 import PDF3 from "../PDF/PDF";
 import {saveAs} from 'file-saver';
 import {useTranslation} from "react-i18next";
@@ -335,7 +335,7 @@ const Result = () => {
                         <Line
                             x={10}
                             y={20}
-                            points={room}
+                            points={RoomReshaper(room, -2)}
                             closed
                             stroke="#868686"
                             strokeWidth={2}
@@ -403,7 +403,7 @@ const Result = () => {
                         <Line
                             x={10}
                             y={20}
-                            points={room}
+                            points={RoomReshaper(room, -2)}
                             closed
                             stroke="#868686"
                             strokeWidth={2}

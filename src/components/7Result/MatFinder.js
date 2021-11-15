@@ -72,14 +72,15 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     const t = -1 //
     const bG = 4;
-    const sG = 0;
+    const sG = 0.7;
+    const step50 = 49.8
     const spots = ColdSpotsTransformer(spotsArray, 0);
-    const headVertical = {w: 58, h: 75}
-    const headHorizontal = {w: 75, h: 58}
+    const headVertical = {w: 57.8, h: 74.8}
+    const headHorizontal = {w: 74.8, h: 57.8}
     const square = {w: 50, h: 50}
     const connectorVertical = {w: d, h: 6}
     const connectorHorizontal = {w: 6, h: d}
-    const R = RoomTransformer(room, -1.8)
+    const R = RoomTransformer(room, -1.2)
     let needToSearch = true;
     let resultMats = []
     let resultCuts = []
@@ -107,11 +108,11 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                 //creating horizontal starting row growing down
                 let columnsDown = 0
                 let startRowGrowDown = [0] //0 is code for "down"
-                while ((isGroupInsideRoom(x + columnsDown * 50 - bG, y - sG, headVertical, R))
+                while ((isGroupInsideRoom(x + columnsDown * step50 - bG, y - sG, headVertical, R))
                     // && (isGroupInsideRoom(x - 3, y + 4 + 1, connectorVertical, R))
                     //  && (isGroupInsideRoom(x + (columnsDown + 1) * 50 - 1, y + 4 + 1, connectorVertical, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - bG, y- sG, headVertical))
-                    && (!doesAnyCSOverlapGroup(connectors, x + columnsDown * 50 - bG, y- sG, headVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsDown * step50 - bG, y- sG, headVertical))
+                    && (!doesAnyCSOverlapGroup(connectors, x + columnsDown * step50 - bG, y- sG, headVertical))
                     // && (!doesAnyCSOverlapGroup(spots, x + columnsDown * 50 - 3, y + 4 + 1, connectorVertical))
                     //  && (!doesAnyCSOverlapGroup(spots, x + (columnsDown + 1) * 50 - 1, y + 4 + 1, connectorVertical))
                     ) {
@@ -120,8 +121,8 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                 }
                 for (let col = 0; col < startRowGrowDown.length - 1; col++) {
                     let rowDown = 0;
-                    while ((isGroupInsideRoom(x + col * 50, y + sG + headVertical.h + rowDown * 50, square, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y + sG + headVertical.h + rowDown * 50, square))
+                    while ((isGroupInsideRoom(x + col * step50, y + sG + headVertical.h + rowDown * 50, square, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + col * step50, y + sG + headVertical.h + rowDown * 50, square))
                     && (rowDown < 3)) {
                         startRowGrowDown[col + 1]++
                         rowDown++
@@ -132,11 +133,11 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                 let columnsUp = 0
                 let startRowGrowUp = [1]  //1 is code for "up"
 
-                while ((isGroupInsideRoom(x + columnsUp * 50 - bG, y + sG, headVertical, R))
+                while ((isGroupInsideRoom(x + columnsUp * step50 - bG, y + sG, headVertical, R))
                     //  && (isGroupInsideRoom(x - 3, y + headVertical.h - 10, connectorVertical, R))
                     //  && (isGroupInsideRoom(x - 1 + (columnsUp + 1) * 50, y + headVertical.h - 10, connectorVertical, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 - bG, y, headVertical))
-                    && (!doesAnyCSOverlapGroup(connectors, x + columnsUp * 50 - bG, y, headVertical))
+                    && (!doesAnyCSOverlapGroup(spots, x + columnsUp * step50 - bG, y, headVertical))
+                    && (!doesAnyCSOverlapGroup(connectors, x + columnsUp * step50 - bG, y, headVertical))
                     //  && (!doesAnyCSOverlapGroup(spots, x + columnsUp * 50 - 3, y + headVertical.h - 10, connectorVertical))
                     //  && (!doesAnyCSOverlapGroup(spots, x - 1 + (columnsUp + 1) * 50, y + headVertical.h - 10, connectorVertical))
                     ) {
@@ -146,8 +147,8 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
                 for (let col = 0; col < startRowGrowUp.length - 1; col++) {
                     let rowUp = 0;
-                    while ((isGroupInsideRoom(x + col * 50, y - sG - (rowUp + 1) * 50, square, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + col * 50, y - sG - (rowUp + 1) * 50, square))
+                    while ((isGroupInsideRoom(x + col * step50, y - sG - (rowUp + 1) * step50, square, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + col * step50, y - sG - (rowUp + 1) * step50, square))
                     && (rowUp < 3)) {
                         startRowGrowUp[col + 1]++
                         rowUp++
@@ -158,11 +159,11 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                 let rowsLeft = 0
                 let startColumnGrowLeft = [2]
 
-                while ((isGroupInsideRoom(x + sG, y + rowsLeft * 50 - bG, headHorizontal, R))
+                while ((isGroupInsideRoom(x + sG, y + rowsLeft * step50 - bG, headHorizontal, R))
                     //  && (isGroupInsideRoom(x + 1 + headHorizontal.w - 10, y - 3, connectorHorizontal, R))
                     //  && (isGroupInsideRoom(x + 1 + headHorizontal.w - 10, y - 1 + (rowsLeft + 1) * 50, connectorHorizontal, R))
-                    && (!doesAnyCSOverlapGroup(spots, x, y + rowsLeft * 50 - bG, headHorizontal))
-                    && (!doesAnyCSOverlapGroup(connectors, x, y + rowsLeft * 50 - bG, headHorizontal))
+                    && (!doesAnyCSOverlapGroup(spots, x, y + rowsLeft * step50 - bG, headHorizontal))
+                    && (!doesAnyCSOverlapGroup(connectors, x, y + rowsLeft * step50 - bG, headHorizontal))
                     //  && (!doesAnyCSOverlapGroup(spots, x + 1 + headHorizontal.w - 10, y - 3, connectorHorizontal))
                     //  && (!doesAnyCSOverlapGroup(spots, x + 1 + headHorizontal.w - 10, y - 1 + (rowsLeft + 1) * 50, connectorHorizontal))
                     ) {
@@ -172,8 +173,8 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
                 for (let row = 0; row < startColumnGrowLeft.length - 1; row++) {
                     let columnLeft = 0;
-                    while ((isGroupInsideRoom(x - sG - (columnLeft + 1) * 50, y + row * 50, square, R))
-                    && (!doesAnyCSOverlapGroup(spots, x - sG - (columnLeft + 1) * 50, y + row * 50, square))
+                    while ((isGroupInsideRoom(x - sG - (columnLeft + 1) * step50, y + row * step50, square, R))
+                    && (!doesAnyCSOverlapGroup(spots, x - sG - (columnLeft + 1) * step50, y + row * step50, square))
                     && (columnLeft < 3)) {
                         startColumnGrowLeft[row + 1]++
                         columnLeft++
@@ -184,11 +185,11 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
                 let rowsRight = 0
                 let startColumnGrowRight = [3]
 
-                while ((isGroupInsideRoom(x - sG, y + rowsRight * 50 - bG, headHorizontal, R))
+                while ((isGroupInsideRoom(x - sG, y + rowsRight * step50 - bG, headHorizontal, R))
                     //   && (isGroupInsideRoom(x + 1 + 4, y - 3, connectorHorizontal, R))
                     //  && (isGroupInsideRoom(x + 1 + 4, y - 1 + (rowsRight + 1) * 50, connectorHorizontal, R))
-                    && (!doesAnyCSOverlapGroup(spots, x, y + rowsRight * 50 - bG, headHorizontal))
-                    && (!doesAnyCSOverlapGroup(connectors, x, y + rowsRight * 50 - bG, headHorizontal))
+                    && (!doesAnyCSOverlapGroup(spots, x, y + rowsRight * step50 - bG, headHorizontal))
+                    && (!doesAnyCSOverlapGroup(connectors, x, y + rowsRight * step50 - bG, headHorizontal))
                     //   && (!doesAnyCSOverlapGroup(spots, x + 1 + 4, y - 3, connectorHorizontal))
                     //   && (!doesAnyCSOverlapGroup(spots, x + 1 + 4, y - 1 + (rowsRight + 1) * 50, connectorHorizontal))
                     ) {
@@ -198,8 +199,8 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
                 for (let row = 0; row < startColumnGrowLeft.length - 1; row++) {
                     let columnRight = 0;
-                    while ((isGroupInsideRoom(x + sG + headHorizontal.w + columnRight * 50, y + row * 50, square, R))
-                    && (!doesAnyCSOverlapGroup(spots, x + sG + headHorizontal.w + columnRight * 50, y + row * 50, square))
+                    while ((isGroupInsideRoom(x + sG + headHorizontal.w + columnRight * step50, y + row * step50, square, R))
+                    && (!doesAnyCSOverlapGroup(spots, x + sG + headHorizontal.w + columnRight * step50, y + row * step50, square))
                     && (columnRight < 3)) {
                         startColumnGrowRight[row + 1]++
                         columnRight++
@@ -533,8 +534,7 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
     let path = bestPath(waysCombinations/*, pitStopsNoDoubles, walls*/);
 
     const connectorsAndNumbers = connectorsFarm(path)
-    console.log("PATH")
-    console.log(path)
+
   //  console.log("PIT STOPS NO DOUBLES  dd")
  //   console.log(pitStopsNoDoubles)
     let pit6 = _.cloneDeep(pitStopsNoDoubles)
@@ -554,11 +554,6 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
     list[4] = cordsArray[0]
     list[5] = cordsArray[1]
     list[6] = cordsArray[2]
-
- //   console.log("ZZZZZZZZ")
- //   console.log(snakesNest, "nest roooooom")
-  //  console.log(resultMats)
-  //  console.log("ZZZZZZZZ")
 
     return [resultMats, snakesNest, connectorsAndNumbers[0], connectorsAndNumbers[1], true, area, list, resultCuts]
 }
