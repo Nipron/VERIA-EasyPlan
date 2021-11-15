@@ -72,7 +72,7 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     const t = -1 //
     const bG = 4;
-    const sG = 0.7;
+    const sG = 0.3;
     const step50 = 49.8
     const spots = ColdSpotsTransformer(spotsArray, 0);
     const headVertical = {w: 57.8, h: 74.8}
