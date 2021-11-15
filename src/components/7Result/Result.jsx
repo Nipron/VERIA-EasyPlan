@@ -46,6 +46,8 @@ const Result = () => {
     const thermoOut = [thermostat.x, thermostat.y]
     const [image] = useImage(thermoImg);
     const checks = useSelector(state => state.checks);
+
+    console.log("CHECK CKECKS", checks.subBurnable)
    // const [subBurnable, setSubBurnable] = useState(checks.subBurnable);
 
     const massGroup = MatFinder(spotsArray, room, thermoOut, checks.subBurnable)
@@ -106,7 +108,7 @@ const Result = () => {
         listOfParts.cord025 = list[4]
         listOfParts.cord1 = list[5]
         listOfParts.cord2 = list[6]
-        if (massGroup[5] > 23) {
+        if ((massGroup[5] > 23) || checks.subBurnable) {
             listOfParts.mat2_55 = list[0]
             listOfParts.mat3_55 = list[1]
             listOfParts.mat4_55 = list[2]
