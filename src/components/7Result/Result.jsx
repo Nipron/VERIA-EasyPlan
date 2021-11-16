@@ -338,7 +338,7 @@ const Result = () => {
                             points={RoomReshaper(room, -2)}
                             closed
                             stroke="#868686"
-                            strokeWidth={2}
+                            strokeWidth={3}
                             fillLinearGradientStartPoint={{x: -50, y: -50}}
                             fillLinearGradientEndPoint={{x: 250, y: 250}}
                             fill="lightgrey"
@@ -406,7 +406,7 @@ const Result = () => {
                             points={RoomReshaper(room, -2)}
                             closed
                             stroke="#868686"
-                            strokeWidth={2}
+                            strokeWidth={3}
                             fillLinearGradientStartPoint={{x: -50, y: -50}}
                             fillLinearGradientEndPoint={{x: 250, y: 250}}
                             //fill="#F7C9C9"

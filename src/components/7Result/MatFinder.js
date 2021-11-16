@@ -71,16 +71,16 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     const t = -1 //
-    const bG = 4;
-    const sG = 0.3;
-    const step50 = 49.8
+    const bG = 6;
+    const sG = 2;
+    const step50 = 49.6
     const spots = ColdSpotsTransformer(spotsArray, 0);
-    const headVertical = {w: 57.8, h: 74.8}
-    const headHorizontal = {w: 74.8, h: 57.8}
-    const square = {w: 50, h: 50}
+    const headVertical = {w: 57.6, h: 74.6}
+    const headHorizontal = {w: 74.6, h: 57.6}
+    const square = {w: 49.6, h: 49.6}
     const connectorVertical = {w: d, h: 6}
     const connectorHorizontal = {w: 6, h: d}
-    const R = RoomTransformer(room, -1.2)
+    const R = RoomTransformer(room, -1.9)
     let needToSearch = true;
     let resultMats = []
     let resultCuts = []
