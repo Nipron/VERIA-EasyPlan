@@ -69,6 +69,8 @@ const doesAnyCSOverlapGroup = (CSarray, gX0, gY0, group) => {
 
 export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
+    console.log(thermoOut, "THERMO OUT")
+
     const d = 4  // 4px * 2cm = 8cm - minimum distance between for connector
     const t = -1 //
     const bG = 6.5;
@@ -430,7 +432,7 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
     let spotsForWalls = ColdSpotsTransformer(spotsArray, 1)
     spotsForWalls.push(...resultMats)
     let walls = BulldozerSquad(spotsForWalls)
-    let wallsFromRoom = Bulldozer(RoomReshaper(room, -3))
+    let wallsFromRoom = Bulldozer(RoomReshaper(room, -4))
 
     //Creating array of pitStops - nodal points at the room for wires (corners of the room, cold spots and mats)
     let pitStops = []
@@ -438,7 +440,7 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
  //   console.log("PIT STOPS before room corners")
  //   console.log(pitStops)
 
-    const roomCorners = BombForRoom(RoomTransformer(room, -1))
+    const roomCorners = BombForRoom(RoomTransformer(room, -2))
     if (shapes.L) {
         pitStops.push(roomCorners[3])
         pitStops.push(roomCorners[4])
@@ -539,12 +541,12 @@ export const MatFinder = (spotsArray, room, thermoOut, burnable) => {
 
     const connectorsAndNumbers = connectorsFarm(path)
 
-  //  console.log("PIT STOPS NO DOUBLES  dd")
- //   console.log(pitStopsNoDoubles)
+    console.log("PIT STOPS NO DOUBLES  dd")
+    console.log(pitStopsNoDoubles)
     let pit6 = _.cloneDeep(pitStopsNoDoubles)
   //  console.log(pit6)
-  //  console.log("WALLS")
-  //  console.log(walls)
+    console.log("WALLS")
+    console.log(walls)
 
     const snakesNestMaker = (arr, pStops, walls) => {
         let result = [];

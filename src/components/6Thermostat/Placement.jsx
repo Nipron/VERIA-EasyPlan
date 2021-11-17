@@ -22,7 +22,7 @@ const Placement = () => {
     const startX = 437;
     const startY = 9;
 
-    const d = -1;
+    const d = -2;
 
     const pos00 = {x: startX + room[0] + d, y: startY + room[1] + d}
     const pos01s = {x: startX + room[2] - d, y: startY + room[3] + d}
